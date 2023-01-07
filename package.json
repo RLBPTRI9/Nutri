@@ -6,7 +6,7 @@
     "scripts": {
         "start": "nodemon server/server.js",
         "build": "webpack",
-        "dev": "webpack-dev-server --open",
+        "dev": "concurrently \"webpack-dev-server --open --hot --progress\" \"nodemon ./server/server.js\"",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -23,6 +23,7 @@
         "assert": "^2.0.0",
         "babel-loader": "^9.1.0",
         "buffer": "^6.0.3",
+        "concurrently": "^7.6.0",
         "css-loader": "^6.7.3",
         "dotenv": "^16.0.3",
         "eslint": "^8.29.0",
