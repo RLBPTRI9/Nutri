@@ -1,4 +1,3 @@
-
 const path = require('path');
 const express = require('express');
 // Create a new Express app
@@ -7,12 +6,7 @@ const app = express();
 
 const PORT = 3000;
 
-app.use(express.static("public"));
-
-
-
-
-
+app.use(express.static('public'));
 
 const leaderList = [
   { name: 'Anna', id: 'a0' },
@@ -20,7 +14,6 @@ const leaderList = [
   { name: 'Clara', id: 'c0' },
   { name: 'David', id: 'd0' },
 ];
-
 
 app.get('/api/leaders', (req, res) => {
   return res.status(200).send(leaderList);
