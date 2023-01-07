@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+require('dotenv').config();
+
 // Create a new Express app
 const app = express();
 // const apiRouter = require('./routes/api')
@@ -16,6 +18,8 @@ const leaderList = [
 ];
 
 app.get('/api/leaders', (req, res) => {
+  console.log(process.env.EDAMAM_RECIPE_API_ID);
+  console.log(process.env.EDAMAM_RECIPE_API_KEY);
   return res.status(200).send(leaderList);
 });
 
