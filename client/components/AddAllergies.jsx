@@ -10,7 +10,7 @@ const useInput = (init) => {
 
 const AddAllergies = (props) => {
   const [allergy, allergyOnChange] = useInput('');
-  const [dish, dishOnChange] = useInput('');
+  // const [dish, dishOnChange] = useInput('');
 
   //we can either save this to a database, or just checkAllergies in the fetch request
   const saveAllergies = () => {
@@ -34,6 +34,7 @@ const AddAllergies = (props) => {
   };
   return (
     <section className="postAllergies">
+      <br />
       <label htmlFor="allergies"> Enter Allergies: </label>
       <br />
       <input
@@ -43,18 +44,19 @@ const AddAllergies = (props) => {
         onChange={allergyOnChange}
       />
       <br />
-      <label htmlFor="dish">Enter dish: </label>
+      {/* <label htmlFor="dish">Enter dish: </label>
       <br />
       <input
         name="dish"
         placeholder="Pad Thai"
         value={dish}
         onChange={dishOnChange}
-      />
-      <br />
+      /> */}
       <button type="button" className="button" onClick={saveAllergies}>
         Save
       </button>
+      <br />
+      <br />
     </section>
   );
 };
