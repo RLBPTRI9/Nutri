@@ -1,6 +1,7 @@
 import React from 'react';
 import GetIngredients from './GetIngredients.jsx';
 import AddAllergies from './AddAllergies.jsx';
+import '../stylesheets/styles.css';
 import ResponsiveAppBar from './NavBar.jsx';
 
 function App() {
