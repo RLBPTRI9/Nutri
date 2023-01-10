@@ -1,6 +1,6 @@
 import React from 'react';
 import GetIngredients from './GetIngredients.jsx';
-import AddAllergies from './AddAllergies.jsx';
+import AddAllergy from './AddAllergy.jsx';
 import '../stylesheets/styles.css';
 import ResponsiveAppBar from './NavBar.jsx';
 
@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <ResponsiveAppBar />
-      <AddAllergies />
+      <AddAllergy />
       <GetIngredients />
     </div>
   );
