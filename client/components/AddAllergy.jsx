@@ -17,18 +17,18 @@ const AddAllergy = (props) => {
     localStorage.setItem('allergy', allergy);
   };
   return (
-    <section className='postAllergy'>
+    <section className="postAllergy">
       <br />
-      <label htmlFor='allergy'> Enter Allergy: </label>
+      <label htmlFor="allergy"> Enter Allergy: </label>
       <br />
       <input
-        name='name'
-        placeholder='e.g., peanut'
+        name="name"
+        placeholder="e.g., peanut"
         value={allergy}
         onChange={allergyOnChange}
       />
       <br />
-      <button type='button' className='button' onClick={saveAllergy}>
+      <button type="button" className="button" onClick={saveAllergy}>
         Save
       </button>
       <br />

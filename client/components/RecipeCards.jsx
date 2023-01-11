@@ -48,6 +48,13 @@ const Item = styled(Paper)(({ theme }) => ({
 //   );
 // }
 
+// x.name = ele.recipe.label;
+// x.image = ele.recipe.image;
+// x.url = ele.recipe.url;
+// x.ingredients = ele.recipe.ingredientLines;
+// x.cautions = ele.recipe.cautions;
+// x.healthLabels = ele.recipe.healthLabels;
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
 
@@ -61,7 +68,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ props }) {
-  const { name, imgUrl, recipeTags, recipeUrl, ingredients } = props;
+  const { name, image, healthLabels, url, ingredients } = props;
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -91,8 +98,7 @@ export default function RecipeReviewCard({ props }) {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Item>
-
-            {/* <Card sx={{ maxWidth: 500 }}> */}
+              {/* <Card sx={{ maxWidth: 500 }}> */}
 
               <Card sx={{ maxWidth: 500 }}>
                 <CardHeader
@@ -113,15 +119,15 @@ export default function RecipeReviewCard({ props }) {
                 <CardMedia
                   component="img"
                   height="280"
-                  image={imgUrl}
+                  image={image}
                   alt="Paella dish"
                 />
                 <CardContent>
                   <Typography variant="body2" color="text.secondary">
-                    Tags: {recipeTags}
+                    Tags: {healthLabels}
                     <br />
                     <br />
-                    Click <a href={recipeUrl}> link</a> for recipe
+                    Click <a href={url}> link</a> for recipe
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
