@@ -57,16 +57,16 @@ function GetIngredients() {
 
   return (
     <div>
-      <label htmlFor="dish">Enter dish: </label>
+      <label htmlFor='dish'>Enter dish: </label>
       <br />
       <input
-        name="dish"
-        placeholder="Pad Thai"
+        name='dish'
+        placeholder='Pad Thai'
         value={dish}
         onChange={dishOnChange}
       />
       <br />
-      <button type="button" className="button" onClick={checkAPI}>
+      <button type='button' className='button' onClick={checkAPI}>
         Check Ingredients
       </button>
       <br />
