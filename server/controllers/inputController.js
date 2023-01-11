@@ -6,8 +6,15 @@ const inputController = {};
 
 inputController.getIngredients = (req, res, next) => {
   //pad thai, pad+thai
-  const { ingredient, allergy } = req.params;
+  //https://localhost:8080/api/getIngredients?allergy=peanut&dish=pad+thai
 
+  const query = req.query;// query = {allery:"peanut",dish: "pad+thai"}
+  const allergy = query.allergy
+  const dish = query.dish
+
+  console.log(allergy, dish)
+  // const { allergy, dish } = req.query;
+  // console.log(req.query.dish, req.query.allergy)
   //clean up user input - trim spaces + lower cases
 
 
@@ -15,7 +22,7 @@ inputController.getIngredients = (req, res, next) => {
   
   // console.log(process.env.EDAMAM_RECIPE_API_ID);
 
-  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=pad+thai`;
+  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish}`;
 
   fetch(url)
     .then((response) => {
@@ -50,7 +57,7 @@ inputController.getIngredients = (req, res, next) => {
         // console.log(resultList);
       });
 
-      const allergy = 'peanut';
+      //const allergy = 'peanut';
 
       //const allergies = localStorage.getItem('allergies');
       //console.log(allergies);
