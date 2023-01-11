@@ -15,8 +15,6 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-
-
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -50,6 +48,12 @@ const Item = styled(Paper)(({ theme }) => ({
 //   );
 // }
 
+// x.name = ele.recipe.label;
+// x.image = ele.recipe.image;
+// x.url = ele.recipe.url;
+// x.ingredients = ele.recipe.ingredientLines;
+// x.cautions = ele.recipe.cautions;
+// x.healthLabels = ele.recipe.healthLabels;
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -64,7 +68,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ props }) {
-  const { name, imgUrl, recipeTags, recipeUrl, ingredients } = props;
+  const { name, image, healthLabels, url, ingredients } = props;
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -72,13 +76,11 @@ export default function RecipeReviewCard({ props }) {
   };
 
   return (
-    <div className="viewCard">
-
-
-    <Box sx={{ flexGrow: 1 }}>
+    <div className='viewCard'>
+      {/* <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Item>xs=6</Item>
+          <Item>lalalal</Item>
         </Grid>
         <Grid item xs={6}>
           <Item>xs=6</Item>
@@ -90,63 +92,71 @@ export default function RecipeReviewCard({ props }) {
           <Item>xs=6</Item>
         </Grid>
       </Grid>
-    </Box>
+    </Box> */}
 
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Item>
+              {/* <Card sx={{ maxWidth: 500 }}> */}
 
-
-      <Card sx={{ maxWidth: 500 }}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              R
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          //  title="Shrimp and Chorizo Paella"
-          title={name}
-          subheader="September 14, 2016"
-        />
-        <CardMedia
-          component="img"
-          height="280"
-          image={imgUrl}
-          alt="Paella dish"
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            Tags: {recipeTags}
-            <br />
-            <br />
-            Click <a href={recipeUrl}> link</a> for recipe
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Ingredients:</Typography>
-            <Typography paragraph>{ingredients}</Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
+              <Card sx={{ maxWidth: 500 }}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
+                      R
+                    </Avatar>
+                  }
+                  action={
+                    <IconButton aria-label='settings'>
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                  //  title="Shrimp and Chorizo Paella"
+                  title={name}
+                  subheader='September 14, 2016'
+                />
+                <CardMedia
+                  component='img'
+                  height='280'
+                  image={image}
+                  alt='Paella dish'
+                />
+                <CardContent>
+                  <Typography variant='body2' color='text.secondary'>
+                    Tags: {healthLabels}
+                    <br />
+                    <br />
+                    Click <a href={url}> link</a> for recipe
+                  </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                  <IconButton aria-label='add to favorites'>
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton aria-label='share'>
+                    <ShareIcon />
+                  </IconButton>
+                  <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label='show more'
+                  >
+                    <ExpandMoreIcon />
+                  </ExpandMore>
+                </CardActions>
+                <Collapse in={expanded} timeout='auto' unmountOnExit>
+                  <CardContent>
+                    <Typography paragraph>Ingredients:</Typography>
+                    <Typography paragraph>{ingredients}</Typography>
+                  </CardContent>
+                </Collapse>
+              </Card>
+            </Item>
+          </Grid>
+        </Grid>
+      </Box>
     </div>
   );
 }

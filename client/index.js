@@ -1,7 +1,8 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './components/App.jsx';
 
-render(<App />, document.getElementById('app'));
+const app = ReactDOM.createRoot(document.getElementById('app'));
+app.render(<App />);
 
 //ask group about what happens when you use prettier here (turns into one line)

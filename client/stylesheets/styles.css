@@ -1,31 +1,30 @@
 body {
-    background-color: #F7FBFC;
+  background-color: #f7fbfc;
 }
 
 .viewCard {
-    margin: 40px 40px;
-    padding: 20px 20px;
-
+  margin: 40px 40px;
+  padding: 20px 20px;
 }
 
 .recipeCard {
-    margin: 40px 40px;
-    padding: 30px 20px;
-    /* display: grid;
+  margin: 40px 40px;
+  padding: 30px 20px;
+  /* display: grid;
     grid-template-columns: 1fr; */
-    border: 1px solid black;
-    height: 500px;
-    margin-top: 80px;
-    width: 600px;
-    float: left;
-    background-color: white;
-    margin-left: 32px;
-    border-radius: 10px;
-    flex-grow: 0;
-	flex-shrink: 0;
+  border: 1px solid black;
+  height: 500px;
+  margin-top: 80px;
+  width: 600px;
+  float: left;
+  background-color: white;
+  margin-left: 32px;
+  border-radius: 10px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .dishphoto {
-    height: 400px;
-    width: 500px;
+  height: 400px;
+  width: 500px;
 }
