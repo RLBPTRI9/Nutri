@@ -1,4 +1,23 @@
 import React, { Component, useEffect, useState } from 'react';
+import RecipeCards from './RecipeCards.jsx';
+
+const testObj = [
+  {
+    name: 'Pad Thai',
+    imgUrl:
+      'https://www.gimmesomeoven.com/wp-content/uploads/2019/01/Pad-Thai-Recipe-1.jpg',
+    recipeTags: 'soy-free, gluten-free',
+    recipeUrl: 'https://tastesbetterfromscratch.com/pad-thai/',
+    ingredients: 'peanuts, noodles',
+  },
+  {
+    name: 'Pad Thai',
+    imgUrl: 'https://cafedelites.com/wp-content/uploads/2018/07/pad-thai-6.jpg',
+    recipeTags: 'nut-free, soy-free, gluten-free',
+    recipeUrl: 'https://cafedelites.com/pad-thai/',
+    ingredients: 'Spice, egg, noodles',
+  },
+];
 
 const useInput = (init) => {
   const [value, setValue] = useState(init);
@@ -10,28 +29,32 @@ const useInput = (init) => {
 
 function GetIngredients() {
   const [dish, dishOnChange] = useInput('');
+  const [details, setDetails] = useState([]);
 
-  const checkAPI = () => {
-    const body = {
-      dish,
+  // const checkAPI = () => {
+  //   const body = {
+  //     dish,
+  //   };
+
+  useEffect(() => {
+    const ingredients = async () => {
+      await fetch(`/api/getIngredients/${dish}`)
+        .then((res) => res.json())
+        .then((details) => {
+          setDetails(details);
+        })
+        .catch((err) => console.log('useEffect: getIngredients: ERROR: ', err));
     };
+    ingredients();
+  }, []);
+  // };
 
-    useEffect(() => {
-      const ingredients = async () => {
-        setLoading(true);
-        await fetch('/api')
-          .then((res) => res.json())
-          .then((ingredients) => {
-            setIngredients(ingredients);
-          })
-          .catch((err) =>
-            console.log('useEffect: getIngredients: ERROR: ', err)
-          );
-        setLoading(false);
-      };
-      ingredients();
-    }, []);
-  };
+  const muiView = testObj.map((detail, index) => (
+    <RecipeCards key={index} props={detail} />
+  ));
+
+  console.log(dish);
+
   return (
     <div>
       <label htmlFor="dish">Enter dish: </label>
@@ -43,9 +66,13 @@ function GetIngredients() {
         onChange={dishOnChange}
       />
       <br />
-      <button type="button" className="button" onClick={checkAPI}>
+      <button type="button" className="button" onClick={GetIngredients}>
         Check Ingredients
       </button>
+      <br />
+      <br />
+      <br />
+      {muiView}
     </div>
   );
 }
