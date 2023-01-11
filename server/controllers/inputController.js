@@ -10,7 +10,10 @@ inputController.getIngredients = (req, res, next) => {
 
   //clean up user input - trim spaces + lower cases
 
-  console.log(process.env.EDAMAM_RECIPE_API_ID);
+
+
+  
+  // console.log(process.env.EDAMAM_RECIPE_API_ID);
 
   const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=pad+thai`;
 
@@ -52,6 +55,38 @@ inputController.getIngredients = (req, res, next) => {
       //const allergies = localStorage.getItem('allergies');
       //console.log(allergies);
 
+      //cleanup function for plurals
+      function cleanUp(string){
+        let result;
+        let input = string.toLowerCase().trim();
+        console.log(input);
+        let inputLength = input.length; 
+        console.log(inputLength);
+        console.log(input.substring(inputLength - 2));
+        console.log(input.substring(inputLength - 4,inputLength - 2));
+        if((input.substring(inputLength - 2)==='es')&& (
+           input.substring(inputLength - 3, inputLength - 2)==='z'||
+           input.substring(inputLength - 3, inputLength - 2)==='o'||
+           input.substring(inputLength - 3, inputLength - 2)==='s'||
+           input.substring(inputLength - 3, inputLength - 2)==='x'||
+           input.substring(inputLength - 4, inputLength - 2)==='sh'||
+           input.substring(inputLength - 4, inputLength - 2)==='ch'
+          )){
+           result = input.substring(0, inputLength-2);
+           console.log(result);
+        } else if((input.substring(inputLength - 2)==='es')&&  (input.substring(inputLength - 3, inputLength - 2)==='i')
+        ){
+          result = input.substring(0, inputLength-3)+'y';
+          console.log(result);
+        } else {
+          result = input;
+        }
+        return result;
+      }
+      let cleanedInput = cleanUp(allergy);
+      const regex = new RegExp(cleanedInput + '?');
+
+
       const recipesWithAllergy = [];
       // const recipesWithoutAllergy = [];
 
@@ -59,9 +94,10 @@ inputController.getIngredients = (req, res, next) => {
       for (let recipe of resultList) {
         let ingredients = recipe.ingredients;
         // console.log(ingredients);
-        for (let ingredient of ingredients) {
+        for (let ingredientU of ingredients) {
           // console.log('ingredient',ingredient)
-          if (ingredient.match(allergy)) {
+          let ingredient = ingredientU.toLowerCase();
+          if (ingredient.match(allergy) || ingredient.match(allergy.toLowerCase().trim()) {
             recipesWithAllergy.push(recipe.url);
             break;
           }

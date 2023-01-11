@@ -3,7 +3,7 @@ const router = express.Router();
 const inputController = require('../controllers/inputController');
 //controller
 
-router.get('/searchIngredients', inputController.getIngredients, (req, res) => {
+router.get('/getIngredients', inputController.getIngredients, (req, res) => {
   return res.status(200).json(res.locals.ingredientData);
 });
 
