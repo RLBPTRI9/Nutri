@@ -1,10 +1,14 @@
 const path = require('path');
 const express = require('express');
 require('dotenv').config();
-
 // Create a new Express app
 const app = express();
+
+const routes = require('./routes/api');
+app.use('/api', routes);
+
 // const apiRouter = require('./routes/api')
+//const databaseRouter = require('./routes/database')
 
 const PORT = 3000;
 
@@ -16,12 +20,6 @@ const leaderList = [
   { name: 'Clara', id: 'c0' },
   { name: 'David', id: 'd0' },
 ];
-
-app.get('/api/leaders', (req, res) => {
-  console.log(process.env.EDAMAM_RECIPE_API_ID);
-  console.log(process.env.EDAMAM_RECIPE_API_KEY);
-  return res.status(200).send(leaderList);
-});
 
 // Define a route handler for the root path
 app.get('/', (req, res) => {
