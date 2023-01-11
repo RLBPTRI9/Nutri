@@ -35,7 +35,7 @@ function GetIngredients() {
 
   return (
     <div>
-      <Grid container spacing={1} direction='column'>
+      <Grid container spacing={1} direction='column' sx={{ mr: 2 }}>
         <Grid item sx={{ mb: 1 }}>
           <Typography variant='h5'>Enter Dish</Typography>
         </Grid>

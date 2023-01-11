@@ -23,7 +23,7 @@ const AddAllergy = (props) => {
 
   return (
     <div>
-      <Grid container spacing={1} direction='column'>
+      <Grid container spacing={1} direction='column' sx={{ ml: 1 }}>
         <Grid item sx={{ mb: 1 }}>
           <Typography variant='h5'>Enter Allergy</Typography>
         </Grid>

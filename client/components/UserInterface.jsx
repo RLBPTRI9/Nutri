@@ -25,7 +25,7 @@ export default function DividerStack() {
               justifyContent='center'
               alignItems='center'
               divider={<Divider orientation='vertical' flexItem />}
-              spacing={8}
+              spacing={7}
             >
               <AddAllergy />
               <GetIngredients />
