@@ -1,23 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import RecipeCards from './RecipeCards.jsx';
-
-const testObj = [
-  {
-    name: 'Pad Thai',
-    imgUrl:
-      'https://www.gimmesomeoven.com/wp-content/uploads/2019/01/Pad-Thai-Recipe-1.jpg',
-    recipeTags: 'soy-free, gluten-free',
-    recipeUrl: 'https://tastesbetterfromscratch.com/pad-thai/',
-    ingredients: 'peanuts, noodles',
-  },
-  {
-    name: 'Pad Thai',
-    imgUrl: 'https://cafedelites.com/wp-content/uploads/2018/07/pad-thai-6.jpg',
-    recipeTags: 'nut-free, soy-free, gluten-free',
-    recipeUrl: 'https://cafedelites.com/pad-thai/',
-    ingredients: 'Spice, egg, noodles',
-  },
-];
+import React, { useEffect, useState, useContext } from 'react';
+import RecipeDetailsContext from '../store/recipe-details-context.js';
 
 const useInput = (init) => {
   const [value, setValue] = useState(init);
@@ -29,11 +11,8 @@ const useInput = (init) => {
 
 function GetIngredients() {
   const [dish, dishOnChange] = useInput('');
-  const [details, setDetails] = useState([]);
-
-  useEffect(() => {
-    // ingredients();
-  }, []);
+  const recipeDetailsContext = useContext(RecipeDetailsContext);
+  const updateRecipeDetails = recipeDetailsContext.updateRecipeDetails;
 
   const checkAPI = () => {
     fetch(
@@ -45,15 +24,10 @@ function GetIngredients() {
       .then((details) => {
         console.log(details);
         console.log(dish);
-        setDetails(details);
+        updateRecipeDetails(details);
       })
       .catch((err) => console.log('useEffect: getIngredients: ERROR: ', err));
   };
-  const muiView = details.map((detail, index) => (
-    <RecipeCards key={index} props={detail} />
-  ));
-
-  console.log(dish);
 
   return (
     <div>
@@ -71,8 +45,6 @@ function GetIngredients() {
       </button>
       <br />
       <br />
-      <br />
-      {muiView}
     </div>
   );
 }

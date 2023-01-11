@@ -17,8 +17,7 @@ const AddAllergy = (props) => {
     localStorage.setItem('allergy', allergy);
   };
   return (
-    <section className='postAllergy'>
-      <br />
+    <div>
       <label htmlFor='allergy'> Enter Allergy: </label>
       <br />
       <input
@@ -33,7 +32,7 @@ const AddAllergy = (props) => {
       </button>
       <br />
       <br />
-    </section>
+    </div>
   );
 };
 

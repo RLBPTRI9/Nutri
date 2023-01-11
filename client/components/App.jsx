@@ -1,6 +1,5 @@
 import React from 'react';
-import GetIngredients from './GetIngredients.jsx';
-import AddAllergy from './AddAllergy.jsx';
+import UserInterface from './UserInterface';
 import '../stylesheets/styles.css';
 import ResponsiveAppBar from './NavBar.jsx';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -24,8 +23,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ResponsiveAppBar />
-      <AddAllergy />
-      <GetIngredients />
+      <UserInterface />
     </ThemeProvider>
   );
 }
