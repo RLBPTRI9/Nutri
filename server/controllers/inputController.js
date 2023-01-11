@@ -8,18 +8,15 @@ inputController.getIngredients = (req, res, next) => {
   //pad thai, pad+thai
   //https://localhost:8080/api/getIngredients?allergy=peanut&dish=pad+thai
 
-  const query = req.query;// query = {allery:"peanut",dish: "pad+thai"}
-  const allergy = query.allergy
-  const dish = query.dish
+  const query = req.query; // query = {allery:"peanut",dish: "pad+thai"}
+  const allergy = query.allergy;
+  const dish = query.dish;
 
-  console.log(allergy, dish)
+  console.log(allergy, dish);
   // const { allergy, dish } = req.query;
   // console.log(req.query.dish, req.query.allergy)
   //clean up user input - trim spaces + lower cases
 
-
-
-  
   // console.log(process.env.EDAMAM_RECIPE_API_ID);
 
   const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish}`;
@@ -63,27 +60,30 @@ inputController.getIngredients = (req, res, next) => {
       //console.log(allergies);
 
       //cleanup function for plurals
-      function cleanUp(string){
+      function cleanUp(string) {
         let result;
         let input = string.toLowerCase().trim();
         console.log(input);
-        let inputLength = input.length; 
+        let inputLength = input.length;
         console.log(inputLength);
         console.log(input.substring(inputLength - 2));
-        console.log(input.substring(inputLength - 4,inputLength - 2));
-        if((input.substring(inputLength - 2)==='es')&& (
-           input.substring(inputLength - 3, inputLength - 2)==='z'||
-           input.substring(inputLength - 3, inputLength - 2)==='o'||
-           input.substring(inputLength - 3, inputLength - 2)==='s'||
-           input.substring(inputLength - 3, inputLength - 2)==='x'||
-           input.substring(inputLength - 4, inputLength - 2)==='sh'||
-           input.substring(inputLength - 4, inputLength - 2)==='ch'
-          )){
-           result = input.substring(0, inputLength-2);
-           console.log(result);
-        } else if((input.substring(inputLength - 2)==='es')&&  (input.substring(inputLength - 3, inputLength - 2)==='i')
-        ){
-          result = input.substring(0, inputLength-3)+'y';
+        console.log(input.substring(inputLength - 4, inputLength - 2));
+        if (
+          input.substring(inputLength - 2) === 'es' &&
+          (input.substring(inputLength - 3, inputLength - 2) === 'z' ||
+            input.substring(inputLength - 3, inputLength - 2) === 'o' ||
+            input.substring(inputLength - 3, inputLength - 2) === 's' ||
+            input.substring(inputLength - 3, inputLength - 2) === 'x' ||
+            input.substring(inputLength - 4, inputLength - 2) === 'sh' ||
+            input.substring(inputLength - 4, inputLength - 2) === 'ch')
+        ) {
+          result = input.substring(0, inputLength - 2);
+          console.log(result);
+        } else if (
+          input.substring(inputLength - 2) === 'es' &&
+          input.substring(inputLength - 3, inputLength - 2) === 'i'
+        ) {
+          result = input.substring(0, inputLength - 3) + 'y';
           console.log(result);
         } else {
           result = input;
@@ -92,7 +92,6 @@ inputController.getIngredients = (req, res, next) => {
       }
       let cleanedInput = cleanUp(allergy);
       const regex = new RegExp(cleanedInput + '?');
-
 
       const recipesWithAllergy = [];
       // const recipesWithoutAllergy = [];
@@ -104,7 +103,10 @@ inputController.getIngredients = (req, res, next) => {
         for (let ingredientU of ingredients) {
           // console.log('ingredient',ingredient)
           let ingredient = ingredientU.toLowerCase();
-          if (ingredient.match(allergy) || ingredient.match(allergy.toLowerCase().trim()) {
+          if (
+            ingredient.match(allergy) ||
+            ingredient.match(allergy.toLowerCase().trim())
+          ) {
             recipesWithAllergy.push(recipe.url);
             break;
           }

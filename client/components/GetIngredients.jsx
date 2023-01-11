@@ -31,29 +31,28 @@ function GetIngredients() {
   const [dish, dishOnChange] = useInput('');
   const [details, setDetails] = useState([]);
 
-  // const checkAPI = () => {
-  //   const body = {
-  //     dish,
-  //   };
-
   useEffect(() => {
-    const ingredients = async () => {
-      await fetch(`/api/getIngredients/${dish}`)
-        .then((res) => res.json())
-        .then((details) => {
-          setDetails(details);
-        })
-        .catch((err) => console.log('useEffect: getIngredients: ERROR: ', err));
-    };
-    ingredients();
+    // ingredients();
   }, []);
-  // };
+
+  const checkAPI = () => {
+    fetch(
+      `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
+        'allergy'
+      )}`
+    )
+      .then((res) => res.json())
+      .then((details) => {
+        console.log(details);
+        console.log(dish);
+        setDetails(details);
+      })
+      .catch((err) => console.log('useEffect: getIngredients: ERROR: ', err));
+  };
 
   const muiView = testObj.map((detail, index) => (
     <RecipeCards key={index} props={detail} />
   ));
-
-  console.log(dish);
 
   return (
     <div>
@@ -66,7 +65,7 @@ function GetIngredients() {
         onChange={dishOnChange}
       />
       <br />
-      <button type="button" className="button" onClick={GetIngredients}>
+      <button type="button" className="button" onClick={checkAPI}>
         Check Ingredients
       </button>
       <br />
