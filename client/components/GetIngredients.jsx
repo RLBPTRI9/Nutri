@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { toast, Flip } from 'react-toastify';
 
 const useInput = (init) => {
   const [value, setValue] = useState(init);
@@ -19,19 +20,51 @@ function GetIngredients() {
   const updateRecipeDetails = recipeDetailsContext.updateRecipeDetails;
 
   const checkAPI = () => {
-    fetch(
-      `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
-        'allergy'
-      )}`
-    )
-      .then((res) => res.json())
-      .then((details) => {
-        console.log(details);
-        console.log(dish);
-        updateRecipeDetails(details);
-        console.log('hey');
-      })
-      .catch((err) => console.log('ERR getingre: ', err));
+    if (dish === '') {
+      toast.error('Invalid input', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+      });
+    } else {
+      const toastID = toast.loading('Searching...', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+
+      fetch(
+        `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
+          'allergy'
+        )}`
+      )
+        .then((res) => res.json())
+        .then((details) => {
+          updateRecipeDetails(details);
+        })
+        .then(() => {
+          setTimeout(() => {
+            toast.update(toastID, {
+              render: 'Recipe search success!',
+              type: 'success',
+              isLoading: false,
+              position: toast.POSITION.TOP_CENTER,
+              autoClose: 1500,
+              transition: Flip,
+            });
+          }, 500);
+        })
+        .catch((err) => {
+          console.log('Error in checkAPI: ', err);
+          setTimeout(() => {
+            toast.update(toastID, {
+              render: 'Something went wrong!',
+              type: 'error',
+              isLoading: false,
+              position: toast.POSITION.TOP_CENTER,
+              autoClose: 2000,
+              transition: Flip,
+            });
+          }, 500);
+        });
+    }
   };
 
   return (
