@@ -15,9 +15,10 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,27 +27,6 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-
-// function BasicGrid() {
-//   return (
-//     <Box sx={{ flexGrow: 1 }}>
-//       <Grid container spacing={2}>
-//         <Grid item xs={8}>
-//           <Item>xs=8</Item>
-//         </Grid>
-//         <Grid item xs={4}>
-//           <Item>xs=4</Item>
-//         </Grid>
-//         <Grid item xs={4}>
-//           <Item>xs=4</Item>
-//         </Grid>
-//         <Grid item xs={8}>
-//           <Item>xs=8</Item>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
 
 // x.name = ele.recipe.label;
 // x.image = ele.recipe.image;
@@ -75,88 +55,78 @@ export default function RecipeReviewCard({ props }) {
     setExpanded(!expanded);
   };
 
+  const singleLabel = healthLabels.toString().split(',');
+  const labels = singleLabel.map((label, index) => (
+    <Stack direction='row' spacing={1}>
+      {/* <Chip label={label} component="a" href="#basic-chip" clickable /> */}
+      <Chip
+        label={label}
+        // size="small"
+        component='a'
+        href='#basic-chip'
+        variant='outlined'
+        clickable
+      />
+    </Stack>
+  ));
+
   return (
-    <div className='viewCard'>
-      {/* <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Item>lalalal</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>xs=6</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>xs=6</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>xs=6</Item>
-        </Grid>
-      </Grid>
-    </Box> */}
-
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Item>
-              {/* <Card sx={{ maxWidth: 500 }}> */}
-
-              <Card sx={{ maxWidth: 500 }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-                      R
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton aria-label='settings'>
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                  //  title="Shrimp and Chorizo Paella"
-                  title={name}
-                  subheader='September 14, 2016'
-                />
-                <CardMedia
-                  component='img'
-                  height='280'
-                  image={image}
-                  alt='Paella dish'
-                />
-                <CardContent>
-                  <Typography variant='body2' color='text.secondary'>
-                    Tags: {healthLabels}
-                    <br />
-                    <br />
-                    Click <a href={url}> link</a> for recipe
-                  </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <IconButton aria-label='add to favorites'>
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label='share'>
-                    <ShareIcon />
-                  </IconButton>
-                  <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label='show more'
-                  >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
-                </CardActions>
-                <Collapse in={expanded} timeout='auto' unmountOnExit>
-                  <CardContent>
-                    <Typography paragraph>Ingredients:</Typography>
-                    <Typography paragraph>{ingredients}</Typography>
-                  </CardContent>
-                </Collapse>
-              </Card>
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
+    <div className='cardContainer'>
+      <div className='viewCard'>
+        <Card sx={{ maxWidth: 500 }}>
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
+                R
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label='settings'>
+                <MoreVertIcon />
+              </IconButton>
+            }
+            //  title="Shrimp and Chorizo Paella"
+            title={name}
+            subheader='September 14, 2016'
+          />
+          <CardMedia
+            component='img'
+            height='280'
+            image={image}
+            alt='Paella dish'
+          />
+          <CardContent>
+            <Typography variant='body2' color='text.secondary'>
+              Tags:
+              {labels}
+              <br />
+              Click <a href={url}> link</a> for recipe
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label='add to favorites'>
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton aria-label='share'>
+              <ShareIcon />
+            </IconButton>
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label='show more'
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          </CardActions>
+          <Collapse in={expanded} timeout='auto' unmountOnExit>
+            <CardContent>
+              <Typography paragraph>Ingredients:</Typography>
+              <Typography paragraph>{ingredients}</Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
+      </div>
     </div>
   );
 }
