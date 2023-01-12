@@ -41,7 +41,9 @@ function ResponsiveAppBar() {
     <AppBar position='static'>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <LocalDiningIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <LocalDiningIcon
+            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+          />
           <Typography
             variant='h6'
             noWrap

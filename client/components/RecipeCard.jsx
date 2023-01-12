@@ -97,7 +97,12 @@ export default function RecipeReviewCard({ props }) {
           <CardContent>
             <Typography variant='body2' color='text.secondary'>
               Tags:
-              <Stack direction='row' spacing={0.5} alignItems='flex-start'>
+              <Stack
+                direction='row'
+                spacing={0.5}
+                alignItems='flex-start'
+                flexWrap='wrap'
+              >
                 {labels}
               </Stack>
               <br />
