@@ -73,7 +73,7 @@ export default function RecipeReviewCard({ props }) {
   return (
     <div className='cardContainer'>
       <div className='viewCard'>
-        <Card sx={{ maxWidth: 500 }}>
+        <Card elevation={12} sx={{ maxWidth: 500 }}>
           <CardHeader
             avatar={
               <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
