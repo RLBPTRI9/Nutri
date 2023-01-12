@@ -10,7 +10,9 @@ inputController.getIngredients = (req, res, next) => {
 
   const query = req.query; // query = {allery:"peanut",dish: "pad+thai"}
   const allergy = query.allergy;
-  const dish = query.dish;
+  //lowercase the dish
+  const dish = query.dish.toLowerCase();
+  console.log(dish);
 
   console.log(allergy, dish);
   // const { allergy, dish } = req.query;
@@ -54,6 +56,10 @@ inputController.getIngredients = (req, res, next) => {
         // console.log(resultList);
       });
 
+      if (!allergy) {
+        res.locals.without = resultList;
+        return next();
+      }
       //const allergy = 'peanut';
 
       //const allergies = localStorage.getItem('allergies');
@@ -104,7 +110,7 @@ inputController.getIngredients = (req, res, next) => {
           // console.log('ingredient',ingredient)
           let ingredient = ingredientU.toLowerCase();
           if (
-            ingredient.match(allergy) ||
+            ingredient.match(regex) ||
             ingredient.match(allergy.toLowerCase().trim())
           ) {
             recipesWithAllergy.push(recipe.url);
@@ -129,4 +135,80 @@ inputController.getIngredients = (req, res, next) => {
     });
 };
 
+inputController.getHealthLabels = (req, res, next) => {
+  const query = req.query;
+  const label = query.label;
+
+  //lowercase the dish
+  const dish = query.dish.toLowerCase();
+  console.log(dish);
+
+  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish}`;
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Not 2xx response', { message: response });
+      }
+      // console.log(response);
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      // console.log(data.hits);
+      const recipes = data.hits; //array of objects, each object containing
+
+      // let counter = 0;
+      // let totalRecipes = recipes.length;
+      // let allergyCheck = false;
+      let resultList = [];
+
+      //we will need allergy from front end or need to query database
+
+      recipes.forEach((ele) => {
+        const x = {};
+        x.name = ele.recipe.label;
+        x.image = ele.recipe.image;
+        x.url = ele.recipe.url;
+        x.ingredients = ele.recipe.ingredientLines;
+        x.cautions = ele.recipe.cautions;
+        x.healthLabels = ele.recipe.healthLabels;
+        // console.log(x);
+        resultList.push(x);
+        // console.log(resultList);
+      });
+
+      const recipesWithHealthLabel = [];
+      const withoutHealthLabel = [];
+
+      for (let recipe of resultList) {
+        let hLabels = recipe.healthLabels;
+        // console.log(ingredients);
+        for (let hLabel of hLabels) {
+          // console.log('ingredient',ingredient)
+          // let ingredient = ingredientU.toLowerCase();
+          if (hLabel.match(label)) {
+            recipesWithHealthLabel.push(recipe);
+            break;
+          }
+        }
+      }
+      // for (let ele of resultList) {
+      //   if (!recipesWithAllergy.includes(ele.url)) {
+      //     withoutAllergy.push(ele);
+      //   }
+      //}
+      // console.log(withoutAllergy);
+      res.locals.healthLabels = recipesWithHealthLabel; //food recipes list not containing allergy sent back to front end
+
+      // res.locals.totalRecipes = totalRecipes; //number of recipes searched
+      // res.locals.recipesContainingAllergy = counter; //number of recipes searched that containin allergy
+      return next();
+    })
+    .catch((err) => {
+      if (err) return next(console.log(err));
+    });
+};
+
+//res.locals.healthLabels
 module.exports = inputController;
