@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 const useInput = (init) => {
   const [value, setValue] = useState(init);
@@ -16,22 +20,34 @@ const AddAllergy = (props) => {
 
     localStorage.setItem('allergy', allergy);
   };
+
   return (
     <div>
-      <label htmlFor='allergy'> Enter Allergy: </label>
-      <br />
-      <input
-        name='name'
-        placeholder='e.g., peanut'
-        value={allergy}
-        onChange={allergyOnChange}
-      />
-      <br />
-      <button type='button' className='button' onClick={saveAllergy}>
-        Save
-      </button>
-      <br />
-      <br />
+      <Grid container spacing={1} direction='column' sx={{ ml: 1 }}>
+        <Grid item sx={{ mb: 1 }}>
+          <Typography variant='h5'>Enter Allergy</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            value={allergy}
+            onChange={allergyOnChange}
+            sx={{ mb: 1 }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant='contained'
+            size='small'
+            type='submit'
+            onClick={saveAllergy}
+          >
+            Save
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };
