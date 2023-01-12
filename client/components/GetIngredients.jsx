@@ -29,8 +29,9 @@ function GetIngredients() {
         console.log(details);
         console.log(dish);
         updateRecipeDetails(details);
+        console.log('hey');
       })
-      .catch((err) => console.log('useEffect: getIngredients: ERROR: ', err));
+      .catch((err) => console.log('ERR getingre: ', err));
   };
 
   return (
