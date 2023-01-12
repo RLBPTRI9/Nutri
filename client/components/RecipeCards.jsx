@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import RecipeCard from './RecipeCard.jsx';
 import RecipeDetailsContext from '../store/recipe-details-context.js';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 const testObj = [
   {
@@ -27,22 +28,35 @@ const testObj = [
     url: 'https://cafedelites.com/pad-thai/',
     ingredients: 'Spice, egg, noodles',
   },
+  {
+    name: 'Pad Thai',
+    image: 'https://cafedelites.com/wp-content/uploads/2018/07/pad-thai-6.jpg',
+    healthLabels: 'nut-free, soy-free, gluten-free',
+    url: 'https://cafedelites.com/pad-thai/',
+    ingredients: 'Spice, egg, noodles',
+  },
 ];
 
 function RecipeCards() {
   const recipeDetailsContext = useContext(RecipeDetailsContext);
   const recipeDetails = recipeDetailsContext.recipeDetails;
 
-  const recipeCards = recipeDetails.map((details, index) => (
-    <Grid xs={6} key={index}>
+  const recipeCards = testObj.map((details, index) => (
+    <Grid xs={2} sm={4} md={4} key={index}>
       <RecipeCard key={index} props={details} />
     </Grid>
   ));
 
   return (
-    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-      {recipeCards}
-    </Grid>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        {recipeCards}
+      </Grid>
+    </Box>
   );
 }
 
