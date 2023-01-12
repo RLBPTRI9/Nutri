@@ -1,23 +1,17 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { toast } from 'react-toastify';
 
-const useInput = (init) => {
-  const [value, setValue] = useState(init);
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
-  return [value, onChange];
-};
+const AddAllergy = () => {
+  const allergyRef = useRef();
 
-const AddAllergy = (props) => {
-  const [allergy, allergyOnChange] = useInput('');
+  const saveAllergy = (event) => {
+    event.preventDefault();
 
-  const saveAllergy = () => {
-    localStorage.setItem('allergy', allergy);
+    const allergy = allergyRef.current.value;
 
     if (allergy === '') {
       toast.error('Invalid input', {
@@ -25,10 +19,14 @@ const AddAllergy = (props) => {
         autoClose: 2000,
       });
     } else {
+      localStorage.setItem('allergy', allergy);
+
       toast.success('Allergy saved!', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
       });
+
+      allergyRef.current.value = '';
     }
   };
 
@@ -43,7 +41,13 @@ const AddAllergy = (props) => {
 
   return (
     <div>
-      <Grid container spacing={1} direction='column' sx={{ ml: 1 }}>
+      <Grid
+        container
+        component='form'
+        spacing={1}
+        direction='column'
+        sx={{ ml: 1 }}
+      >
         <Grid item sx={{ mb: 1 }}>
           <Typography variant='h5'>Enter Allergy</Typography>
         </Grid>
@@ -52,8 +56,7 @@ const AddAllergy = (props) => {
             variant='outlined'
             size='small'
             placeholder='e.g., peanuts'
-            value={allergy}
-            onChange={allergyOnChange}
+            inputRef={allergyRef}
             sx={{ mb: 1 }}
           />
         </Grid>
@@ -69,7 +72,6 @@ const AddAllergy = (props) => {
           <Button
             variant='outlined'
             size='small'
-            type='submit'
             onClick={clearAllergy}
             sx={{ ml: 1 }}
           >

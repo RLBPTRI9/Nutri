@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import RecipeDetailsContext from '../store/recipe-details-context.js';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -6,20 +6,16 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { toast, Flip } from 'react-toastify';
 
-const useInput = (init) => {
-  const [value, setValue] = useState(init);
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
-  return [value, onChange];
-};
-
 function GetIngredients() {
-  const [dish, dishOnChange] = useInput('');
   const recipeDetailsContext = useContext(RecipeDetailsContext);
   const updateRecipeDetails = recipeDetailsContext.updateRecipeDetails;
+  const dishRef = useRef();
 
-  const checkAPI = () => {
+  const searchRecipes = (event) => {
+    event.preventDefault();
+
+    const dish = dishRef.current.value;
+
     if (dish === '') {
       toast.error('Invalid input', {
         position: toast.POSITION.TOP_CENTER,
@@ -41,6 +37,8 @@ function GetIngredients() {
         })
         .then(() => {
           setTimeout(() => {
+            dishRef.current.value = '';
+
             toast.update(toastID, {
               render: 'Recipe search success!',
               type: 'success',
@@ -69,7 +67,13 @@ function GetIngredients() {
 
   return (
     <div>
-      <Grid container spacing={1} direction='column' sx={{ mr: 2 }}>
+      <Grid
+        container
+        component='form'
+        spacing={1}
+        direction='column'
+        sx={{ mr: 2 }}
+      >
         <Grid item sx={{ mb: 1 }}>
           <Typography variant='h5'>Enter Dish</Typography>
         </Grid>
@@ -77,8 +81,7 @@ function GetIngredients() {
           <TextField
             variant='outlined'
             size='small'
-            value={dish}
-            onChange={dishOnChange}
+            inputRef={dishRef}
             sx={{ mb: 1 }}
           />
         </Grid>
@@ -87,7 +90,7 @@ function GetIngredients() {
             variant='contained'
             size='small'
             type='submit'
-            onClick={checkAPI}
+            onClick={searchRecipes}
           >
             View Recipes
           </Button>
