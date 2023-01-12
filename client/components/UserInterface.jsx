@@ -4,21 +4,35 @@ import Stack from '@mui/material/Stack';
 import AddAllergy from './AddAllergy';
 import GetIngredients from './GetIngredients';
 import RecipeCards from './RecipeCards';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 
 export default function DividerStack() {
   return (
     <div>
-      <Stack
-        direction='row'
-        justifyContent='center'
+      <Grid
+        container
+        spacing={2}
+        justify='center'
         alignItems='center'
-        divider={<Divider orientation='vertical' flexItem />}
-        spacing={3}
-        sx={{ mt: 4 }}
+        direction='column'
+        sx={{ mt: 6, pb: 4 }}
       >
-        <AddAllergy />
-        <GetIngredients />
-      </Stack>
+        <Grid item xs={12}>
+          <Paper elevation={24} sx={{ p: 4 }}>
+            <Stack
+              direction='row'
+              justifyContent='center'
+              alignItems='center'
+              divider={<Divider orientation='vertical' flexItem />}
+              spacing={7}
+            >
+              <AddAllergy />
+              <GetIngredients />
+            </Stack>
+          </Paper>
+        </Grid>
+      </Grid>
       <RecipeCards />
     </div>
   );
