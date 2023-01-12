@@ -5,6 +5,8 @@ import ResponsiveAppBar from './NavBar.jsx';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -24,6 +26,7 @@ function App() {
       <CssBaseline />
       <ResponsiveAppBar />
       <UserInterface />
+      <ToastContainer />
     </ThemeProvider>
   );
 }

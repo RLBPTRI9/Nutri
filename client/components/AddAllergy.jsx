@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { toast } from 'react-toastify';
 
 const useInput = (init) => {
   const [value, setValue] = useState(init);
@@ -16,9 +17,28 @@ const AddAllergy = (props) => {
   const [allergy, allergyOnChange] = useInput('');
 
   const saveAllergy = () => {
-    if (allergy === '') console.log('invalid input');
-
     localStorage.setItem('allergy', allergy);
+
+    if (allergy === '') {
+      toast.error('Invalid input', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+      });
+    } else {
+      toast.success('Allergy saved!', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const clearAllergy = () => {
+    localStorage.setItem('allergy', '');
+
+    toast.info('Allergy cleared', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 2000,
+    });
   };
 
   return (
@@ -45,6 +65,15 @@ const AddAllergy = (props) => {
             onClick={saveAllergy}
           >
             Save
+          </Button>
+          <Button
+            variant='outlined'
+            size='small'
+            type='submit'
+            onClick={clearAllergy}
+            sx={{ ml: 1 }}
+          >
+            Clear
           </Button>
         </Grid>
       </Grid>
