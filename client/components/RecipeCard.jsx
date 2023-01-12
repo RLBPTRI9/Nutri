@@ -57,7 +57,7 @@ export default function RecipeReviewCard({ props }) {
 
   const singleLabel = healthLabels.toString().split(',');
   const labels = singleLabel.map((label, index) => (
-    <Stack direction='row' spacing={1}>
+    <Stack direction='row' spacing={1} alignItems='flex-start'>
       {/* <Chip label={label} component="a" href="#basic-chip" clickable /> */}
       <Chip
         label={label}
@@ -73,7 +73,7 @@ export default function RecipeReviewCard({ props }) {
   return (
     <div className='cardContainer'>
       <div className='viewCard'>
-        <Card elevation={12} sx={{ maxWidth: 500 }}>
+        <Card sx={{ maxWidth: 500 }}>
           <CardHeader
             avatar={
               <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
@@ -85,7 +85,6 @@ export default function RecipeReviewCard({ props }) {
                 <MoreVertIcon />
               </IconButton>
             }
-            //  title="Shrimp and Chorizo Paella"
             title={name}
             subheader='September 14, 2016'
           />
@@ -98,7 +97,9 @@ export default function RecipeReviewCard({ props }) {
           <CardContent>
             <Typography variant='body2' color='text.secondary'>
               Tags:
-              {labels}
+              <Stack direction='row' spacing={0.5} alignItems='flex-start'>
+                {labels}
+              </Stack>
               <br />
               Click <a href={url}> link</a> for recipe
             </Typography>
