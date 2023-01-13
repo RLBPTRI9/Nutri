@@ -31,7 +31,7 @@ function GetIngredients() {
 
       fetch(
         healthLabelActive
-          ? `/api/getIngredients/?dish=${dish}&label=${localStorage.getItem(
+          ? `/api/getHealthLabels/?dish=${dish}&label=${localStorage.getItem(
               'label'
             )}`
           : `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
