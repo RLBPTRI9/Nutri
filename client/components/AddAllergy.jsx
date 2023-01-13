@@ -37,6 +37,8 @@ const AddAllergy = () => {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 2000,
     });
+
+    allergyRef.current.value = '';
   };
 
   return (
