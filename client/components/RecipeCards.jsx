@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import RecipeCard from './RecipeCard.jsx';
-import RecipeDetailsContext from '../store/recipe-details-context.js';
+import NutriContext from '../store/nutri-context.js';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import SetMealIcon from '@mui/icons-material/SetMeal';
@@ -138,8 +138,8 @@ const testObj = [
 ];
 
 function RecipeCards() {
-  const recipeDetailsContext = useContext(RecipeDetailsContext);
-  const recipeDetails = recipeDetailsContext.recipeDetails;
+  const nutriContext = useContext(NutriContext);
+  const recipeDetails = nutriContext.recipeDetails;
   const [favorite, setFavorite] = useState([]);
 
   const recipeCards = recipeDetails.map((details, index) => (

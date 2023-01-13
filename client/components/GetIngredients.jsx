@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import RecipeDetailsContext from '../store/recipe-details-context.js';
+import NutriContext from '../store/nutri-context.js';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -7,8 +7,11 @@ import Typography from '@mui/material/Typography';
 import { toast, Flip } from 'react-toastify';
 
 function GetIngredients() {
-  const recipeDetailsContext = useContext(RecipeDetailsContext);
-  const updateRecipeDetails = recipeDetailsContext.updateRecipeDetails;
+  const nutriContext = useContext(NutriContext);
+  const allergy = nutriContext.allergy;
+  const healthLabel = nutriContext.healthLabel;
+  const updateRecipeDetails = nutriContext.updateRecipeDetails;
+  const healthLabelActive = nutriContext.healthLabelActive;
   const dishRef = useRef();
 
   const searchRecipes = (event) => {
@@ -27,9 +30,13 @@ function GetIngredients() {
       });
 
       fetch(
-        `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
-          'allergy'
-        )}`
+        healthLabelActive
+          ? `/api/getHealthLabels/?dish=${dish}&label=${localStorage.getItem(
+              'label'
+            )}`
+          : `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
+              'allergy'
+            )}`
       )
         .then((res) => res.json())
         .then((details) => {
@@ -72,17 +79,26 @@ function GetIngredients() {
         component='form'
         spacing={1}
         direction='column'
-        sx={{ mr: 2 }}
+        sx={{ mr: 5 }}
       >
-        <Grid item sx={{ mb: 1 }}>
-          <Typography variant='h5'>Enter Dish</Typography>
+        <Grid item sx={{ mb: 3 }}>
+          <Typography variant='h5'>Recipe Information</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant='h7'>
+            {healthLabelActive
+              ? `Health Label: ${healthLabel}`
+              : `Allergy: ${allergy}`}
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
+            label='Dish name'
             variant='outlined'
             size='small'
+            placeholder='e.g., pad thai'
             inputRef={dishRef}
-            sx={{ mb: 1 }}
+            sx={{ width: 250 }}
           />
         </Grid>
         <Grid item xs={12}>
