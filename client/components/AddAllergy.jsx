@@ -1,11 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
+import NutriContext from '../store/nutri-context.js';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { toast } from 'react-toastify';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 const AddAllergy = () => {
+  const nutriContext = useContext(NutriContext);
+  const updateAllergy = nutriContext.updateAllergy;
+  const updateSetHealthLabelActive = nutriContext.updateSetHealthLabelActive;
+
   const allergyRef = useRef();
 
   const saveAllergy = (event) => {
@@ -26,6 +33,7 @@ const AddAllergy = () => {
         autoClose: 2000,
       });
 
+      updateAllergy(allergy);
       allergyRef.current.value = '';
     }
   };
@@ -37,6 +45,17 @@ const AddAllergy = () => {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 2000,
     });
+
+    updateAllergy('');
+    allergyRef.current.value = '';
+  };
+
+  const setByAllergy = () => {
+    updateSetHealthLabelActive(false);
+  };
+
+  const setByHealthLabel = () => {
+    updateSetHealthLabelActive(true);
   };
 
   return (
@@ -46,18 +65,30 @@ const AddAllergy = () => {
         component='form'
         spacing={1}
         direction='column'
-        sx={{ ml: 1 }}
+        sx={{ ml: 4 }}
       >
-        <Grid item sx={{ mb: 1 }}>
-          <Typography variant='h5'>Enter Allergy</Typography>
+        <Grid item sx={{ mb: 2 }}>
+          <Typography variant='h5'>Allergy Information</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack direction='row' spacing={1}>
+            <Chip
+              label='By Allergy'
+              variant='outlined'
+              color='primary'
+              onClick={setByAllergy}
+            />
+            <Chip label='By Health Label' onClick={setByHealthLabel} />
+          </Stack>
         </Grid>
         <Grid item xs={12}>
           <TextField
+            label='Allergy'
             variant='outlined'
             size='small'
             placeholder='e.g., peanuts'
             inputRef={allergyRef}
-            sx={{ mb: 1 }}
+            sx={{ width: 250 }}
           />
         </Grid>
         <Grid item xs={12}>
