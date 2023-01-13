@@ -1,0 +1,26 @@
+body {
+  background-color: #f7fbfc;
+}
+
+.viewCard {
+  /* margin: 40px 40px; */
+  /* padding: 20px 20px; */
+  padding-left: 20px;
+  padding-top: 40px;
+  margin-left: 80px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.recipeCard {
+  border: 1px solid black;
+  height: 500px;
+  margin-top: 80px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.dishphoto {
+  height: 400px;
+  width: 500px;
+}
