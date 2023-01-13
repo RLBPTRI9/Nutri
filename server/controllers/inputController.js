@@ -184,6 +184,11 @@ inputController.getHealthLabels = (req, res, next) => {
         // console.log(resultList);
       });
 
+      if (!label) {
+        res.locals.healthLabels = resultList;
+        return next();
+      }
+
       const recipesWithHealthLabel = [];
       const withoutHealthLabel = [];
 
@@ -199,6 +204,7 @@ inputController.getHealthLabels = (req, res, next) => {
           }
         }
       }
+
       // for (let ele of resultList) {
       //   if (!recipesWithAllergy.includes(ele.url)) {
       //     withoutAllergy.push(ele);

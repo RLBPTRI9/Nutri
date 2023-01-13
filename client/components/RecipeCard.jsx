@@ -14,7 +14,35 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import img from '../static/will2.png';
+//randomly display avatar img
+import img1 from '../static/will.png';
+import img2 from '../static/will2.png';
+import img3 from '../static/matt1.jpg';
+import img4 from '../static/sam.jpg';
+import img5 from '../static/matt2.jpg';
+import img6 from '../static/matt3.jpg';
+import img7 from '../static/jess.png';
+import img8 from '../static/kyle.png';
+import img9 from '../static/glen.png';
+import img10 from '../static/charlie.png';
+import img11 from '../static/laurence.jpg';
+import img12 from '../static/ethan.jpg';
+import img13 from '../static/hannah.jpg';
+const img = [
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+  img11,
+  img12,
+  img13,
+];
 
 import Paper from '@mui/material/Paper';
 
@@ -77,7 +105,12 @@ export default function RecipeReviewCard({ props }) {
       <div className='viewCard'>
         <Card sx={{ maxWidth: 500 }} elevation={12}>
           <CardHeader
-            avatar={<Avatar alt='Remy Sharp' src={img} />}
+            avatar={
+              <Avatar
+                alt='Remy Sharp'
+                src={img[Math.floor(Math.random() * img.length)]}
+              />
+            }
             action={
               <IconButton aria-label='settings'>
                 <MoreVertIcon />
