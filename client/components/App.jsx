@@ -15,6 +15,9 @@ function App() {
     () =>
       createTheme({
         palette: {
+          primary: {
+            main: '#0e5423',
+          },
           mode: prefersDarkMode ? 'dark' : 'light',
         },
       }),
