@@ -25,15 +25,15 @@ inputController.getIngredients = (req, res, next) => {
 
   fetch(url)
     .then((response) => {
-      if (!response.ok) {
-        throw new Error('Not 2xx response', { message: response });
-      }
-      // console.log(response);
+      // if (!response.ok) {
+      //   throw new Error('Not 2xx response', { message: response });
+      // }
+      console.log(response);
       return response.json();
     })
     .then((data) => {
-      // console.log(data);
-      // console.log(data.hits);
+      console.log(data);
+      console.log(data.hits);
       const recipes = data.hits; //array of objects, each object containing
 
       // let counter = 0;
