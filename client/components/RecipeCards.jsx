@@ -136,7 +136,7 @@ function RecipeCards() {
   const recipeDetailsContext = useContext(RecipeDetailsContext);
   const recipeDetails = recipeDetailsContext.recipeDetails;
 
-  const recipeCards = testObj.map((details, index) => (
+  const recipeCards = recipeDetails.map((details, index) => (
     <Grid xs={2} sm={4} md={4} key={index}>
       <RecipeCard key={index} props={details} />
     </Grid>
