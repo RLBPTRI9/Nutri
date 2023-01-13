@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import AddAllergy from './AddAllergy';
+import AddAllergyByTag from './AddAllergyByTagLabel';
 import GetIngredients from './GetIngredients';
 import RecipeCards from './RecipeCards';
 import Paper from '@mui/material/Paper';
@@ -27,7 +27,7 @@ export default function DividerStack() {
               divider={<Divider orientation='vertical' flexItem />}
               spacing={7}
             >
-              <AddAllergy />
+              <AddAllergyByTag />
               <GetIngredients />
             </Stack>
           </Paper>
