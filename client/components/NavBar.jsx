@@ -12,8 +12,10 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import PersonIcon from '@mui/icons-material/Person';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
-import RamenDiningIcon from '@mui/icons-material/RamenDining';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SetMealOutlinedIcon from '@mui/icons-material/SetMealOutlined';
 
 const pages = ['Add Allergies', 'Search Recipes'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -132,7 +134,11 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <ManageAccountsIcon
+                  style={{ fontSize: 35 }}
+                  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+                />
+                {/* <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' /> */}
               </IconButton>
             </Tooltip>
             <Menu
