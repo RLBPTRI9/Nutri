@@ -73,7 +73,7 @@ export default function RecipeReviewCard({ props }) {
   return (
     <div className='cardContainer'>
       <div className='viewCard'>
-        <Card sx={{ maxWidth: 500 }}>
+      <Card sx={{ maxWidth: 500 }} elevation={12}>
           <CardHeader
             avatar={
               <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
@@ -128,7 +128,10 @@ export default function RecipeReviewCard({ props }) {
           <Collapse in={expanded} timeout='auto' unmountOnExit>
             <CardContent>
               <Typography paragraph>Ingredients:</Typography>
-              <Typography paragraph>{ingredients}</Typography>
+              <Typography paragraph>
+              {ingredients.map((item) => 
+                    <span key= {item}>{item} <br/> </span>)}
+              </Typography>
             </CardContent>
           </Collapse>
         </Card>
