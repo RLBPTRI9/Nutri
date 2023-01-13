@@ -51,6 +51,8 @@ inputController.getIngredients = (req, res, next) => {
         x.ingredients = ele.recipe.ingredientLines;
         x.cautions = ele.recipe.cautions;
         x.healthLabels = ele.recipe.healthLabels;
+        //adding the source for front-end
+        x.source = ele.recipe.source;
         // console.log(x);
         resultList.push(x);
         // console.log(resultList);
