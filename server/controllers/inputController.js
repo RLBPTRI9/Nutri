@@ -11,7 +11,7 @@ inputController.getIngredients = (req, res, next) => {
   const query = req.query; // query = {allery:"peanut",dish: "pad+thai"}
   const allergy = query.allergy;
   //lowercase the dish
-  const dish = query.dish.toLowerCase();
+  const dish = query.dish.toLowerCase().trim();
   console.log(dish);
 
   console.log(allergy, dish);
@@ -28,7 +28,7 @@ inputController.getIngredients = (req, res, next) => {
       // if (!response.ok) {
       //   throw new Error('Not 2xx response', { message: response });
       // }
-      console.log(response);
+      console.log('fetching API with ingredients');
       return response.json();
     })
     .then((data) => {
@@ -139,10 +139,10 @@ inputController.getIngredients = (req, res, next) => {
 
 inputController.getHealthLabels = (req, res, next) => {
   const query = req.query;
-  const label = query.label;
+  const label = query.label.toLowerCase();
 
   //lowercase the dish
-  const dish = query.dish.toLowerCase();
+  const dish = query.dish.toLowerCase().trim();
   console.log(dish);
 
   const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish}`;
@@ -152,7 +152,9 @@ inputController.getHealthLabels = (req, res, next) => {
       if (!response.ok) {
         throw new Error('Not 2xx response', { message: response });
       }
-      // console.log(response);
+      console.log('fetching API with healthLable');
+      console.log('label', label);
+      console.log('dish', dish);
       return response.json();
     })
     .then((data) => {
@@ -175,6 +177,8 @@ inputController.getHealthLabels = (req, res, next) => {
         x.ingredients = ele.recipe.ingredientLines;
         x.cautions = ele.recipe.cautions;
         x.healthLabels = ele.recipe.healthLabels;
+        //adding the source for front-end
+        x.source = ele.recipe.source;
         // console.log(x);
         resultList.push(x);
         // console.log(resultList);
@@ -186,9 +190,9 @@ inputController.getHealthLabels = (req, res, next) => {
       for (let recipe of resultList) {
         let hLabels = recipe.healthLabels;
         // console.log(ingredients);
-        for (let hLabel of hLabels) {
-          // console.log('ingredient',ingredient)
-          // let ingredient = ingredientU.toLowerCase();
+        for (let hLabelUpper of hLabels) {
+          let hLabel = hLabelUpper.toLowerCase();
+          //console.log('hLabel lowerCased',hLabel);
           if (hLabel.match(label)) {
             recipesWithHealthLabel.push(recipe);
             break;

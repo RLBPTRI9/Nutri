@@ -12,13 +12,13 @@ app.use('/api', routes);
 
 const mongoose = require('mongoose');
 
-mongoose.connect(
-  'mongodb+srv://matt:codesmith@cluster1.wajxvza.mongodb.net/?retryWrites=true&w=majority',
-  { useNewUrlParser: true, useUnifiedTopology: true }
-);
-mongoose.connection.once('open', () => {
-  console.log('Connected to Database');
-});
+// mongoose.connect(
+//   'mongodb+srv://matt:codesmith@cluster1.wajxvza.mongodb.net/?retryWrites=true&w=majority',
+//   { useNewUrlParser: true, useUnifiedTopology: true }
+// );
+// mongoose.connection.once('open', () => {
+//   console.log('Connected to Database');
+// });
 
 // const apiRouter = require('./routes/api')
 //const databaseRouter = require('./routes/database')
