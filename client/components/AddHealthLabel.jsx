@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from 'react-toastify';
-import RecipeDetailsContext from '../store/recipe-details-context.js';
+import NutriContext from '../store/nutri-context.js';
+import Chip from '@mui/material/Chip';
 
 const AddHealthLabel = () => {
   const healthLabels = [
@@ -14,7 +15,7 @@ const AddHealthLabel = () => {
     'celery-free',
     'crustacean-free',
     'dairy-free',
-    'DASH',
+    'dash',
     'egg-free',
     'fish-free',
     'fodmap-free',
@@ -46,23 +47,46 @@ const AddHealthLabel = () => {
     'wheat-free',
   ];
 
-  const recipeDetailsContext = useContext(RecipeDetailsContext);
-  const updateAddHealthLabel = recipeDetailsContext.updateAddHealthLabel;
-  updateAddHealthLabel(true);
+  const nutriContext = useContext(NutriContext);
+  const updateHealthLabel = nutriContext.updateHealthLabel;
+  const updateSetHealthLabelActive = nutriContext.updateSetHealthLabelActive;
 
   const [inputValue, setInputValue] = React.useState('');
+  const healthLabelRef = useRef();
 
   const saveHealthLabel = (event) => {
     event.preventDefault();
 
     const healthLabel = inputValue;
 
+    updateHealthLabel(healthLabel);
     localStorage.setItem('label', healthLabel);
+    healthLabelRef.current.value = '';
 
     toast.success('Health label updated!', {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 2000,
     });
+  };
+
+  const clearHealthLabel = () => {
+    localStorage.setItem('label', '');
+
+    toast.info('Health Label cleared', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 2000,
+    });
+
+    updateHealthLabel('');
+    healthLabelRef.current.value = '';
+  };
+
+  const setByAllergy = () => {
+    updateSetHealthLabelActive(false);
+  };
+
+  const setByHealthLabel = () => {
+    updateSetHealthLabelActive(true);
   };
 
   return (
@@ -72,23 +96,32 @@ const AddHealthLabel = () => {
         component='form'
         spacing={1}
         direction='column'
-        sx={{ ml: 1 }}
+        sx={{ ml: 4 }}
       >
-        <Grid item sx={{ mb: 1 }}>
-          <Typography variant='h5'>Enter Health Label</Typography>
+        <Grid item sx={{ mb: 2 }}>
+          <Typography variant='h5'>Allergy Information</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Chip label='By Allergy' variant='outlined' onClick={setByAllergy} />
+          <Chip label='By Health Label' onClick={setByHealthLabel} />
         </Grid>
         <Grid item xs={12}>
           <Autocomplete
             disablePortal
+            selectOnFocus
             size='small'
             options={healthLabels}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
             }}
-            sx={{ width: 300 }}
+            sx={{ width: 250 }}
             renderInput={(params) => (
-              <TextField {...params} label='Health Label' />
+              <TextField
+                {...params}
+                label='Health Label'
+                inputRef={healthLabelRef}
+              />
             )}
           />
         </Grid>
@@ -100,6 +133,14 @@ const AddHealthLabel = () => {
             onClick={saveHealthLabel}
           >
             Save
+          </Button>
+          <Button
+            variant='outlined'
+            size='small'
+            onClick={clearHealthLabel}
+            sx={{ ml: 1 }}
+          >
+            Clear
           </Button>
         </Grid>
       </Grid>
