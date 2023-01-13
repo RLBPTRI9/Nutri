@@ -7,6 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from 'react-toastify';
 import NutriContext from '../store/nutri-context.js';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 const AddHealthLabel = () => {
   const healthLabels = [
@@ -102,8 +103,15 @@ const AddHealthLabel = () => {
           <Typography variant='h5'>Allergy Information</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Chip label='By Allergy' variant='outlined' onClick={setByAllergy} />
-          <Chip label='By Health Label' onClick={setByHealthLabel} />
+          <Stack direction='row' spacing={1}>
+            <Chip label='By Allergy' onClick={setByAllergy} />
+            <Chip
+              label='By Health Label'
+              variant='outlined'
+              color='primary'
+              onClick={setByHealthLabel}
+            />
+          </Stack>
         </Grid>
         <Grid item xs={12}>
           <Autocomplete

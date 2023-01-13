@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { toast } from 'react-toastify';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 const AddAllergy = () => {
   const nutriContext = useContext(NutriContext);
@@ -70,12 +71,15 @@ const AddAllergy = () => {
           <Typography variant='h5'>Allergy Information</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Chip label='By Allergy' onClick={setByAllergy} />
-          <Chip
-            label='By Health Label'
-            variant='outlined'
-            onClick={setByHealthLabel}
-          />
+          <Stack direction='row' spacing={1}>
+            <Chip
+              label='By Allergy'
+              variant='outlined'
+              color='primary'
+              onClick={setByAllergy}
+            />
+            <Chip label='By Health Label' onClick={setByHealthLabel} />
+          </Stack>
         </Grid>
         <Grid item xs={12}>
           <TextField
