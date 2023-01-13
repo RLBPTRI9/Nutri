@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import img from '../static/will2.png';
 
 import Paper from '@mui/material/Paper';
 
@@ -48,13 +49,14 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ props }) {
-  const { name, image, healthLabels, url, ingredients } = props;
+  const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const sourceFrom = 'Source: '
   const singleLabel = healthLabels.toString().split(',');
   const labels = singleLabel.map((label, index) => (
     <Stack direction='row' spacing={1} alignItems='flex-start'>
@@ -73,12 +75,10 @@ export default function RecipeReviewCard({ props }) {
   return (
     <div className='cardContainer'>
       <div className='viewCard'>
-      <Card sx={{ maxWidth: 500 }} elevation={12}>
+        <Card sx={{ maxWidth: 500 }} elevation={12}>
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-                R
-              </Avatar>
+              <Avatar alt="Remy Sharp" src={img} />
             }
             action={
               <IconButton aria-label='settings'>
@@ -86,7 +86,7 @@ export default function RecipeReviewCard({ props }) {
               </IconButton>
             }
             title={name}
-            subheader='September 14, 2016'
+            subheader={[sourceFrom, source]}
           />
           <CardMedia
             component='img'
@@ -129,8 +129,11 @@ export default function RecipeReviewCard({ props }) {
             <CardContent>
               <Typography paragraph>Ingredients:</Typography>
               <Typography paragraph>
-              {ingredients.map((item) => 
-                    <span key= {item}>{item} <br/> </span>)}
+                {ingredients.map((item) => (
+                  <span key={item}>
+                    {item} <br />{' '}
+                  </span>
+                ))}
               </Typography>
             </CardContent>
           </Collapse>

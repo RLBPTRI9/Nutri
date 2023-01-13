@@ -7,14 +7,21 @@ const RecipeDetailsContext = createContext({
 
 export function RecipeDetailsContextProvider(props) {
   const [recipeDetails, setRecipeDetails] = useState([]);
+  const [faveClicked, setfaveClicked] = useState([]);
 
   function updateRecipeDetailsHandler(newRecipeDetails) {
     setRecipeDetails(newRecipeDetails);
   }
 
+  function updateFaveClickedHandler(newFaveClicked) {
+    setfaveClicked(newFaveClicked);
+  }
+
   const context = {
     recipeDetails,
     updateRecipeDetails: updateRecipeDetailsHandler,
+    faveClicked,
+    updateFaveClicked: updateFaveClickedHandler
   };
 
   return (
