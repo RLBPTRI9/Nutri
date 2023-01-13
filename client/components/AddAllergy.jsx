@@ -6,6 +6,10 @@ import Typography from '@mui/material/Typography';
 import { toast } from 'react-toastify';
 
 const AddAllergy = () => {
+  const recipeDetailsContext = useContext(RecipeDetailsContext);
+  const updateAddHealthLabel = recipeDetailsContext.updateAddHealthLabel;
+  updateAddHealthLabel(false);
+
   const allergyRef = useRef();
 
   const saveAllergy = (event) => {

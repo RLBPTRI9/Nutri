@@ -56,7 +56,7 @@ export default function RecipeReviewCard({ props }) {
     setExpanded(!expanded);
   };
 
-  const sourceFrom = 'Source: '
+  const sourceFrom = 'Source: ';
   const singleLabel = healthLabels.toString().split(',');
   const labels = singleLabel.map((label, index) => (
     <Stack direction='row' spacing={1} alignItems='flex-start'>
@@ -77,9 +77,7 @@ export default function RecipeReviewCard({ props }) {
       <div className='viewCard'>
         <Card sx={{ maxWidth: 500 }} elevation={12}>
           <CardHeader
-            avatar={
-              <Avatar alt="Remy Sharp" src={img} />
-            }
+            avatar={<Avatar alt='Remy Sharp' src={img} />}
             action={
               <IconButton aria-label='settings'>
                 <MoreVertIcon />
@@ -96,7 +94,7 @@ export default function RecipeReviewCard({ props }) {
           />
           <CardContent>
             <Typography variant='body2' color='text.secondary'>
-              Tags:
+              Health Labels:
               <Stack
                 direction='row'
                 spacing={0.5}

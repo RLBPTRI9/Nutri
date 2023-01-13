@@ -9,6 +9,7 @@ import { toast, Flip } from 'react-toastify';
 function GetIngredients() {
   const recipeDetailsContext = useContext(RecipeDetailsContext);
   const updateRecipeDetails = recipeDetailsContext.updateRecipeDetails;
+  const addHealthLabel = recipeDetailsContext.addHealthLabel;
   const dishRef = useRef();
 
   const searchRecipes = (event) => {
@@ -27,9 +28,13 @@ function GetIngredients() {
       });
 
       fetch(
-        `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
-          'allergy'
-        )}`
+        addHealthLabel
+          ? `/api/getIngredients/?dish=${dish}&label=${localStorage.getItem(
+              'label'
+            )}`
+          : `/api/getIngredients/?dish=${dish}&allergy=${localStorage.getItem(
+              'allergy'
+            )}`
       )
         .then((res) => res.json())
         .then((details) => {

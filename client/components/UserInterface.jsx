@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import AddAllergyByTag from './AddAllergyByTagLabel';
+import AddAllergyByTag from './AddHealthLabel';
 import GetIngredients from './GetIngredients';
 import RecipeCards from './RecipeCards';
 import Paper from '@mui/material/Paper';
