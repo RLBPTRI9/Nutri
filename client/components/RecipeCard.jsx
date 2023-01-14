@@ -16,7 +16,6 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import NutriContext from '../store/nutri-context.js';
-import heartFav from '../static/heart2.png';
 
 //randomly display avatar img
 import img1 from '../static/will.png';
