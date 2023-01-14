@@ -14,6 +14,35 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+//randomly display avatar img
+import img1 from '../static/will.png';
+import img2 from '../static/will2.png';
+import img3 from '../static/matt1.jpg';
+import img4 from '../static/sam.jpg';
+import img5 from '../static/matt2.jpg';
+import img6 from '../static/matt3.jpg';
+import img7 from '../static/jess.png';
+import img8 from '../static/kyle.png';
+import img9 from '../static/glen.png';
+import img10 from '../static/charlie.png';
+import img11 from '../static/laurence.jpg';
+import img12 from '../static/ethan.jpg';
+import img13 from '../static/hannah.jpg';
+const img = [
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+  img11,
+  img12,
+  img13,
+];
 
 import Paper from '@mui/material/Paper';
 
@@ -48,13 +77,14 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ props }) {
-  const { name, image, healthLabels, url, ingredients } = props;
+  const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const sourceFrom = 'Source: ';
   const singleLabel = healthLabels.toString().split(',');
   const labels = singleLabel.map((label, index) => (
     <Stack direction='row' spacing={1} alignItems='flex-start'>
@@ -73,12 +103,13 @@ export default function RecipeReviewCard({ props }) {
   return (
     <div className='cardContainer'>
       <div className='viewCard'>
-      <Card sx={{ maxWidth: 500 }} elevation={12}>
+        <Card sx={{ maxWidth: 500 }} elevation={12}>
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-                R
-              </Avatar>
+              <Avatar
+                alt='Remy Sharp'
+                src={img[Math.floor(Math.random() * img.length)]}
+              />
             }
             action={
               <IconButton aria-label='settings'>
@@ -86,7 +117,7 @@ export default function RecipeReviewCard({ props }) {
               </IconButton>
             }
             title={name}
-            subheader='September 14, 2016'
+            subheader={[sourceFrom, source]}
           />
           <CardMedia
             component='img'
@@ -96,7 +127,7 @@ export default function RecipeReviewCard({ props }) {
           />
           <CardContent>
             <Typography variant='body2' color='text.secondary'>
-              Tags:
+              Health Labels:
               <Stack
                 direction='row'
                 spacing={0.5}
@@ -129,8 +160,11 @@ export default function RecipeReviewCard({ props }) {
             <CardContent>
               <Typography paragraph>Ingredients:</Typography>
               <Typography paragraph>
-              {ingredients.map((item) => 
-                    <span key= {item}>{item} <br/> </span>)}
+                {ingredients.map((item) => (
+                  <span key={item}>
+                    {item} <br />{' '}
+                  </span>
+                ))}
               </Typography>
             </CardContent>
           </Collapse>
