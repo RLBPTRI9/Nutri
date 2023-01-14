@@ -79,6 +79,7 @@ const ExpandMore = styled((props) => {
 export default function RecipeReviewCard({ props }) {
   const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
+  const [favorite, setFav] = React.useState('grey');
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -99,6 +100,14 @@ export default function RecipeReviewCard({ props }) {
       />
     </Stack>
   ));
+
+  const changeHeartColor = (e)=>{
+    if(favorite === 'grey'){
+      setFav('red');
+    } else {
+      setFav('grey');
+    }
+  }
 
   return (
     <div className='cardContainer'>
@@ -142,7 +151,10 @@ export default function RecipeReviewCard({ props }) {
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label='add to favorites'>
-              <FavoriteIcon />
+              <FavoriteIcon
+              onClick={changeHeartColor}
+              color={favorite}>
+              </FavoriteIcon>
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
