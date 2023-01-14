@@ -18,6 +18,9 @@ function App() {
           primary: {
             main: '#0e5423',
           },
+          red: {
+            main: '#FF0000',
+          },
           mode: prefersDarkMode ? 'dark' : 'light',
         },
       }),

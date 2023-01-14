@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import NutriContext from '../store/nutri-context.js';
 //randomly display avatar img
 import img1 from '../static/will.png';
 import img2 from '../static/will2.png';
@@ -80,8 +81,20 @@ export default function RecipeReviewCard({ props }) {
   const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
 
+  const nutriContext = React.useContext(NutriContext);
+  const isFavorite = nutriContext.isFavorite;
+  const updateIsFavorite = nutriContext.updateIsFavorite;
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      updateIsFavorite(false);
+    } else {
+      updateIsFavorite(true);
+    }
   };
 
   const sourceFrom = 'Source: ';
@@ -141,8 +154,11 @@ export default function RecipeReviewCard({ props }) {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton aria-label='add to favorites'>
-              <FavoriteIcon />
+            <IconButton
+              aria-label='add to favorites'
+              onClick={handleFavoriteClick}
+            >
+              <FavoriteIcon color={isFavorite ? 'red' : ''} />
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
