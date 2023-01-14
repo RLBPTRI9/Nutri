@@ -90,14 +90,13 @@ export default function RecipeReviewCard({ props }) {
   const handleFavoriteClick = () => {
     if (faveClicked) {
       updateFaveClicked(false);
+      updateArrOfFavs([...nutriContext.arrOfFavs, url]);
+    } else {
+      updateFaveClicked(true);
       nutriContext.arrOfFavs = nutriContext.arrOfFavs.filter(
         (site) => site !== url
       );
       updateArrOfFavs(nutriContext.arrOfFavs);
-    } else {
-      updateFaveClicked(true);
-      updateArrOfFavs([...nutriContext.arrOfFavs, url]);
-      // updateFavePics([...nutriContext.favePics, image])
     }
   };
 
@@ -162,7 +161,7 @@ export default function RecipeReviewCard({ props }) {
               aria-label='add to favorites'
               onClick={handleFavoriteClick}
             >
-              <FavoriteIcon color={faveClicked ? 'red' : ''} />
+              <FavoriteIcon color={faveClicked ? '' : 'red'} />{' '}
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
