@@ -97,6 +97,7 @@ export default function RecipeReviewCard({ props }) {
         (site) => site !== url
       );
       updateArrOfFavs(nutriContext.arrOfFavs);
+      // updateFavePics([...nutriContext.favePics, image])
     }
   };
 
@@ -161,7 +162,7 @@ export default function RecipeReviewCard({ props }) {
               aria-label='add to favorites'
               onClick={handleFavoriteClick}
             >
-              <FavoriteIcon color={faveClicked ? '' : 'red'} />{' '}
+              <FavoriteIcon color={faveClicked ? '' : 'red'} />
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
