@@ -1,33 +1,37 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import NutriContext from '../store/nutri-context.js';
 import { useContext, useState } from 'react';
 import FavesCard from './RecipeCard.jsx';
+import faves from '../static/faves2.png';
 
 export default function Faves() {
   const nutriContext = useContext(NutriContext);
   const arrOfFavs = nutriContext.arrOfFavs;
-  const faveCards = arrOfFavs.map((details, index) => (
-    <Grid xs={2} sm={4} md={4} key={index}>
-      <FavesCard key={index} props={details} />
-    </Grid>
-  ));
+  const favePics = nutriContext.favePics;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        {faveCards}
-      </Grid>
-    </Box>
+    <Card sx={{ maxWidth: 550 }}>
+      <CardMedia
+        component='img'
+        alt='green iguana'
+        height='300'
+        width='700'
+        src={faves}
+      />
+      <CardContent>
+        <Typography gutterBottom variant='h5' component='div'>
+          <a href={arrOfFavs}>{arrOfFavs}</a>
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size='small'>Recipe</Button>
+      </CardActions>
+    </Card>
   );
 }

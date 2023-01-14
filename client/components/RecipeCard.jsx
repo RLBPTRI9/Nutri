@@ -78,29 +78,31 @@ export default function RecipeReviewCard({ props }) {
   const [expanded, setExpanded] = React.useState(false);
   // const [favorite, setFavorite] = useState([]);
   const nutriContext = useContext(NutriContext);
+  const faveClicked = nutriContext.faveClicked;
   const updateFaveClicked = nutriContext.updateFaveClicked;
   const updateArrOfFavs = nutriContext.updateArrOfFavs;
+  const updateFavePics = nutriContext.updateArrOfFavs;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  // const listOfFavs = (url) => {
-  //   updateArrOfFavs([...nutriContext.arrOfFavs, url])
-  // }
-
-  const updateHeart = (url) => {
-    if (nutriContext.faveClicked === false) {
-      updateFaveClicked(true);
-      updateArrOfFavs([...nutriContext.arrOfFavs, url]);
-    } else {
+  const handleFavoriteClick = () => {
+    if (faveClicked) {
       updateFaveClicked(false);
       nutriContext.arrOfFavs = nutriContext.arrOfFavs.filter(
         (site) => site !== url
       );
       updateArrOfFavs(nutriContext.arrOfFavs);
+      // nutriContext.favePics = nutriContext.favePics.filter((site) => site !== image);
+      // updateFacePics(nutriContext.favePics)
+    } else {
+      updateFaveClicked(true);
+      updateArrOfFavs([...nutriContext.arrOfFavs, url]);
+      // updateFavePics([...nutriContext.favePics, image])
     }
   };
+
   console.log(nutriContext.arrOfFavs);
 
   const sourceFrom = 'Source: ';
@@ -158,30 +160,11 @@ export default function RecipeReviewCard({ props }) {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton aria-label='add to favorites'>
-              {nutriContext.faveClicked === false ? (
-                <FavoriteIcon
-                  onClick={() => {
-                    updateHeart(url);
-                    // listOfFavs(url)
-                  }}
-                  // value={index}
-                />
-              ) : (
-                <Avatar
-                  // onClick={updateHeart(url)}
-                  onClick={() => {
-                    updateHeart(url);
-                    // listOfFavs(url)
-                  }}
-                  alt='Remy Sharp'
-                  src={heartFav}
-                  sx={{ width: 23, height: 20 }}
-                />
-              )}
-              {/* <FavoriteIcon 
-              onClick={updateHeart}
-              /> */}
+            <IconButton
+              aria-label='add to favorites'
+              onClick={handleFavoriteClick}
+            >
+              <FavoriteIcon color={faveClicked ? 'red' : ''} />
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
