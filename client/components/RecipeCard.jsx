@@ -77,10 +77,11 @@ export default function RecipeReviewCard({ props }) {
   const [expanded, setExpanded] = React.useState(false);
   // const [favorite, setFavorite] = useState([]);
   const nutriContext = useContext(NutriContext);
-  const faveClicked = nutriContext.faveClicked;
-  const updateFaveClicked = nutriContext.updateFaveClicked;
+  // const faveClicked = nutriContext.faveClicked;
+  // const updateFaveClicked = nutriContext.updateFaveClicked;
   const updateArrOfFavs = nutriContext.updateArrOfFavs;
   const updateFavePics = nutriContext.updateArrOfFavs;
+  const [faveClicked, updateFaveClicked] = React.useState('false');
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -93,8 +94,6 @@ export default function RecipeReviewCard({ props }) {
         (site) => site !== url
       );
       updateArrOfFavs(nutriContext.arrOfFavs);
-      // nutriContext.favePics = nutriContext.favePics.filter((site) => site !== image);
-      // updateFacePics(nutriContext.favePics)
     } else {
       updateFaveClicked(true);
       updateArrOfFavs([...nutriContext.arrOfFavs, url]);
