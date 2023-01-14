@@ -177,13 +177,11 @@ export default function RecipeReviewCard({ props }) {
                   alt='Remy Sharp'
                   src={heartFav}
                   sx={{ width: 23, height: 20 }}
-                  // value={index}
                 />
               )}
               {/* <FavoriteIcon 
               onClick={updateHeart}
               /> */}
-              {/* <Avatar alt="Remy Sharp" src={heartFav}/> */}
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
