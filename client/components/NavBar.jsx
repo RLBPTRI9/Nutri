@@ -16,13 +16,23 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SetMealOutlinedIcon from '@mui/icons-material/SetMealOutlined';
+import { BrowserRouter, useNavigate, Route, Routes } from 'react-router-dom';
+import Faves from './Faves.jsx';
+import { Link } from 'react-router-dom';
 
-const pages = ['Add Allergies', 'Search Recipes'];
+const pages = ['Add Allergies', 'Search Recipes', 'Favorites'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+// const handleClick = () => console.log('hi')
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/favorites', {replace: true});
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,6 +48,10 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  <BrowserRouter>
+      <Route path='favorites' element={<Faves />} />
+  </BrowserRouter>;
 
   return (
     <AppBar position='static'>
@@ -94,7 +108,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={handleClick}>
                   <Typography textAlign='center'>{page}</Typography>
                 </MenuItem>
               ))}
@@ -123,8 +137,8 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={handleClick}
               >
                 {page}
               </Button>

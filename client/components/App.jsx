@@ -7,8 +7,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Faves from './Faves.jsx';
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
 
 function App() {
+
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const theme = React.useMemo(
@@ -28,6 +32,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ResponsiveAppBar />
+      <Routes>
+          <Route path="favorites" element={ <Faves/> } />
+        </Routes>
       <UserInterface />
       <ToastContainer />
     </ThemeProvider>

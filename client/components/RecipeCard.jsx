@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,6 +15,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import NutriContext from '../store/nutri-context.js';
+import heartFav from '../static/heart2.png';
+
 //randomly display avatar img
 import img1 from '../static/will.png';
 import img2 from '../static/will2.png';
@@ -57,13 +61,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-// x.name = ele.recipe.label;
-// x.image = ele.recipe.image;
-// x.url = ele.recipe.url;
-// x.ingredients = ele.recipe.ingredientLines;
-// x.cautions = ele.recipe.cautions;
-// x.healthLabels = ele.recipe.healthLabels;
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
 
@@ -79,19 +76,39 @@ const ExpandMore = styled((props) => {
 export default function RecipeReviewCard({ props }) {
   const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
+  // const [favorite, setFavorite] = useState([]);
+  const nutriContext = useContext(NutriContext);
+  const updateFaveClicked = nutriContext.updateFaveClicked;
+  const updateArrOfFavs = nutriContext.updateArrOfFavs;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  // const listOfFavs = (url) => {
+  //   updateArrOfFavs([...nutriContext.arrOfFavs, url])
+  // }
+
+  const updateHeart = (url) => {
+    if (nutriContext.faveClicked === false) {
+      updateFaveClicked(true);
+      updateArrOfFavs([...nutriContext.arrOfFavs, url]);
+    } else {
+      updateFaveClicked(false);
+      nutriContext.arrOfFavs = nutriContext.arrOfFavs.filter(
+        (site) => site !== url
+      );
+      updateArrOfFavs(nutriContext.arrOfFavs);
+    }
+  };
+  console.log(nutriContext.arrOfFavs);
+
   const sourceFrom = 'Source: ';
   const singleLabel = healthLabels.toString().split(',');
   const labels = singleLabel.map((label, index) => (
     <Stack direction='row' spacing={1} alignItems='flex-start'>
-      {/* <Chip label={label} component="a" href="#basic-chip" clickable /> */}
       <Chip
         label={label}
-        // size="small"
         component='a'
         href='#basic-chip'
         variant='outlined'
@@ -142,7 +159,31 @@ export default function RecipeReviewCard({ props }) {
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label='add to favorites'>
-              <FavoriteIcon />
+              {nutriContext.faveClicked === false ? (
+                <FavoriteIcon
+                  onClick={() => {
+                    updateHeart(url);
+                    // listOfFavs(url)
+                  }}
+                  // value={index}
+                />
+              ) : (
+                <Avatar
+                  // onClick={updateHeart(url)}
+                  onClick={() => {
+                    updateHeart(url);
+                    // listOfFavs(url)
+                  }}
+                  alt='Remy Sharp'
+                  src={heartFav}
+                  sx={{ width: 23, height: 20 }}
+                  // value={index}
+                />
+              )}
+              {/* <FavoriteIcon 
+              onClick={updateHeart}
+              /> */}
+              {/* <Avatar alt="Remy Sharp" src={heartFav}/> */}
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />
