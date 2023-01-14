@@ -10,7 +10,7 @@ import { useContext, useState } from 'react';
 import FavesCard from './RecipeCard.jsx';
 import faves from '../static/faves2.png';
 
-export default function Faves() {
+function Faves() {
   const nutriContext = useContext(NutriContext);
   const arrOfFavs = nutriContext.arrOfFavs;
   const favePics = nutriContext.favePics;
@@ -35,3 +35,5 @@ export default function Faves() {
     </Card>
   );
 }
+
+export default Faves;
