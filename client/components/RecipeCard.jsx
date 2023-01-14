@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,6 +15,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import NutriContext from '../store/nutri-context.js';
+
 //randomly display avatar img
 import img1 from '../static/will.png';
 import img2 from '../static/will2.png';
@@ -57,13 +60,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-// x.name = ele.recipe.label;
-// x.image = ele.recipe.image;
-// x.url = ele.recipe.url;
-// x.ingredients = ele.recipe.ingredientLines;
-// x.cautions = ele.recipe.cautions;
-// x.healthLabels = ele.recipe.healthLabels;
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
 
@@ -79,19 +75,40 @@ const ExpandMore = styled((props) => {
 export default function RecipeReviewCard({ props }) {
   const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
+  // const [favorite, setFavorite] = useState([]);
+  const nutriContext = useContext(NutriContext);
+  // const faveClicked = nutriContext.faveClicked;
+  // const updateFaveClicked = nutriContext.updateFaveClicked;
+  const updateArrOfFavs = nutriContext.updateArrOfFavs;
+  const updateFavePics = nutriContext.updateArrOfFavs;
+  const [faveClicked, updateFaveClicked] = React.useState('false');
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const handleFavoriteClick = () => {
+    if (faveClicked) {
+      updateFaveClicked(false);
+      updateArrOfFavs([...nutriContext.arrOfFavs, url]);
+    } else {
+      updateFaveClicked(true);
+      nutriContext.arrOfFavs = nutriContext.arrOfFavs.filter(
+        (site) => site !== url
+      );
+      updateArrOfFavs(nutriContext.arrOfFavs);
+      // updateFavePics([...nutriContext.favePics, image])
+    }
+  };
+
+  console.log(nutriContext.arrOfFavs);
+
   const sourceFrom = 'Source: ';
   const singleLabel = healthLabels.toString().split(',');
   const labels = singleLabel.map((label, index) => (
     <Stack direction='row' spacing={1} alignItems='flex-start'>
-      {/* <Chip label={label} component="a" href="#basic-chip" clickable /> */}
       <Chip
         label={label}
-        // size="small"
         component='a'
         href='#basic-chip'
         variant='outlined'
@@ -141,8 +158,11 @@ export default function RecipeReviewCard({ props }) {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton aria-label='add to favorites'>
-              <FavoriteIcon />
+            <IconButton
+              aria-label='add to favorites'
+              onClick={handleFavoriteClick}
+            >
+              <FavoriteIcon color={faveClicked ? '' : 'red'} />
             </IconButton>
             <IconButton aria-label='share'>
               <ShareIcon />

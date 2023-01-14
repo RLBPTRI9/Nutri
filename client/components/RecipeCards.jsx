@@ -87,7 +87,7 @@ const testObj = [
       'Red-Meat-Free',
       'Crustacean-Free',
     ],
-    url: 'https://cafedelites.com/pad-thai/',
+    url: 'https://www.yahoo.com',
     ingredients: [
       '8 ounces pad Thai rice noodles',
       '1 tablespoon tamarind paste',
@@ -114,7 +114,7 @@ const testObj = [
     name: 'Pad Thai',
     image: 'https://cafedelites.com/wp-content/uploads/2018/07/pad-thai-6.jpg',
     healthLabels: 'nut-free, soy-free, gluten-free',
-    url: 'https://cafedelites.com/pad-thai/',
+    url: 'https://food.com/',
     ingredients: [
       '5 ounces pad thai rice noodles',
       '3 tablespoons vegetable oil',
@@ -140,11 +140,11 @@ const testObj = [
 function RecipeCards() {
   const nutriContext = useContext(NutriContext);
   const recipeDetails = nutriContext.recipeDetails;
-  const [favorite, setFavorite] = useState([]);
 
   const recipeCards = recipeDetails.map((details, index) => (
     <Grid xs={2} sm={4} md={4} key={index}>
       <RecipeCard key={index} props={details} />
+      {console.log(index)}
     </Grid>
   ));
 

@@ -7,7 +7,11 @@ const NutriContext = createContext({
   updateHealthLabel: (newHealthLabel) => {},
   recipeDetails: [],
   updateRecipeDetails: (newRecipeDetails) => {},
-  faveClicked: [],
+  arrOfFavs: [],
+  updateArrOfFavs: (newArrOfFavs) => {},
+  favePics: [],
+  updateFavePics: (newFavePics) => {},
+  faveClicked: false,
   updateFaveClicked: (newFaveClicked) => {},
   healthLabelActive: false,
   updateSetHealthLabelActive: (newSetHealthLabelActive) => {},
@@ -17,7 +21,9 @@ export function NutriContextProvider(props) {
   const [allergy, setAllergy] = useState('');
   const [healthLabel, setHealthLabel] = useState('');
   const [recipeDetails, setRecipeDetails] = useState([]);
-  const [faveClicked, setfaveClicked] = useState([]);
+  const [faveClicked, setfaveClicked] = useState(false);
+  const [arrOfFavs, setArrOfFavs] = useState([]);
+  const [favePics, setFavePics] = useState([]);
   const [healthLabelActive, setHealthLabelActive] = useState(false);
 
   function updateAllergyHandler(newAllergy) {
@@ -32,6 +38,13 @@ export function NutriContextProvider(props) {
     setRecipeDetails(newRecipeDetails);
   }
 
+  function updateArrOfFavesHandler(newArrOfFavs) {
+    setArrOfFavs(newArrOfFavs);
+  }
+
+  function updateFavePicsHandler(newFavePics) {
+    setFavePics(newFavePics);
+  }
   function updateFaveClickedHandler(newFaveClicked) {
     setfaveClicked(newFaveClicked);
   }
@@ -47,6 +60,10 @@ export function NutriContextProvider(props) {
     updateHealthLabel: updateHealthLabelHandler,
     recipeDetails,
     updateRecipeDetails: updateRecipeDetailsHandler,
+    arrOfFavs,
+    updateArrOfFavs: updateArrOfFavesHandler,
+    favePics,
+    updateFavePics: updateFavePicsHandler,
     faveClicked,
     updateFaveClicked: updateFaveClickedHandler,
     healthLabelActive,
