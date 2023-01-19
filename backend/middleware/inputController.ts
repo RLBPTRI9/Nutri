@@ -1,18 +1,23 @@
-const { application } = require('express');
-const fetch = require('node-fetch');
-require('dotenv').config();
+import { Request, Response, NextFunction } from 'express';
+import env from 'dotenv';
 
-const inputController = {};
+type Recipe = {
+        name: string,
+        image: string,
+        url: string,
+        ingredients: any,
+        cautions: any,
+        healthLabels: string[];
+        source: string
+}
 
-inputController.getIngredients = (req, res, next) => {
+const inputController = {
+
+getIngredients: (req: Request, res: Response, next: NextFunction) => {
   //pad thai, pad+thai
   //https://localhost:8080/api/getIngredients?allergy=peanut&dish=pad+thai
 
-  const query = req.query; // query = {allery:"peanut",dish: "pad+thai"}
-  const allergy = query.allergy;
-  //lowercase the dish
-  const dish = query.dish.toLowerCase().trim();
-  console.log(dish);
+  const { allergy , dish} = req.query; // query = {allergy:"peanut",dish: "pad+thai"}
 
   console.log(allergy, dish);
   // const { allergy, dish } = req.query;
@@ -21,7 +26,7 @@ inputController.getIngredients = (req, res, next) => {
 
   // console.log(process.env.EDAMAM_RECIPE_API_ID);
 
-  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish}`;
+  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish.toLowerCase().trim()}`;
 
   fetch(url)
     .then((response) => {
@@ -35,27 +40,26 @@ inputController.getIngredients = (req, res, next) => {
       console.log(data);
       console.log(data.hits);
       const recipes = data.hits; //array of objects, each object containing
-
+      //[{recipe:{...}},{recipe:{...}}]
       // let counter = 0;
       // let totalRecipes = recipes.length;
       // let allergyCheck = false;
-      let resultList = [];
+      let resultList: Recipe[]  = [];
 
       //we will need allergy from front end or need to query database
 
-      recipes.forEach((ele) => {
-        const x = {};
-        x.name = ele.recipe.label;
-        x.image = ele.recipe.image;
-        x.url = ele.recipe.url;
-        x.ingredients = ele.recipe.ingredientLines;
-        x.cautions = ele.recipe.cautions;
-        x.healthLabels = ele.recipe.healthLabels;
-        //adding the source for front-end
-        x.source = ele.recipe.source;
+      recipes.forEach((data: any) => {
+        const recipe: any = data.recipe;
         // console.log(x);
-        resultList.push(x);
-        // console.log(resultList);
+        resultList.push({
+          name : recipe.label,
+          image : recipe.image,
+          url : recipe.url,
+          ingredients : recipe.ingredientLines,
+          cautions : recipe.cautions,
+          healthLabels : recipe.healthLabels,
+          source : recipe.source,
+        });
       });
 
       if (!allergy) {
@@ -67,8 +71,11 @@ inputController.getIngredients = (req, res, next) => {
       //const allergies = localStorage.getItem('allergies');
       //console.log(allergies);
 
+
+      //TODO: figure this out
+      // TODO: wtf?
       //cleanup function for plurals
-      function cleanUp(string) {
+      function cleanUp(string: string) {
         let result;
         let input = string.toLowerCase().trim();
         console.log(input);
@@ -98,12 +105,17 @@ inputController.getIngredients = (req, res, next) => {
         }
         return result;
       }
-      let cleanedInput = cleanUp(allergy);
+      let cleanedInput = cleanUp(`${allergy}`);
       const regex = new RegExp(cleanedInput + '?');
 
       const recipesWithAllergy = [];
       // const recipesWithoutAllergy = [];
 
+      /*
+      TODO: pull recipes that include items in user's inventory
+      */
+
+      // TODO: see if we can do this with edimam API rather than here.
       const withoutAllergy = [];
       for (let recipe of resultList) {
         let ingredients = recipe.ingredients;
@@ -135,17 +147,15 @@ inputController.getIngredients = (req, res, next) => {
     .catch((err) => {
       if (err) return next(console.log(err));
     });
-};
+},
 
-inputController.getHealthLabels = (req, res, next) => {
-  const query = req.query;
-  const label = query.label.toLowerCase();
+getHealthLabels: (req: Request, res: Response, next: NextFunction) => {
+  const {label, dish} = req.query;
+  const lowercaseLabel = `${label}`.toLowerCase();
 
-  //lowercase the dish
-  const dish = query.dish.toLowerCase().trim();
   console.log(dish);
 
-  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish}`;
+  const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${dish.toLowerCase().trim()}`;
 
   fetch(url)
     .then((response) => {
@@ -162,29 +172,47 @@ inputController.getHealthLabels = (req, res, next) => {
       // console.log(data.hits);
       const recipes = data.hits; //array of objects, each object containing
 
-      // let counter = 0;
-      // let totalRecipes = recipes.length;
-      // let allergyCheck = false;
-      let resultList = [];
+
+      let resultList: Recipe[]  = [];
 
       //we will need allergy from front end or need to query database
 
-      recipes.forEach((ele) => {
-        const x = {};
-        x.name = ele.recipe.label;
-        x.image = ele.recipe.image;
-        x.url = ele.recipe.url;
-        x.ingredients = ele.recipe.ingredientLines;
-        x.cautions = ele.recipe.cautions;
-        x.healthLabels = ele.recipe.healthLabels;
-        //adding the source for front-end
-        x.source = ele.recipe.source;
+      recipes.forEach((data: any) => {
+        const recipe: any = data.recipe;
         // console.log(x);
-        resultList.push(x);
-        // console.log(resultList);
+        resultList.push({
+          name : recipe.label,
+          image : recipe.image,
+          url : recipe.url,
+          ingredients : recipe.ingredientLines,
+          cautions : recipe.cautions,
+          healthLabels : recipe.healthLabels,
+          source : recipe.source,
+        });
       });
+      // let counter = 0;
+      // let totalRecipes = recipes.length;
+      // let allergyCheck = false;
+      // let resultList = [];
 
-      if (!label) {
+      // //we will need allergy from front end or need to query database
+
+      // recipes.forEach((ele) => {
+      //   const x = {};
+      //   x.name = ele.recipe.label;
+      //   x.image = ele.recipe.image;
+      //   x.url = ele.recipe.url;
+      //   x.ingredients = ele.recipe.ingredientLines;
+      //   x.cautions = ele.recipe.cautions;
+      //   x.healthLabels = ele.recipe.healthLabels;
+      //   //adding the source for front-end
+      //   x.source = ele.recipe.source;
+      //   // console.log(x);
+      //   resultList.push(x);
+      //   // console.log(resultList);
+      // });
+
+      if (!lowercaseLabel) {
         res.locals.healthLabels = resultList;
         return next();
       }
@@ -198,7 +226,7 @@ inputController.getHealthLabels = (req, res, next) => {
         for (let hLabelUpper of hLabels) {
           let hLabel = hLabelUpper.toLowerCase();
           //console.log('hLabel lowerCased',hLabel);
-          if (hLabel.match(label)) {
+          if (hLabel.match(lowercaseLabel)) {
             recipesWithHealthLabel.push(recipe);
             break;
           }
@@ -221,6 +249,7 @@ inputController.getHealthLabels = (req, res, next) => {
       if (err) return next(console.log(err));
     });
 };
+};
 
-//res.locals.healthLabels
-module.exports = inputController;
+//res.locals.healthLabel
+export default inputController;

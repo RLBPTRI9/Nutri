@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 const inputController = require('../controllers/inputController');
 //controller
 const Student = require('../models/testModel');
