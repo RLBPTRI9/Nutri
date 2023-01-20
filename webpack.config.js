@@ -1,68 +1,21 @@
-const webpack = require('webpack');
 const path = require('path');
+require('dotenv').config();
+const process = require('process');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './client/index.js',
-  plugins: [
-    //2 lines below below is new
-    new HtmlWebpackPlugin({
-      title: 'Development',
-      template: 'index.html',
-    }),
-    // new MiniCssExtractPlugin(),
-  ],
-  // output: {
-  //   path: path.join(__dirname, 'build'),
-  //   filename: 'bundle.js',
-  // },
-  devtool: 'eval-source-map',
-  mode: 'development',
-  devServer: {
-    // host: 'localhost',
-    port: 8080,
-    historyApiFallback: true,
-    hot: true,
-    static: {
-      directory: path.join(__dirname, 'build'),
-      publicPath: '/build',
-    },
-    // headers: { 'Access-Control-Allow-Origin': '*' },
-    proxy: {
-      '/api': 'http://localhost:3000',
-      secure: false,
-    }
-  },
-  //new
-  resolve: {
-    extensions: ["*", ".js", ".jsx"]
-  },
-  resolveLoader: {
-    extensions: ["babel-loader"]
-  },
-  //new up
+  mode: process.env.TARGET ?? 'production',
+  entry: './client/index.tsx',
   module: {
     rules: [
       {
-        test: /\.jsx?/,
-        // exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-          }
-        }
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: [/node_modules/],
       },
       {
-        test: /\.css$/,
-        // test: /\.(scss)$/,
-        // exclude: /node_modules/,
-        use: [
-          // MiniCssExtractPlugin.loader,
-          'style-loader',
-          'css-loader',
-          // 'sass-loader',
-        ]
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -72,6 +25,31 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
     ],
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  devServer: {
+    static: './dist',
+    port: 8080,
+    historyApiFallback: true,
+    watchFiles: {
+      paths: ['src/**/*'],
+    },
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist/public'),
+  },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+  ],
 };

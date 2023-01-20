@@ -1,16 +1,17 @@
-const path = require('path');
-const express = require('express');
-require('dotenv').config();
+import * as path from 'path';
+import express from 'express';
+import mongoose from 'mongoose';
+import env from 'dotenv';
+env.config();
 // Create a new Express app
 const app = express();
+const PORT = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const routes = require('./routes/api');
 app.use('/api', routes);
-
-const mongoose = require('mongoose');
 
 // mongoose.connect(
 //   'mongodb+srv://matt:codesmith@cluster1.wajxvza.mongodb.net/?retryWrites=true&w=majority',
@@ -22,8 +23,6 @@ const mongoose = require('mongoose');
 
 // const apiRouter = require('./routes/api')
 //const databaseRouter = require('./routes/database')
-
-const PORT = 3000;
 
 app.use(express.static('public'));
 

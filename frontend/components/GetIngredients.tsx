@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { ReactEventHandler, useContext, useRef } from 'react';
 import NutriContext from '../store/nutri-context.js';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -12,9 +12,9 @@ function GetIngredients() {
   const healthLabel = nutriContext.healthLabel;
   const updateRecipeDetails = nutriContext.updateRecipeDetails;
   const healthLabelActive = nutriContext.healthLabelActive;
-  const dishRef = useRef();
+  const dishRef: any = useRef();
 
-  const searchRecipes = (event) => {
+  const searchRecipes = (event: any) => {
     event.preventDefault();
 
     const dish = dishRef.current.value;
@@ -79,13 +79,12 @@ function GetIngredients() {
         component='form'
         spacing={1}
         direction='column'
-        sx={{ mr: 5 }}
-      >
+        sx={{ mr: 5 }}>
         <Grid item sx={{ mb: 3 }}>
           <Typography variant='h5'>Recipe Information</Typography>
         </Grid>
         <Grid item>
-          <Typography variant='h7'>
+          <Typography variant='h6'>
             {healthLabelActive
               ? `Health Label: ${healthLabel}`
               : `Allergy: ${allergy}`}
@@ -106,8 +105,7 @@ function GetIngredients() {
             variant='contained'
             size='small'
             type='submit'
-            onClick={searchRecipes}
-          >
+            onClick={searchRecipes}>
             View Recipes
           </Button>
         </Grid>

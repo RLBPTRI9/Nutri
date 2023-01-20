@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import RecipeCard from './RecipeCard.jsx';
-import NutriContext from '../store/nutri-context.js';
+import RecipeCard from './RecipeCard';
+import NutriContext from '../store/nutri-context';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import SetMealIcon from '@mui/icons-material/SetMeal';
@@ -153,8 +153,7 @@ function RecipeCards() {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
+        columns={{ xs: 4, sm: 8, md: 12 }}>
         {recipeCards}
       </Grid>
     </Box>
