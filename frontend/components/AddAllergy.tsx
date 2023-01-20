@@ -13,9 +13,9 @@ const AddAllergy = () => {
   const updateAllergy = nutriContext.updateAllergy;
   const updateSetHealthLabelActive = nutriContext.updateSetHealthLabelActive;
 
-  const allergyRef = useRef();
+  const allergyRef: any = useRef();
 
-  const saveAllergy = (event) => {
+  const saveAllergy = (event: any) => {
     event.preventDefault();
 
     const allergy = allergyRef.current.value;
@@ -65,8 +65,7 @@ const AddAllergy = () => {
         component='form'
         spacing={1}
         direction='column'
-        sx={{ ml: 4 }}
-      >
+        sx={{ ml: 4 }}>
         <Grid item sx={{ mb: 2 }}>
           <Typography variant='h5'>Allergy Information</Typography>
         </Grid>
@@ -96,16 +95,14 @@ const AddAllergy = () => {
             variant='contained'
             size='small'
             type='submit'
-            onClick={saveAllergy}
-          >
+            onClick={saveAllergy}>
             Save
           </Button>
           <Button
             variant='outlined'
             size='small'
             onClick={clearAllergy}
-            sx={{ ml: 1 }}
-          >
+            sx={{ ml: 1 }}>
             Clear
           </Button>
         </Grid>

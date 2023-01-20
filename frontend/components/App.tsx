@@ -7,8 +7,16 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 function App() {
+  const routes = [
+    {
+      path: '/',
+      element: <App />,
+    },
+  ];
+
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const theme = React.useMemo(

@@ -53,16 +53,17 @@ const AddHealthLabel = () => {
   const updateSetHealthLabelActive = nutriContext.updateSetHealthLabelActive;
 
   const [inputValue, setInputValue] = React.useState('');
-  const healthLabelRef = useRef();
+  const healthLabelRef: HTMLTextAreaElement =
+    document.querySelector('#HealthLabel')!;
 
-  const saveHealthLabel = (event) => {
+  const saveHealthLabel = (event: any) => {
     event.preventDefault();
 
-    const healthLabel = inputValue;
+    const healthLabel: string = inputValue;
 
     updateHealthLabel(healthLabel);
     localStorage.setItem('label', healthLabel);
-    healthLabelRef.current.value = '';
+    healthLabelRef.value = '';
 
     toast.success('Health label updated!', {
       position: toast.POSITION.TOP_CENTER,
@@ -79,7 +80,7 @@ const AddHealthLabel = () => {
     });
 
     updateHealthLabel('');
-    healthLabelRef.current.value = '';
+    healthLabelRef.value = '';
   };
 
   const setByAllergy = () => {
@@ -97,8 +98,7 @@ const AddHealthLabel = () => {
         component='form'
         spacing={1}
         direction='column'
-        sx={{ ml: 4 }}
-      >
+        sx={{ ml: 4 }}>
         <Grid item sx={{ mb: 2 }}>
           <Typography variant='h5'>Allergy Information</Typography>
         </Grid>
@@ -125,11 +125,7 @@ const AddHealthLabel = () => {
             }}
             sx={{ width: 250 }}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label='Health Label'
-                inputRef={healthLabelRef}
-              />
+              <TextField {...params} label='Health Label' id='HealthLabel' />
             )}
           />
         </Grid>
@@ -138,16 +134,14 @@ const AddHealthLabel = () => {
             variant='contained'
             size='small'
             type='submit'
-            onClick={saveHealthLabel}
-          >
+            onClick={saveHealthLabel}>
             Save
           </Button>
           <Button
             variant='outlined'
             size='small'
             onClick={clearHealthLabel}
-            sx={{ ml: 1 }}
-          >
+            sx={{ ml: 1 }}>
             Clear
           </Button>
         </Grid>
