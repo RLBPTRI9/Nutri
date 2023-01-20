@@ -28,6 +28,7 @@ import img10 from '../static/charlie.png';
 import img11 from '../static/laurence.jpg';
 import img12 from '../static/ethan.jpg';
 import img13 from '../static/hannah.jpg';
+
 const img = [
   img1,
   img2,
@@ -48,14 +49,15 @@ import Paper from '@mui/material/Paper';
 
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import { FC } from 'react';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+// const Item = styled(Paper)(({ theme }) => ({
+//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//   ...theme.typography.body2,
+//   padding: theme.spacing(1),
+//   textAlign: 'center',
+//   color: theme.palette.text.secondary,
+// }));
 
 // x.name = ele.recipe.label;
 // x.image = ele.recipe.image;
@@ -64,11 +66,31 @@ const Item = styled(Paper)(({ theme }) => ({
 // x.cautions = ele.recipe.cautions;
 // x.healthLabels = ele.recipe.healthLabels;
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
+// expand={expanded}
+// onClick={handleExpandClick}
+// aria-expanded={expanded}
+// aria-label='show more'
 
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
+const ExpandMore = styled(
+  (props: {
+    expand: boolean;
+    func: any;
+    ariaLabel: string;
+    ariaExpanded: any;
+    children: any;
+  }) => {
+    const { expand, func, ariaLabel, ariaExpanded, children } = props;
+
+    return (
+      <IconButton
+        onClick={func}
+        aria-label={ariaLabel}
+        aria-expanded={ariaExpanded}>
+        {children}
+      </IconButton>
+    );
+  }
+)(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
@@ -76,8 +98,16 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RecipeReviewCard({ props }) {
-  const { name, image, healthLabels, url, ingredients, source } = props;
+const RecipeReviewCard: FC<{
+  name?: string;
+  image?: string;
+  healthLabels?: string[];
+  url?: string;
+  ingredients?: any;
+  source?: string;
+  props?: any;
+}> = ({ name, image, healthLabels, url, ingredients, source }) => {
+  // const { name, image, healthLabels, url, ingredients, source } = props;
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -85,9 +115,9 @@ export default function RecipeReviewCard({ props }) {
   };
 
   const sourceFrom = 'Source: ';
-  const singleLabel = healthLabels.toString().split(',');
-  const labels = singleLabel.map((label, index) => (
-    <Stack direction='row' spacing={1} alignItems='flex-start'>
+  const singleLabel = healthLabels?.toString().split(',');
+  const labels = singleLabel?.map((label: string, index: number) => (
+    <Stack direction='row' spacing={1} alignItems='flex-start' key={index}>
       {/* <Chip label={label} component="a" href="#basic-chip" clickable /> */}
       <Chip
         label={label}
@@ -132,8 +162,7 @@ export default function RecipeReviewCard({ props }) {
                 direction='row'
                 spacing={0.5}
                 alignItems='flex-start'
-                flexWrap='wrap'
-              >
+                flexWrap='wrap'>
                 {labels}
               </Stack>
               <br />
@@ -147,12 +176,12 @@ export default function RecipeReviewCard({ props }) {
             <IconButton aria-label='share'>
               <ShareIcon />
             </IconButton>
+            {/* TODO: Figure out how this works or remake ourselves (Lines 151-172) */}
             <ExpandMore
               expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label='show more'
-            >
+              func={handleExpandClick}
+              ariaExpanded={expanded}
+              ariaLabel='show more'>
               <ExpandMoreIcon />
             </ExpandMore>
           </CardActions>
@@ -160,7 +189,7 @@ export default function RecipeReviewCard({ props }) {
             <CardContent>
               <Typography paragraph>Ingredients:</Typography>
               <Typography paragraph>
-                {ingredients.map((item) => (
+                {ingredients.map((item: any) => (
                   <span key={item}>
                     {item} <br />{' '}
                   </span>
@@ -172,4 +201,6 @@ export default function RecipeReviewCard({ props }) {
       </div>
     </div>
   );
-}
+};
+
+export default RecipeReviewCard;
