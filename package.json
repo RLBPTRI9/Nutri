@@ -4,9 +4,9 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "nodemon backend/server.ts",
     "build": "webpack",
-    "dev": "concurrently \"webpack-dev-server --open --hot --progress\" \"nodemon ./server/server.js\"",
+    "dev": "concurrently \"webpack-dev-server --open --hot --progress\" \"nodemon backend/server.ts\"",
     "test": "jest"
   },
   "keywords": [],
@@ -23,6 +23,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.15",
     "@types/jest": "^29.2.6",
+    "@types/node-fetch": "^2.6.2",
     "@types/react-dom": "^18.0.10",
     "assert": "^2.0.0",
     "babel-loader": "^9.1.0",
@@ -70,6 +71,7 @@
     "react-router-dom": "^6.6.2",
     "react-toastify": "^9.1.1",
     "styled-components": "^5.3.6",
+    "ts-loader": "^9.4.2",
     "webpack-hot-middleware": "^2.25.3"
   }
 }

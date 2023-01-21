@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { Request, Response, NextFunction } from 'express';
 import env from 'dotenv';
 
@@ -18,13 +19,13 @@ const inputController = {
 
     const { allergy, dish } = req.query; // query = {allergy:"peanut",dish: "pad+thai"}
 
-    console.log(allergy, dish);
+    console.log('this is inputController getIngredients', allergy, dish);
     // const { allergy, dish } = req.query;
     // console.log(req.query.dish, req.query.allergy)
     //clean up user input - trim spaces + lower cases
 
     // console.log(process.env.EDAMAM_RECIPE_API_ID);
-
+    console.log('before fetch');
     const url = `https://api.edamam.com/search?app_id=${
       process.env.EDAMAM_RECIPE_API_ID
     }&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${String(dish ?? '')

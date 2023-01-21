@@ -73,8 +73,8 @@ const AddAllergy = () => {
           <Stack direction='row' spacing={1}>
             <Chip
               label='By Allergy'
-              variant='outlined'
-              color='primary'
+              variant='filled'
+              color='success'
               onClick={setByAllergy}
             />
             <Chip label='By Health Label' onClick={setByHealthLabel} />
