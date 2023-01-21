@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import { NutriContextProvider } from './store/nutri-context.js';
 import { Provider } from 'react-redux';
-// import { store } from './store/store';
 
 createRoot(document.querySelector('#app')!).render(
   <React.StrictMode>

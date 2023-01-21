@@ -83,4 +83,10 @@ module.exports = {
       template: './index.html',
     }),
   ],
+  //temporarily getting rid of webpack 'file size' errors - TODO: compress images better so they don't exceed recommended file size
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
 };
