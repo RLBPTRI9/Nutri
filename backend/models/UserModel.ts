@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   allergies: { type: Array<String>(), default: [] },
   fridgeInventory: {
-    type: Array<{ itemName: string; amount: number; expires: Date }>(),
+    type: Array<{ ingredient: string; amount: number; expires: Date }>(), // changed from itemName to ingredient to correspond to fridgeItem interface
     default: [],
   },
   favorites: { type: Array<String>(), default: [] },
