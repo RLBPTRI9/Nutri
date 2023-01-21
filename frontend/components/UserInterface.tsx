@@ -8,29 +8,10 @@ import RecipeCards from './RecipeCards';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import NutriContext from '../store/nutri-context.js';
-import { styled } from '@mui/material/styles';
 
 export default function DividerStack() {
   const nutriContext = React.useContext(NutriContext);
   const healthLabelActive = nutriContext.healthLabelActive;
-
-  // interface Props {
-  //   container: any;
-  //   spacing: number;
-  //   justify: string;
-  //   alighItems: string;
-  //   direction: string;
-  //   sx: any;
-  // }
-
-  // const customGrid = styled(Grid){
-  //   container: boolean = true,
-  //   spacing: number =  2,
-  //   justify: string = 'center',
-  //   alignItems: string ='center',
-  //   direction='column',
-  //   sx={{ mt: 6, pb: 4 }}
-  // } as typeof Grid;
 
   return (
     <div>
