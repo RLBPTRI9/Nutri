@@ -1,7 +1,8 @@
 import React from 'react';
+import Root from './routes/Root';
 import UserInterface from './UserInterface';
+import SearchRecipes from './routes/SearchRecipes';
 import '../stylesheets/styles.css';
-import ResponsiveAppBar from './NavBar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,12 +14,23 @@ function App() {
   //setting up React Router
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Navigate to="/home"/>
-    },
-    {
-      path: "/home",
-      element: <UserInterface />,
+      path: '/',
+      element: <Root />,
+
+      children: [
+        {
+          path: "/",
+          element: <Navigate to="/home" />
+        },
+        {
+          path: "/home",
+          element: <UserInterface />,
+        },
+        {
+          path: "/recipes",
+          element: <SearchRecipes/>,
+        },
+      ],
     },
     {
       path: "/login",
@@ -44,7 +56,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ResponsiveAppBar />
       <RouterProvider router={router} />
       <ToastContainer />
     </ThemeProvider>
