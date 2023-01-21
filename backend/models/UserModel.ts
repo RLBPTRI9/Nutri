@@ -14,6 +14,11 @@ const UserSchema = new Schema({
   favorites: { type: Array<String>(), default: [] },
 });
 
-UserSchema.pre('save', function (err, user) {});
+UserSchema.methods.createJWT = function (){
+  
+}
+
+//TODO: add functionality with bcrypt and to encrpt password
+// UserSchema.pre('save', function (err, user) {});
 
 export default model('User', UserSchema);
