@@ -1,14 +1,21 @@
 import { Router } from 'express';
 const router = Router();
-const inputController = require('../controllers/inputController');
-//controller
-const Student = require('../models/testModel');
+const inputController = require('../middleware/inputController');
+const userController = require('../middleware/userController');
 
-router.get('/getIngredients', inputController.getIngredients, (req, res) => {
+
+
+router.post('/',userController.default.createUser, (req,res) => {
+  console.log('made a user');
+  return res.status(200).json(res.locals.newUser);
+
+});
+
+router.get('/getIngredients', inputController.default.getIngredients, (req, res) => {
   return res.status(200).json(res.locals.without);
 });
 
-router.get('/getHealthLabels', inputController.getHealthLabels, (req, res) => {
+router.get('/getHealthLabels', inputController.default.getHealthLabels, (req, res) => {
   return res.status(200).json(res.locals.healthLabels);
 });
 

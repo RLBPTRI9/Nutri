@@ -1,7 +1,7 @@
 import React from 'react';
 import UserInterface from './UserInterface';
 import '../stylesheets/styles.css';
-import ResponsiveAppBar from './NavBar.jsx';
+import ResponsiveAppBar from './NavBar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';

@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.TARGET ?? 'production',
-  entry: './client/index.tsx',
+  entry: './frontend/index.tsx',
   module: {
     rules: [
       {
@@ -14,8 +14,29 @@ module.exports = {
         exclude: [/node_modules/],
       },
       {
+        test: /\.jsx?/,
+        // exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
+        },
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.css$/,
+        // test: /\.(scss)$/,
+        // exclude: /node_modules/,
+        use: [
+          // MiniCssExtractPlugin.loader,
+          'style-loader',
+          'css-loader',
+          // 'sass-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -32,14 +53,24 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss'],
+    modules: ['frontend', 'node_modules'],
   },
   devServer: {
     static: './dist',
     port: 8080,
     historyApiFallback: true,
+    hot: true,
+    static: {
+      directory: path.join(__dirname, 'build'),
+      publicPath: '/build',
+    },
     watchFiles: {
       paths: ['src/**/*'],
+    },
+    proxy: {
+      '/api': 'http://localhost:3000/',
+      secure: false,
     },
   },
   output: {
@@ -49,7 +80,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './index.html',
     }),
   ],
 };
