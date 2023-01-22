@@ -5,9 +5,15 @@ const userController = require('../middleware/userController');
 
 
 
-router.post('/',userController.default.createUser, (req,res) => {
+router.post('/register',userController.default.createUser, (req,res) => {
   console.log('made a user');
   return res.status(200).json(res.locals.newUser);
+
+});
+
+router.post('/login',userController.default.verifyUser, (req,res) => {
+  console.log('found a user');
+  return res.status(200).json(res.locals.foundUser);
 
 });
 

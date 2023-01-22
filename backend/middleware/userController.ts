@@ -3,13 +3,16 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/UserModel';
 
 /**
- * TODO: add verifyuser
+ * TODO: refactor createUser to handle avatar, allergies, fridgeInventory, favorites
  * TODO: add encryption for password
  */
 
 const userController = {
   createUser: async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to userController');
+
+
+    console.log(req.body);
 
     const { username, password, name, email } = req.body;
 
@@ -41,10 +44,10 @@ const userController = {
     }
   },
 
-  verifyUser: async (req: Request, res: Response, next:NextFunction) => {
+  verifyUser: async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to verifyUser');
 
-    const { username, password} = req.body;
+    const { username, password } = req.body;
 
     if (!username || !password) {
       console.log('error happened here');
@@ -54,17 +57,17 @@ const userController = {
     console.log(username, password);
 
     try {
-      const foundUser = await User.findOne({username, password});
+      const foundUser = await User.findOne({ username, password });
 
       res.locals.foundUser = foundUser;
-      console.log('the following user was created', foundUser);
+      console.log('the following user was found', foundUser);
+
       return next();
     } catch (err) {
       console.log('error occured in userController create user', err);
       next(err);
     }
-
-  }
+  },
 };
 
 export default userController;

@@ -3,6 +3,8 @@ import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import env from 'dotenv';
+import cors from 'cors';
+
 const routes = require('./routes/api');
 // import * as routes from './routes/api';
 env.config();
@@ -11,11 +13,10 @@ const app = express();
 const PORT = 3000;
 
 
-
-//TODO: finish off userController
 //TODO: connect to frontend
+//TODO: finish off userController
 //TODO: figure out sessions
-
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

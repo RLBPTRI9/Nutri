@@ -2,6 +2,7 @@ import React from 'react';
 import UserInterface from './UserInterface';
 import '../stylesheets/styles.css';
 import ResponsiveAppBar from './NavBar';
+import LoginPage from './LoginPage';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -22,7 +23,7 @@ function App() {
     },
     {
       path: "/login",
-      element: <div>Log In</div>,
+      element: <LoginPage/>,
     },
   ]);
 
