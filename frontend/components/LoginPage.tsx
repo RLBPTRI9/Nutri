@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 const LoginPage = () => {
@@ -22,6 +23,13 @@ const LoginPage = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
+    console.log(
+      'username ' +
+        usernameRef.current.value +
+        'password ' +
+        passwordRef.current.value
+    );
+
     const options = {
       method: 'POST',
       headers: {
@@ -29,64 +37,78 @@ const LoginPage = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username,
-        name,
-        email,
-        password,
+        username: usernameRef.current.value,
+        name: nameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
       }),
     };
 
-    fetch(URL + '/register', options).then((data) => {
-      console.log('successfully created user', data);
-    });
-  };
+    fetch(URL + '/api/login', options)
+      .then((data) => data.json())
+      .then((data) => {
+        console.log('user is logged in!', data);
+      });
 
-  const clearFormValues = () => {
     usernameRef.current.value = '';
     nameRef.current.value = '';
     emailRef.current.value = '';
     passwordRef.current.value = '';
   };
 
+  const clearFormValues = () => {
+    // usernameRef.current.value = '';
+    // nameRef.current.value = '';
+    // emailRef.current.value = '';
+    // passwordRef.current.value = '';
+  };
+
   return (
-    <div>
+    <div className='login-form'>
       <form onSubmit={handleSubmit}>
-        <Typography variant='h5'>Allergy Information</Typography>
-        <TextField
-          label='Name'
-          variant='outlined'
-          size='small'
-          placeholder='e.g., peanuts'
-          inputRef={usernameRef}
-          sx={{ width: 250 }}
-        />
-        <TextField
-          label='Username'
-          variant='outlined'
-          size='small'
-          placeholder='e.g., peanuts'
-          inputRef={nameRef}
-          sx={{ width: 250 }}
-        />
-        <TextField
-          label='Email'
-          variant='outlined'
-          size='small'
-          placeholder='e.g., peanuts'
-          inputRef={emailRef}
-          sx={{ width: 250 }}
-        />
-        <TextField
-          label='Password'
-          variant='outlined'
-          size='small'
-          placeholder='e.g., peanuts'
-          inputRef={passwordRef}
-          sx={{ width: 250 }}
-        />
-        <Button type='submit' onClick={clearFormValues}>
-          Login
-        </Button>
+        <Typography variant='h5'>Login</Typography>
+        <br></br>
+        <Paper className='login-form-container'>
+          <TextField
+            label='Name'
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            inputRef={nameRef}
+            sx={{ width: 250 }}
+          />
+          <br></br>
+          <TextField
+            label='Username'
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            inputRef={usernameRef}
+            sx={{ width: 250 }}
+          />
+          <br></br>
+          <TextField
+            label='Email'
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            inputRef={emailRef}
+            sx={{ width: 250 }}
+          />
+          <br></br>
+          <TextField
+            label='Password'
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            inputRef={passwordRef}
+            sx={{ width: 250 }}
+          />
+          <br></br>
+          <Button type='submit' onClick={clearFormValues}>
+            Login
+          </Button>
+        </Paper>
       </form>
     </div>
   );

@@ -11,7 +11,6 @@ const userController = {
   createUser: async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to userController');
 
-
     console.log(req.body);
 
     const { username, password, name, email } = req.body;
@@ -46,11 +45,12 @@ const userController = {
 
   verifyUser: async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to verifyUser');
-
+    // console.log(req);
     const { username, password } = req.body;
 
+    console.log({ username, password });
     if (!username || !password) {
-      console.log('error happened here');
+      console.log('error happened here in verfiyUser controller');
       return next('error, please enter appropriate information');
     }
 
