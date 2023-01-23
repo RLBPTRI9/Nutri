@@ -7,10 +7,8 @@ const routes = require('./routes/api');
 // import * as routes from './routes/api';
 env.config();
 // Create a new Express app
-const app = express();
+export const app = express();
 const PORT = 3000;
-
-
 
 //TODO: finish off userController
 //TODO: connect to frontend
