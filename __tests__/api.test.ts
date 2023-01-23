@@ -1,22 +1,23 @@
-import { Recipe } from '../../backend/types/Recipe';
-import { Ingredient } from '../../backend/types/Ingredients';
-import UserModel from '../../backend/models/UserModel';
-import { User } from '../../backend/types/User';
+import { Recipe } from '../backend/types/Recipe';
+import { Ingredient } from '../backend/types/Ingredients';
+import UserModel from '../backend/models/UserModel';
+import { User } from '../backend/types/User';
 import axios from 'axios';
 import request from 'supertest';
 import mongoose, { Mongoose } from 'mongoose';
 import env from 'dotenv';
-import { app } from '../../backend/server';
-env.config();
+import app from '../backend/server';
+env.config({ path: '../.env' });
 
-if (!process.env.DB_URI)
-  throw new Error('No database URI found. Aborting tests.');
+const DB_URI: string = process.env.MONGO_URI!;
+
+if (!DB_URI) throw new Error('No database URI found. Aborting tests.');
 
 const testApp = request(app);
 
 // TODO: refactor for readability
 // TODO: Bug fixes!
-// TODO: axios should be replaced by supertest...
+// TODO: Add session support once sessions are made.
 
 let testUser: User = {
   username: 'TEST',
@@ -134,7 +135,7 @@ describe('API', () => {
     let db: typeof mongoose | undefined;
 
     beforeEach(async () => {
-      db = await mongoose.connect(process.env.DB_URI!);
+      db = await mongoose.connect(DB_URI!);
       user = await UserModel.create(testUser);
       // This is where the session creation would go.
       // SSID = (await Session.create({userId: user._id}))._id; // <- should look something like this.
@@ -293,23 +294,25 @@ describe('API', () => {
     });
   });
 
-  // TODO: Needs sessions to work.
   xdescribe('ingredients', () => {
+    const expiration = new Date(Date.now() + 172800000);
     let user: User | undefined;
     let SSID: string | undefined;
     let db: typeof mongoose | undefined;
 
     beforeEach(async () => {
-      db = await mongoose.connect(process.env.DB_URI!);
+      db = await mongoose.connect(DB_URI!);
       user = await UserModel.create(testUser);
       // This is where the session creation would go.
       // SSID = (await Session.create({userId: user._id}))._id; // <- should look something like this.
+      SSID = 'not a real session';
     });
 
     // Test cleanup
     afterEach(async () => {
       // Remove test session
       // await Session.findOneAndDelete({ userId: user._id })
+      SSID = undefined;
 
       // Remove test user
       await UserModel.findByIdAndDelete(user?._id);
@@ -320,9 +323,7 @@ describe('API', () => {
       db = undefined;
     });
 
-    it('should save a new ingredient and return all ingredients', async () => {
-      const expiration = new Date(Date.now() + 172800000);
-    });
+    it('should save a new ingredient and return all ingredients', async () => {});
 
     it('should get all saved ingredients', async () => {});
 
