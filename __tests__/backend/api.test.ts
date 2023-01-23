@@ -42,118 +42,89 @@ let testUser: User = {
 
 describe('API', () => {
   describe('recipes', () => {
-    it('should search for a recipe', (done) => {
-      axios
-        .get('http://localhost:3000/api/recipes?q=pad%20thai', {})
-        .then((d) => {
-          const res: Recipe[] = d.data;
-          expect(Array.isArray(res));
-          expect(res[0].recipeId).toBeDefined();
-          expect(d.status).toBe(200);
-          done();
-        });
+    it('should search for a recipe', async () => {
+      const res = await testApp.get('/api/recipes?q=pad%20thai');
+      const data: Recipe[] = res.body;
+      expect(Array.isArray(data));
+      expect(data[0].recipeId).toBeDefined();
+      expect(res.status).toBe(200);
     });
 
-    it('should get a recipe by id', (done) => {
-      axios
-        .get(
-          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-        )
-        .then((d) => {
-          const res: Recipe = d.data;
-          expect(res.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(d.status).toBe(200);
-          done();
-        });
+    it('should get a recipe by id', async () => {
+      const res = await testApp.get(
+        '/api/recipes?id=341a387129b0686d49709bc632c3050c'
+      );
+      const data: Recipe = res.body;
+      expect(data.recipeName).toBe('Easy Vegan Pad Thai');
+      expect(res.status).toBe(200);
     });
 
-    it('should be of type recipe', (done) => {
-      axios
-        .get(
-          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-        )
-        .then((d) => {
-          const res: Recipe = d.data;
-          expect(res.recipeId).toBeDefined();
-          expect(res.sourceUrl).toBeDefined();
-          expect(res.recipeName).toBeDefined();
-          expect(res.image).toBeDefined();
-          expect(res.recipeSource).toBeDefined();
-          expect(res.edemamShareUrl).toBeDefined();
-          expect(res.yield).toBeDefined();
-          expect(res.dietLabels).toBeDefined();
-          expect(res.healthLabels).toBeDefined();
-          expect(res.allergens).toBeDefined();
-          expect(res.instructions).toBeDefined();
-          expect(res.ingredients).toBeDefined();
-          expect(res.calories).toBeDefined();
-          expect(res.totalTime).toBeDefined();
-          expect(res.dishType).toBeDefined();
-          expect(d.status).toBe(200);
-          done();
-        });
+    it('should be of type recipe', async () => {
+      const res = await testApp.get(
+        '/api/recipes?id=341a387129b0686d49709bc632c3050c'
+      );
+      const data: Recipe = res.body;
+
+      expect(data.recipeId).toBeDefined();
+      expect(data.sourceUrl).toBeDefined();
+      expect(data.recipeName).toBeDefined();
+      expect(data.image).toBeDefined();
+      expect(data.recipeSource).toBeDefined();
+      expect(data.edemamShareUrl).toBeDefined();
+      expect(data.yield).toBeDefined();
+      expect(data.dietLabels).toBeDefined();
+      expect(data.healthLabels).toBeDefined();
+      expect(data.allergens).toBeDefined();
+      expect(data.instructions).toBeDefined();
+      expect(data.ingredients).toBeDefined();
+      expect(data.calories).toBeDefined();
+      expect(data.totalTime).toBeDefined();
+      expect(data.dishType).toBeDefined();
+      expect(res.status).toBe(200);
     });
 
-    it('should get ingredients in a recipe', (done) => {
-      axios
-        .get(
-          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-        )
-        .then((d) => {
-          const res: Recipe = d.data;
-          expect(res.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(res.instructions).toBeDefined();
-          expect(d.status).toBe(200);
-          done();
-        });
+    it('should get ingredients in a recipe', async () => {
+      const res = await testApp.get(
+        '/api/recipes?id=341a387129b0686d49709bc632c3050c'
+      );
+      const data: Recipe = res.body;
+      expect(data.recipeName).toBe('Easy Vegan Pad Thai');
+      expect(data.instructions).toBeDefined();
+      expect(res.status).toBe(200);
     });
 
-    it('should return all allergies', (done) => {
-      axios
-        .get(
-          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-        )
-        .then((d) => {
-          const res: Recipe = d.data;
-          expect(res.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(res.allergens).toBeDefined();
-          expect(d.status).toBe(200);
-          done();
-        });
+    it('should return all allergies', async () => {
+      const res = await testApp.get(
+        '/api/recipes?id=341a387129b0686d49709bc632c3050c'
+      );
+      const data: Recipe = res.body;
+      expect(data.recipeName).toBe('Easy Vegan Pad Thai');
+      expect(data.allergens).toBeDefined();
+      expect(res.status).toBe(200);
     });
 
-    it("should only return recipes that don't contain allergens", (done) => {
-      axios
-        .get(
-          'http://localhost:3000/api/recipes?q=pad%20thai&allergens=gluten,wheat,sulfites'
-        )
-        .then((d) => {
-          const res: Recipe[] = d.data;
-          const withAllergens = res.filter((recipe) => {
-            if (
-              recipe.allergens.includes('gluten') ||
-              recipe.allergens.includes('wheat') ||
-              recipe.allergens.includes('sulfites')
-            )
-              return true;
-            return false;
-          });
-          expect(res.length).toBeGreaterThan(0);
-          expect(withAllergens.length).toBe(0);
-          expect(d.status).toBe(200);
-          done();
-        });
+    it("should only return recipes that don't contain allergens", async () => {
+      const res = await testApp.get(
+        '/api/recipes?q=pad%20thai&allergens=gluten,wheat,sulfites'
+      );
+      const data: Recipe[] = res.body;
+      const withAllergens = data.filter(
+        (recipe) =>
+          recipe.allergens.includes('gluten') ||
+          recipe.allergens.includes('wheat') ||
+          recipe.allergens.includes('sulfites')
+      );
+
+      expect(data.length).toBeGreaterThan(0);
+      expect(withAllergens.length).toBe(0);
+      expect(res.status).toBe(200);
     });
 
-    it('should return a status of 404 and an error object when no recipe is found', (done) => {
-      axios
-        .get('http://localhost:3000/api/recipes?id=notARealID1234')
-        .then((d) => {
-          const res: { error: string } = d.data;
-          expect(res.error).toBeDefined();
-          expect(d.status).toBe(404);
-          done();
-        });
+    it('should return a status of 404 and an error object when no recipe is found', async () => {
+      const res = await testApp.get('/api/recipes?id=notARealID1234');
+      const data: { error: string } = res.body;
+      expect(data.error).toBeDefined();
+      expect(res.status).toBe(404);
     });
   });
 
