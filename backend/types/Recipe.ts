@@ -1,4 +1,4 @@
-export type Recipie = {
+export type Recipe = {
   recipeId: string;
   sourceUrl: string;
   recipeName: string;
