@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const URL = 'http://localhost:3000';
 
   const usernameRef: any = useRef();
@@ -19,6 +19,8 @@ const LoginPage = () => {
     // console.log(username, name, email, password);
 
     const username = usernameRef.current.value;
+    const name = nameRef.current.value;
+    const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
     console.log(
@@ -36,6 +38,8 @@ const LoginPage = () => {
       },
       body: JSON.stringify({
         username: usernameRef.current.value,
+        name: nameRef.current.value,
+        email: emailRef.current.value,
         password: passwordRef.current.value,
       }),
     };
@@ -47,6 +51,8 @@ const LoginPage = () => {
       });
 
     usernameRef.current.value = '';
+    nameRef.current.value = '';
+    emailRef.current.value = '';
     passwordRef.current.value = '';
   };
 
@@ -60,9 +66,17 @@ const LoginPage = () => {
   return (
     <div className='login-form'>
       <form onSubmit={handleSubmit}>
-        <Typography variant='h5'>Login</Typography>
+        <Typography variant='h5'>Register</Typography>
         <br></br>
         <Paper className='login-form-container'>
+          <TextField
+            label='Name'
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            inputRef={nameRef}
+            sx={{ width: 250 }}
+          />
           <br></br>
           <TextField
             label='Username'
@@ -70,6 +84,15 @@ const LoginPage = () => {
             size='small'
             placeholder='e.g., peanuts'
             inputRef={usernameRef}
+            sx={{ width: 250 }}
+          />
+          <br></br>
+          <TextField
+            label='Email'
+            variant='outlined'
+            size='small'
+            placeholder='e.g., peanuts'
+            inputRef={emailRef}
             sx={{ width: 250 }}
           />
           <br></br>
@@ -82,8 +105,8 @@ const LoginPage = () => {
             sx={{ width: 250 }}
           />
           <br></br>
-          <Button type='submit'>
-            Login
+          <Button type='submit' onClick={clearFormValues}>
+            Sign up
           </Button>
         </Paper>
       </form>
@@ -91,4 +114,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
