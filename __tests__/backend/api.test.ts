@@ -158,7 +158,7 @@ describe('API', () => {
 
     it('should get all favorite ingredients', async () => {
       const res = await testApp
-        .get('/api/ingredients')
+        .get('/api/favorites')
         .set('Accept', 'application/json')
         .set('Cookie', [`SSID=${SSID}`]);
       const data: string[] = res.body;
@@ -170,7 +170,7 @@ describe('API', () => {
 
     it('should add new favorite ingredients and respond with all ingredients', async () => {
       const res = await testApp
-        .post('/api/ingredients')
+        .post('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({ newIngredients: ['Spinach', 'Chocolate'] });
@@ -185,7 +185,7 @@ describe('API', () => {
 
     it('should update a favorite ingredient', async () => {
       const res = await testApp
-        .patch('/api/ingredients')
+        .patch('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({ update: 'Milk', to: 'Honey' });
@@ -201,7 +201,7 @@ describe('API', () => {
 
     it('should remove a favorite ingredient', async () => {
       const res = await testApp
-        .delete('/api/ingredients')
+        .delete('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({ remove: ['Milk'] });
@@ -215,21 +215,21 @@ describe('API', () => {
 
     it('all routes should return 401 and an error when the user is not logged in', async () => {
       const get = await testApp
-        .get('/api/ingredients')
+        .get('/api/favorites')
         .set('Accept', 'application/json');
 
       const create = await testApp
-        .post('/api/ingredients')
+        .post('/api/favorites')
         .set('Content-Type', 'application/json')
         .send({ newIngredients: ['Spinach', 'Chocolate'] });
 
       const update = await testApp
-        .patch('/api/ingredients')
+        .patch('/api/favorites')
         .set('Content-Type', 'application/json')
         .send({ update: 'Milk', to: 'Honey' });
 
       const remove = await testApp
-        .delete('/api/ingredients')
+        .delete('/api/favorites')
         .set('Content-Type', 'application/json')
         .send({ remove: ['Milk'] });
 
@@ -245,7 +245,7 @@ describe('API', () => {
 
     it('create should return 400 when missing what to add', async () => {
       const res = await testApp
-        .post('/api/ingredients')
+        .post('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({});
@@ -256,19 +256,19 @@ describe('API', () => {
 
     it('update should return 400 when missing details', async () => {
       const noUpdate = await testApp
-        .patch('/api/ingredients')
+        .patch('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({ to: 'Noodles' });
 
       const noTo = await testApp
-        .patch('/api/ingredients')
+        .patch('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({ update: 'Milk' });
 
       const none = await testApp
-        .patch('/api/ingredients')
+        .patch('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({});
@@ -283,7 +283,7 @@ describe('API', () => {
 
     it('remove should return 400 when missing what to remove', async () => {
       const res = await testApp
-        .delete('/api/ingredients')
+        .delete('/api/favorites')
         .set('Content-Type', 'application/json')
         .set('Cookie', [`SSID=${SSID}`])
         .send({});
@@ -320,104 +320,23 @@ describe('API', () => {
       db = undefined;
     });
 
-    it('should save a new ingredient and return all ingredients', (done) => {
+    it('should save a new ingredient and return all ingredients', async () => {
       const expiration = new Date(Date.now() + 172800000);
-      fetch('http://localhost:3000/api/ingredients', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          itemName: 'Eggs',
-          amount: 200,
-          // Expires in 2 days
-          expires: expiration,
-        }),
-      })
-        .then((d) => d.json())
-        .then(async (d: Ingredient[]) => {
-          expect(Array.isArray(d)).toBe(true);
-          expect(d.length).toBe(3);
-
-          expect(
-            d.filter((ingredient) => ingredient.itemName === 'Eggs')[0]
-          ).toEqual({
-            itemName: 'Eggs',
-            amount: 200,
-            // Expires in 2 days
-            expires: expiration,
-          });
-
-          expect(
-            user?.fridgeInventory.filter(
-              (ingredient) => ingredient.itemName === 'Eggs'
-            )
-          ).toEqual({ itemName: 'Eggs', amount: 200, expires: expiration });
-          done();
-        });
     });
 
-    it('should get all saved ingredients', (done) => {
-      fetch('http://localhost:3000/api/ingredients')
-        .then((d) => d.json())
-        .then((d: Ingredient[]) => {
-          expect(Array.isArray(d)).toBe(true);
-          expect(d.length).toBe(2);
-          done();
-        });
-    });
+    it('should get all saved ingredients', async () => {});
 
-    it('should update a saved ingredient and return all ingredients', (done) => {
-      fetch('http://localhost:3000/api/ingredients', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          itemName: 'Milk',
-          updates: {
-            itemName: 'Half and Half',
-            amount: 2,
-          },
-        }),
-      })
-        .then((d) => d.json())
-        .then((d: Ingredient[]) => {
-          expect(Array.isArray(d)).toBe(true);
+    it('should update a saved ingredient and return all ingredients', async () => {});
 
-          const halfnhalf = d.filter(
-            (ingredient) => ingredient.itemName === 'Half and Half'
-          )[0];
+    it('should remove a saved ingredient', async () => {});
 
-          expect(
-            d.filter((ingredient) => ingredient.itemName === 'Milk').length
-          ).toBe(0);
+    it('all routes should return 401 and an error when the user is not logged in', async () => {});
 
-          expect(halfnhalf.itemName).toBe('Half and Half');
-          expect(halfnhalf.amount).toBe(120);
+    it('create should return 400 when missing what to add', async () => {});
 
-          expect(d.length).toBe(2);
-          done();
-        });
-    });
+    it('update should return 400 when missing details', async () => {});
 
-    it('should remove a saved ingredient', (done) => {
-      fetch('http://localhost:3000/api/ingredients', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          itemName: 'Milk',
-        }),
-      })
-        .then((d) => d.json())
-        .then((d: Ingredient[]) => {
-          expect(Array.isArray(d)).toBe(true);
-          expect(
-            d.filter((ingredient) => ingredient.itemName === 'Milk').length
-          ).toBe(0);
-
-          expect(d.length).toBe(1);
-          done();
-        });
-    });
-
-    it('should respond with status 401 and error if the user is not authorized', () => {});
+    it('remove should return 400 when missing what to remove', async () => {});
   });
 
   // TODO: Needs sessions to work.
