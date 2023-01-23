@@ -16,82 +16,93 @@ if (!process.env.DB_URI)
 describe('API', () => {
   describe('recipes', () => {
     it('should search for a recipe', (done) => {
-      fetch('http://localhost:3000/api/recipes?q=pad%20thai')
-        .then((d) => d.json())
-        .then((d: Recipe[]) => {
-          expect(d.length).toBeGreaterThan(0);
-          expect(d[0].recipeId).toBeDefined();
+      axios
+        .get('http://localhost:3000/api/recipes?q=pad%20thai', {})
+        .then((d) => {
+          const res: Recipe[] = d.data;
+          expect(Array.isArray(res));
+          expect(res[0].recipeId).toBeDefined();
+          expect(d.status).toBe(200);
           done();
         });
     });
 
     it('should get a recipe by id', (done) => {
-      fetch(
-        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-      )
-        .then((d) => d.json())
-        .then((d: Recipe) => {
-          expect(d.recipeName).toBe('Easy Vegan Pad Thai');
+      axios
+        .get(
+          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
+        )
+        .then((d) => {
+          const res: Recipe = d.data;
+          expect(res.recipeName).toBe('Easy Vegan Pad Thai');
+          expect(d.status).toBe(200);
           done();
         });
     });
 
     it('should be of type recipe', (done) => {
-      fetch(
-        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-      )
-        .then((d) => d.json())
-        .then((d: Recipe) => {
-          expect(d.recipeId).toBeDefined();
-          expect(d.sourceUrl).toBeDefined();
-          expect(d.recipeName).toBeDefined();
-          expect(d.image).toBeDefined();
-          expect(d.recipeSource).toBeDefined();
-          expect(d.edemamShareUrl).toBeDefined();
-          expect(d.yield).toBeDefined();
-          expect(d.dietLabels).toBeDefined();
-          expect(d.healthLabels).toBeDefined();
-          expect(d.allergens).toBeDefined();
-          expect(d.instructions).toBeDefined();
-          expect(d.ingredients).toBeDefined();
-          expect(d.calories).toBeDefined();
-          expect(d.totalTime).toBeDefined();
-          expect(d.dishType).toBeDefined();
+      axios
+        .get(
+          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
+        )
+        .then((d) => {
+          const res: Recipe = d.data;
+          expect(res.recipeId).toBeDefined();
+          expect(res.sourceUrl).toBeDefined();
+          expect(res.recipeName).toBeDefined();
+          expect(res.image).toBeDefined();
+          expect(res.recipeSource).toBeDefined();
+          expect(res.edemamShareUrl).toBeDefined();
+          expect(res.yield).toBeDefined();
+          expect(res.dietLabels).toBeDefined();
+          expect(res.healthLabels).toBeDefined();
+          expect(res.allergens).toBeDefined();
+          expect(res.instructions).toBeDefined();
+          expect(res.ingredients).toBeDefined();
+          expect(res.calories).toBeDefined();
+          expect(res.totalTime).toBeDefined();
+          expect(res.dishType).toBeDefined();
+          expect(d.status).toBe(200);
           done();
         });
     });
 
     it('should get ingredients in a recipe', (done) => {
-      fetch(
-        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-      )
-        .then((d) => d.json())
-        .then((d: Recipe) => {
-          expect(d.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(d.instructions).toBeDefined();
+      axios
+        .get(
+          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
+        )
+        .then((d) => {
+          const res: Recipe = d.data;
+          expect(res.recipeName).toBe('Easy Vegan Pad Thai');
+          expect(res.instructions).toBeDefined();
+          expect(d.status).toBe(200);
           done();
         });
     });
 
     it('should return all allergies', (done) => {
-      fetch(
-        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
-      )
-        .then((d) => d.json())
-        .then((d: Recipe) => {
-          expect(d.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(d.allergens).toBeDefined();
+      axios
+        .get(
+          'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
+        )
+        .then((d) => {
+          const res: Recipe = d.data;
+          expect(res.recipeName).toBe('Easy Vegan Pad Thai');
+          expect(res.allergens).toBeDefined();
+          expect(d.status).toBe(200);
           done();
         });
     });
 
     it("should only return recipes that don't contain allergens", (done) => {
-      fetch(
-        'http://localhost:3000/api/recipes?q=pad%20thai&allergens=gluten,wheat,sulfites'
-      )
-        .then((d) => d.json())
-        .then((d: Recipe[]) => {
-          const withAllergens = d.filter((recipe) => {
+      axios
+        .get(
+          'http://localhost:3000/api/recipes?q=pad%20thai&allergens=gluten,wheat,sulfites'
+        )
+        .then((d) => {
+          const res: Recipe[] = d.data;
+          const withAllergens = res.filter((recipe) => {
             if (
               recipe.allergens.includes('gluten') ||
               recipe.allergens.includes('wheat') ||
@@ -100,8 +111,20 @@ describe('API', () => {
               return true;
             return false;
           });
-          expect(d.length).toBeGreaterThan(0);
+          expect(res.length).toBeGreaterThan(0);
           expect(withAllergens.length).toBe(0);
+          expect(d.status).toBe(200);
+          done();
+        });
+    });
+
+    it('should return a status of 404 and an error object when no recipe is found', (done) => {
+      axios
+        .get('http://localhost:3000/api/recipes?id=notARealID1234')
+        .then((d) => {
+          const res: { error: string } = d.data;
+          expect(res.error).toBeDefined();
+          expect(d.status).toBe(404);
           done();
         });
     });
