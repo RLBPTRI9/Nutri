@@ -18,6 +18,7 @@ const testApp = request(app);
 // TODO: refactor for readability
 // TODO: Bug fixes!
 // TODO: Add session support once sessions are made.
+// TODO: Test for non-duplicates in favorites, ingredients, and allergens
 
 let testUser: User = {
   username: 'TEST',
@@ -294,7 +295,7 @@ describe('API', () => {
     });
   });
 
-  xdescribe('ingredients', () => {
+  describe('ingredients', () => {
     const expiration = new Date(Date.now() + 172800000);
     let user: User | undefined;
     let SSID: string | undefined;
@@ -323,21 +324,207 @@ describe('API', () => {
       db = undefined;
     });
 
-    it('should save a new ingredient and return all ingredients', async () => {});
+    it('should get all saved ingredients', async () => {
+      const res = await testApp
+        .get('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`]);
 
-    it('should get all saved ingredients', async () => {});
+      const data: Ingredient[] = res.body;
 
-    it('should update a saved ingredient and return all ingredients', async () => {});
+      expect(Array.isArray(data)).toBe(true);
+      expect(data).toEqual(testUser.fridgeInventory);
+      expect(res.status).toBe(200);
+    });
 
-    it('should remove a saved ingredient', async () => {});
+    it('should save new ingredients and return all ingredients', async () => {
+      const res = await testApp
+        .post('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          newIngredients: [
+            { itemName: 'Noodles', amount: 2, expires: expiration },
+            { itemName: 'Water', amount: 78, expires: expiration },
+          ],
+        });
 
-    it('all routes should return 401 and an error when the user is not logged in', async () => {});
+      const data: Ingredient[] = res.body;
 
-    it('create should return 400 when missing what to add', async () => {});
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBe(testUser.fridgeInventory.length + 2);
+      expect(res.status).toBe(200);
+    });
 
-    it('update should return 400 when missing details', async () => {});
+    it('should update specified ingredients and return all ingredients', async () => {
+      const res = await testApp
+        .patch('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          updates: [{ update: 'Milk', to: { itemName: 'Water', amount: 3 } }],
+        });
 
-    it('remove should return 400 when missing what to remove', async () => {});
+      const data: Ingredient[] = res.body;
+
+      const water: Ingredient[] = data.filter(
+        (ingredient) => ingredient.itemName === 'Water'
+      );
+
+      const milk: Ingredient[] = data.filter(
+        (ingredient) => ingredient.itemName === 'Milk'
+      );
+
+      const chocolate: Ingredient[] = data.filter(
+        (ingredient) => ingredient.itemName === 'Chocolate'
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(water[0]).toBeDefined();
+      expect(water[0].itemName).toBe('Water');
+      expect(water[0].amount).toBe(2);
+      expect(chocolate[0]).toBeDefined();
+      expect(milk.length).toBe(0);
+      expect(res.status).toBe(200);
+    });
+
+    it('should remove a saved ingredient and return all ingredients', async () => {
+      const res = await testApp
+        .delete('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({ remove: ['Milk', 'Chocolate'] });
+
+      const data: Ingredient[] = res.body;
+
+      expect(data.length).toBe(0);
+      expect(res.status).toBe(200);
+    });
+
+    it('all routes should return 401 and an error when the user is not logged in', async () => {
+      const get = await testApp
+        .get('/api/ingredients')
+        .set('Accept', 'application/json');
+
+      const create = await testApp
+        .post('/api/ingredients')
+        .set('Accept', 'application/json')
+        .send({
+          newIngredients: [
+            { itemName: 'Noodles', amount: 2, expires: expiration },
+            { itemName: 'Water', amount: 78, expires: expiration },
+          ],
+        });
+
+      const update = await testApp
+        .patch('/api/ingredients')
+        .set('Accept', 'application/json')
+        .send({
+          updates: [{ update: 'Milk', to: { itemName: 'Water', amount: 3 } }],
+        });
+
+      const remove = await testApp
+        .delete('/api/ingredients')
+        .set('Accept', 'application/json')
+        .send({ remove: ['Milk', 'Chocolate'] });
+
+      expect(get.status).toBe(401);
+      expect(create.status).toBe(401);
+      expect(update.status).toBe(401);
+      expect(remove.status).toBe(401);
+      expect(get.body.error).toBeDefined();
+      expect(create.body.error).toBeDefined();
+      expect(update.body.error).toBeDefined();
+      expect(remove.body.error).toBeDefined();
+    });
+
+    it('create should return 400 when missing details', async () => {
+      const missingItemName = await testApp
+        .post('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          newIngredients: [{ amount: 2, expires: expiration }],
+        });
+
+      const missingAmount = await testApp
+        .post('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          newIngredients: [{ itemName: 'Noodles', expires: expiration }],
+        });
+
+      const missingExpires = await testApp
+        .post('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          newIngredients: [{ itemName: 'Noodles', amount: 2 }],
+        });
+
+      const none = await testApp
+        .post('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({});
+
+      expect(missingItemName.status).toBe(400);
+      expect(missingItemName.body.error).toBeDefined();
+
+      expect(missingAmount.status).toBe(400);
+      expect(missingAmount.body.error).toBeDefined();
+
+      expect(missingExpires.status).toBe(400);
+      expect(missingExpires.body.error).toBeDefined();
+
+      expect(none.status).toBe(400);
+      expect(none.body.error).toBeDefined();
+    });
+
+    it('update should return 400 when missing details', async () => {
+      const missingUpdate = await testApp
+        .patch('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          updates: [{ to: { itemName: 'Water', amount: 3 } }],
+        });
+
+      const missingTo = await testApp
+        .patch('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({
+          updates: [{ update: 'Milk' }],
+        });
+
+      const none = await testApp
+        .patch('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({});
+
+      expect(missingUpdate.status).toBe(400);
+      expect(missingUpdate.body).toBeDefined();
+
+      expect(missingTo.status).toBe(400);
+      expect(missingTo.body).toBeDefined();
+
+      expect(none.status).toBe(400);
+      expect(none.body).toBeDefined();
+    });
+
+    it('remove should return 400 when missing details', async () => {
+      const res = await testApp
+        .delete('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({});
+
+      expect(res.status).toBe(200);
+      expect(res.body.error).toBeDefined();
+    });
   });
 
   // TODO: Needs sessions to work.
@@ -346,6 +533,10 @@ describe('API', () => {
     it('should save allergies', () => {});
     it('should update an allergy saved', () => {});
     it('should remove an allergy saved', () => {});
+    it('all routes should return 401 and an error when the user is not logged in', async () => {});
+    it('create should return 400 when missing what to add', async () => {});
+    it('update should return 400 when missing details', async () => {});
+    it('remove should return 400 when missing what to remove', async () => {});
   });
 });
 
