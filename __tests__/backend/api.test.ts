@@ -1,17 +1,44 @@
 import { Recipe } from '../../backend/types/Recipe';
 import { Ingredient } from '../../backend/types/Ingredients';
 import UserModel from '../../backend/models/UserModel';
+import { User } from '../../backend/types/User';
 import axios from 'axios';
+import request from 'supertest';
 import mongoose, { Mongoose } from 'mongoose';
 import env from 'dotenv';
+import { app } from '../../backend/server';
 env.config();
 
 if (!process.env.DB_URI)
   throw new Error('No database URI found. Aborting tests.');
 
+const testApp = request(app);
+
 // TODO: refactor for readability
 // TODO: Bug fixes!
-// TODO: Fetch needs to be switched to axios
+// TODO: axios should be replaced by supertest...
+
+let testUser: User = {
+  username: 'TEST',
+  name: 'TEST',
+  email: 'TEST@example.com',
+  password: 'PASSWORD',
+  fridgeInventory: [
+    {
+      itemName: 'Milk',
+      amount: 120,
+      expires: new Date(Date.now() + 172800000),
+    },
+    {
+      itemName: 'Chocolate',
+      amount: 67,
+      expires: new Date(Date.now() + 172800000),
+    },
+  ],
+  avatar: 'https://http.cat/510.jpg',
+  allergies: ['Peanuts', 'Gluten'],
+  favorites: ['Milk', 'Shrimp'],
+};
 
 describe('API', () => {
   describe('recipes', () => {
@@ -130,41 +157,196 @@ describe('API', () => {
     });
   });
 
-  // TODO: Needs sessions to work.
-  xdescribe('ingredients', () => {
+  describe('favorites', () => {
+    let user: User | undefined;
     let SSID: string | undefined;
-    let userId: mongoose.Types.ObjectId | undefined;
-    let database: Mongoose;
+    let db: typeof mongoose | undefined;
 
-    // TODO: complete when sessions are added.
-    // Needs to create a test user then add a session and save the session ID to SSID variable.
     beforeEach(async () => {
-      await database.connect(process.env.DB_URI!);
-      const user = await UserModel.create({
-        username: 'TEST',
-        name: 'TEST',
-        email: 'TEST@example.com',
-        password: 'PASSWORD',
-        fridgeInventory: [
-          {
-            itemName: 'Milk',
-            amount: 120,
-            expires: new Date(Date.now() + 172800000),
-          },
-          {
-            itemName: 'Chocolate',
-            amount: 67,
-            expires: new Date(Date.now() + 172800000),
-          },
-        ],
-      });
-      userId = user._id;
+      db = await mongoose.connect(process.env.DB_URI!);
+      user = await UserModel.create(testUser);
+      // This is where the session creation would go.
+      // SSID = (await Session.create({userId: user._id}))._id; // <- should look something like this.
+      SSID = 'no sessions yet';
     });
 
+    // Test cleanup
     afterEach(async () => {
-      await database.disconnect();
+      // Remove test session
+      // await Session.findOneAndDelete({ userId: user._id })
       SSID = undefined;
-      userId = undefined;
+
+      // Remove test user
+      await UserModel.findByIdAndDelete(user?._id);
+      user = undefined;
+
+      // disconnect from db
+      await db?.disconnect();
+      db = undefined;
+    });
+
+    it('should get all favorite ingredients', async () => {
+      const res = await testApp
+        .get('/api/ingredients')
+        .set('Accept', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`]);
+      const data: string[] = res.body;
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data).toEqual(testUser.favorites);
+      expect(res.status).toBe(200);
+    });
+
+    it('should add new favorite ingredients and respond with all ingredients', async () => {
+      const res = await testApp
+        .post('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({ newIngredients: ['Spinach', 'Chocolate'] });
+
+      const data: string[] = res.body;
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBe(testUser.favorites.length + 2);
+      expect(data).toEqual([...testUser.favorites, 'Spinach', 'Chocolate']);
+      expect(res.status).toBe(200);
+    });
+
+    it('should update a favorite ingredient', async () => {
+      const res = await testApp
+        .patch('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({ update: 'Milk', to: 'Honey' });
+
+      const data: string[] = res.body;
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBe(testUser.favorites.length);
+      expect(data.includes('Milk')).toBe(false);
+      expect(data.includes('Honey')).toBe(true);
+      expect(res.status).toBe(200);
+    });
+
+    it('should remove a favorite ingredient', async () => {
+      const res = await testApp
+        .delete('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({ remove: ['Milk'] });
+
+      const data: string[] = res.body;
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data).toEqual(['Shrimp']);
+      expect(res.status).toBe(200);
+    });
+
+    it('all routes should return 401 and an error when the user is not logged in', async () => {
+      const get = await testApp
+        .get('/api/ingredients')
+        .set('Accept', 'application/json');
+
+      const create = await testApp
+        .post('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .send({ newIngredients: ['Spinach', 'Chocolate'] });
+
+      const update = await testApp
+        .patch('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .send({ update: 'Milk', to: 'Honey' });
+
+      const remove = await testApp
+        .delete('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .send({ remove: ['Milk'] });
+
+      expect(get.status).toBe(401);
+      expect(create.status).toBe(401);
+      expect(update.status).toBe(401);
+      expect(remove.status).toBe(401);
+      expect(get.body.error).toBeDefined();
+      expect(create.body.error).toBeDefined();
+      expect(update.body.error).toBeDefined();
+      expect(remove.body.error).toBeDefined();
+    });
+
+    it('create should return 400 when missing what to add', async () => {
+      const res = await testApp
+        .post('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({});
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBeDefined();
+    });
+
+    it('update should return 400 when missing details', async () => {
+      const noUpdate = await testApp
+        .patch('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({ to: 'Noodles' });
+
+      const noTo = await testApp
+        .patch('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({ update: 'Milk' });
+
+      const none = await testApp
+        .patch('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({});
+
+      expect(noUpdate.status).toBe(400);
+      expect(noTo.status).toBe(400);
+      expect(none.status).toBe(400);
+      expect(noUpdate.body.error).toBeDefined();
+      expect(noTo.body.error).toBeDefined();
+      expect(none.body.error).toBeDefined();
+    });
+
+    it('remove should return 400 when missing what to remove', async () => {
+      const res = await testApp
+        .delete('/api/ingredients')
+        .set('Content-Type', 'application/json')
+        .set('Cookie', [`SSID=${SSID}`])
+        .send({});
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBeDefined();
+    });
+  });
+
+  // TODO: Needs sessions to work.
+  xdescribe('ingredients', () => {
+    let user: User | undefined;
+    let SSID: string | undefined;
+    let db: typeof mongoose | undefined;
+
+    beforeEach(async () => {
+      db = await mongoose.connect(process.env.DB_URI!);
+      user = await UserModel.create(testUser);
+      // This is where the session creation would go.
+      // SSID = (await Session.create({userId: user._id}))._id; // <- should look something like this.
+    });
+
+    // Test cleanup
+    afterEach(async () => {
+      // Remove test session
+      // await Session.findOneAndDelete({ userId: user._id })
+
+      // Remove test user
+      await UserModel.findByIdAndDelete(user?._id);
+      user = undefined;
+
+      // disconnect from db
+      await db?.disconnect();
+      db = undefined;
     });
 
     it('should save a new ingredient and return all ingredients', (done) => {
@@ -181,9 +363,7 @@ describe('API', () => {
       })
         .then((d) => d.json())
         .then(async (d: Ingredient[]) => {
-          const user = await UserModel.findById(userId);
           expect(Array.isArray(d)).toBe(true);
-
           expect(d.length).toBe(3);
 
           expect(
