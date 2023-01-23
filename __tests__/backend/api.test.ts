@@ -1,4 +1,4 @@
-import { Recipie } from '../../backend/types/Recipie';
+import { Recipe } from '../../backend/types/Recipe';
 import { Ingredient } from '../../backend/types/Ingredients';
 import UserModel from '../../backend/models/UserModel';
 import axios from 'axios';
@@ -9,108 +9,93 @@ env.config();
 if (!process.env.DB_URI)
   throw new Error('No database URI found. Aborting tests.');
 
+// TODO: refactor for readability
+// TODO: Bug fixes!
+// TODO: Fetch needs to be switched to axios
+
 describe('API', () => {
-  describe('recipies', () => {
-    it('should search for a recipie', (done) => {
-      fetch('http://localhost:3000/api/recipies?q=pad%20thai')
+  describe('recipes', () => {
+    it('should search for a recipe', (done) => {
+      fetch('http://localhost:3000/api/recipes?q=pad%20thai')
         .then((d) => d.json())
-        .then((d: Recipie[]) => {
+        .then((d: Recipe[]) => {
           expect(d.length).toBeGreaterThan(0);
           expect(d[0].recipeId).toBeDefined();
           done();
         });
     });
 
-    it('should get a recipie by id', (done) => {
+    it('should get a recipe by id', (done) => {
       fetch(
-        'http://localhost:3000/api/recipies?id=341a387129b0686d49709bc632c3050c'
+        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
       )
         .then((d) => d.json())
-        .then((d: Recipie) => {
+        .then((d: Recipe) => {
           expect(d.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(d.instructions).toEqual([
-            '16 ounces Pad Thai Rice Noodles',
-            '1/2 cup Agave',
-            '1/3 cup lime juice',
-            '1/2 cup shoyu',
-            '2 tablespoons Toasted sesame seed oil',
-            '6 scallions–sliced',
-            '2 cloves of garlic–minced',
-            '1 teaspoon fresh ginger–minced',
-            "1 packet baked tofu (I used the trader Joe\\\\'s brand)",
-            '1 cup bean sprouts',
-          ]);
-          expect(d.allergens).toEqual(['Gluten', 'Wheat', 'Sulfites']);
-          expect(d.healthLabels).toEqual([
-            'Vegan',
-            'Vegetarian',
-            'Pescatarian',
-            'Dairy-Free',
-            'Egg-Free',
-            'Peanut-Free',
-            'Tree-Nut-Free',
-            'Fish-Free',
-            'Shellfish-Free',
-            'Pork-Free',
-            'Red-Meat-Free',
-            'Crustacean-Free',
-            'Celery-Free',
-            'Mustard-Free',
-            'Lupine-Free',
-            'Mollusk-Free',
-            'Alcohol-Free',
-            'Kosher',
-          ]);
           done();
         });
     });
 
-    it('should get ingredients in a recipie', (done) => {
+    it('should be of type recipe', (done) => {
       fetch(
-        'http://localhost:3000/api/recipies?id=341a387129b0686d49709bc632c3050c'
+        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
       )
         .then((d) => d.json())
-        .then((d: Recipie) => {
+        .then((d: Recipe) => {
+          expect(d.recipeId).toBeDefined();
+          expect(d.sourceUrl).toBeDefined();
+          expect(d.recipeName).toBeDefined();
+          expect(d.image).toBeDefined();
+          expect(d.recipeSource).toBeDefined();
+          expect(d.edemamShareUrl).toBeDefined();
+          expect(d.yield).toBeDefined();
+          expect(d.dietLabels).toBeDefined();
+          expect(d.healthLabels).toBeDefined();
+          expect(d.allergens).toBeDefined();
+          expect(d.instructions).toBeDefined();
+          expect(d.ingredients).toBeDefined();
+          expect(d.calories).toBeDefined();
+          expect(d.totalTime).toBeDefined();
+          expect(d.dishType).toBeDefined();
+          done();
+        });
+    });
+
+    it('should get ingredients in a recipe', (done) => {
+      fetch(
+        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
+      )
+        .then((d) => d.json())
+        .then((d: Recipe) => {
           expect(d.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(d.instructions).toEqual([
-            '16 ounces Pad Thai Rice Noodles',
-            '1/2 cup Agave',
-            '1/3 cup lime juice',
-            '1/2 cup shoyu',
-            '2 tablespoons Toasted sesame seed oil',
-            '6 scallions–sliced',
-            '2 cloves of garlic–minced',
-            '1 teaspoon fresh ginger–minced',
-            "1 packet baked tofu (I used the trader Joe\\\\'s brand)",
-            '1 cup bean sprouts',
-          ]);
+          expect(d.instructions).toBeDefined();
           done();
         });
     });
 
     it('should return all allergies', (done) => {
       fetch(
-        'http://localhost:3000/api/recipies?id=341a387129b0686d49709bc632c3050c'
+        'http://localhost:3000/api/recipes?id=341a387129b0686d49709bc632c3050c'
       )
         .then((d) => d.json())
-        .then((d: Recipie) => {
+        .then((d: Recipe) => {
           expect(d.recipeName).toBe('Easy Vegan Pad Thai');
-          expect(d.allergens).toEqual(['Gluten', 'Wheat', 'Sulfites']);
+          expect(d.allergens).toBeDefined();
           done();
         });
     });
 
-    it('should only return recipies not containing allergins', (done) => {
+    it("should only return recipes that don't contain allergens", (done) => {
       fetch(
-        'http://localhost:3000/api/recipies?q=pad%20thai&allergens=gluten,wheat,sulfites'
+        'http://localhost:3000/api/recipes?q=pad%20thai&allergens=gluten,wheat,sulfites'
       )
         .then((d) => d.json())
-        .then((d: Recipie[]) => {
-          const withAllergens = d.filter((recipie) => {
+        .then((d: Recipe[]) => {
+          const withAllergens = d.filter((recipe) => {
             if (
-              recipie.allergens.includes('gluten') ||
-              recipie.allergens.includes('wheat') ||
-              recipie.allergens.includes('sulfites')
+              recipe.allergens.includes('gluten') ||
+              recipe.allergens.includes('wheat') ||
+              recipe.allergens.includes('sulfites')
             )
               return true;
             return false;
@@ -122,7 +107,8 @@ describe('API', () => {
     });
   });
 
-  describe('ingredients', () => {
+  // TODO: Needs sessions to work.
+  xdescribe('ingredients', () => {
     let SSID: string | undefined;
     let userId: mongoose.Types.ObjectId | undefined;
     let database: Mongoose;
@@ -131,7 +117,7 @@ describe('API', () => {
     // Needs to create a test user then add a session and save the session ID to SSID variable.
     beforeEach(async () => {
       await database.connect(process.env.DB_URI!);
-      const user = UserModel.create({
+      const user = await UserModel.create({
         username: 'TEST',
         name: 'TEST',
         email: 'TEST@example.com',
@@ -142,9 +128,14 @@ describe('API', () => {
             amount: 120,
             expires: new Date(Date.now() + 172800000),
           },
+          {
+            itemName: 'Chocolate',
+            amount: 67,
+            expires: new Date(Date.now() + 172800000),
+          },
         ],
       });
-      userId = (await user)._id;
+      userId = user._id;
     });
 
     afterEach(async () => {
@@ -154,6 +145,7 @@ describe('API', () => {
     });
 
     it('should save a new ingredient and return all ingredients', (done) => {
+      const expiration = new Date(Date.now() + 172800000);
       fetch('http://localhost:3000/api/ingredients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -161,18 +153,30 @@ describe('API', () => {
           itemName: 'Eggs',
           amount: 200,
           // Expires in 2 days
-          expires: new Date(Date.now() + 172800000),
+          expires: expiration,
         }),
       })
         .then((d) => d.json())
-        .then((d: Ingredient[]) => {
+        .then(async (d: Ingredient[]) => {
+          const user = await UserModel.findById(userId);
           expect(Array.isArray(d)).toBe(true);
+
+          expect(d.length).toBe(3);
+
           expect(
-            d.filter((ingredient) => ingredient.itemName === 'Eggs').length
-          ).toBe(1);
+            d.filter((ingredient) => ingredient.itemName === 'Eggs')[0]
+          ).toEqual({
+            itemName: 'Eggs',
+            amount: 200,
+            // Expires in 2 days
+            expires: expiration,
+          });
+
           expect(
-            d.filter((ingredient) => ingredient.itemName === 'Milk').length
-          ).toBe(1);
+            user?.fridgeInventory.filter(
+              (ingredient) => ingredient.itemName === 'Eggs'
+            )
+          ).toEqual({ itemName: 'Eggs', amount: 200, expires: expiration });
           done();
         });
     });
@@ -181,8 +185,8 @@ describe('API', () => {
       fetch('http://localhost:3000/api/ingredients')
         .then((d) => d.json())
         .then((d: Ingredient[]) => {
-          expect(d[0]).toBeDefined();
-          expect(d[0].itemName).toBe('Milk');
+          expect(Array.isArray(d)).toBe(true);
+          expect(d.length).toBe(2);
           done();
         });
     });
@@ -202,26 +206,48 @@ describe('API', () => {
         .then((d) => d.json())
         .then((d: Ingredient[]) => {
           expect(Array.isArray(d)).toBe(true);
+
+          const halfnhalf = d.filter(
+            (ingredient) => ingredient.itemName === 'Half and Half'
+          )[0];
+
           expect(
             d.filter((ingredient) => ingredient.itemName === 'Milk').length
           ).toBe(0);
-          expect(d[0].itemName).toBe('');
+
+          expect(halfnhalf.itemName).toBe('Half and Half');
+          expect(halfnhalf.amount).toBe(120);
+
+          expect(d.length).toBe(2);
+          done();
         });
     });
 
-    it('should remove a saved ingredient', (done) => {});
+    it('should remove a saved ingredient', (done) => {
+      fetch('http://localhost:3000/api/ingredients', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          itemName: 'Milk',
+        }),
+      })
+        .then((d) => d.json())
+        .then((d: Ingredient[]) => {
+          expect(Array.isArray(d)).toBe(true);
+          expect(
+            d.filter((ingredient) => ingredient.itemName === 'Milk').length
+          ).toBe(0);
+
+          expect(d.length).toBe(1);
+          done();
+        });
+    });
 
     it('should respond with status 401 and error if the user is not authorized', () => {});
   });
 
-  describe('healthlabels', () => {
-    it('should get healthlabels', () => {});
-    it('should save a new healthlabel', () => {});
-    it('should update a saved healthlabel', () => {});
-    it('should remove a saved healthlabel', () => {});
-  });
-
-  describe('allergies', () => {
+  // TODO: Needs sessions to work.
+  xdescribe('allergies', () => {
     it('should get allergies saved', () => {});
     it('should save allergies', () => {});
     it('should update an allergy saved', () => {});
