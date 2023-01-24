@@ -260,6 +260,20 @@ describe('auth', () => {
   });
 
   describe('get', () => {
+    let user: User | undefined;
+    let db: typeof mongoose | undefined;
+    beforeEach(async () => {
+      db = await mongoose.connect(DB_URI);
+      user = await UserModel.create(testUser);
+    });
+
+    afterEach(async () => {
+      await UserModel.findByIdAndDelete(user!._id);
+      user = undefined;
+      await db?.disconnect();
+      db = undefined;
+    });
+
     it('should return the user info', async () => {
       const res = await testApp
         .post('/api/auth/login')
