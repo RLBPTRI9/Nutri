@@ -5,7 +5,7 @@ const userController = require('../middleware/userController');
 
 
 
-router.post('/register',userController.default.createUser, (req,res) => {
+router.post('/signup',userController.default.createUser, (req,res) => {
   console.log('made a user');
   return res.status(200).json(res.locals.newUser);
 
@@ -28,6 +28,12 @@ router.get('/getHealthLabels', inputController.default.getHealthLabels, (req, re
 router.post('/allergies', (req, res) => {
   res.status(200).json();
 });
+
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('ssid');
+  res.status(200).json('Logged out successfully');
+})
 
 // router.post('/test', async (req, res) => {
 //   try {

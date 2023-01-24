@@ -7,6 +7,12 @@ import User from '../models/UserModel';
  * TODO: add encryption for password
  */
 
+// function generateToken(id) {
+//   return jwt.sign(id, process.env.JWT_SECRET, {
+//     expiresIn: "30d",
+//   });
+// }
+
 const userController = {
   createUser: async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to userController');
@@ -36,6 +42,9 @@ const userController = {
 
       res.locals.newUser = newUser;
       console.log('the following user was created', newUser);
+
+    
+
       return next();
     } catch (err) {
       console.log('error occured in userController create user', err);
@@ -59,12 +68,23 @@ const userController = {
     try {
       const foundUser = await User.findOne({ username, password });
 
+      //handler if not able to find a user in the database
+      if (!foundUser) {
+
+        return next({
+          log: 'Express error handler caught verifyUser middleware error',
+          message: { err: `no user found within database ${username}` },
+
+        });
+      }
+
       res.locals.foundUser = foundUser;
       console.log('the following user was found', foundUser);
+      const userToken = foundUser.createJWT();
 
       return next();
     } catch (err) {
-      console.log('error occured in userController create user', err);
+      console.log('error occured in userController verify user', err);
       next(err);
     }
   },

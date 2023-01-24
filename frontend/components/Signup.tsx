@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-const RegisterPage = () => {
+const Signup = () => {
   const URL = 'http://localhost:3000';
 
   const usernameRef: any = useRef();
@@ -44,10 +44,10 @@ const RegisterPage = () => {
       }),
     };
 
-    fetch(URL + '/api/login', options)
+    fetch(URL + '/api/signup', options)
       .then((data) => data.json())
       .then((data) => {
-        console.log('user is logged in!', data);
+        console.log('user is created!', data);
       });
 
     usernameRef.current.value = '';
@@ -114,4 +114,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default Signup;

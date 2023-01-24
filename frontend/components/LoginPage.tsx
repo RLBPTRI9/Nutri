@@ -9,8 +9,6 @@ const LoginPage = () => {
   const URL = 'http://localhost:3000';
 
   const usernameRef: any = useRef();
-  const nameRef: any = useRef();
-  const emailRef: any = useRef();
   const passwordRef: any = useRef();
 
   const handleSubmit = (e: any) => {
