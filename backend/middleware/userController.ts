@@ -1,20 +1,18 @@
 import fetch from 'node-fetch';
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/UserModel';
+import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 /**
  * TODO: refactor createUser to handle avatar, allergies, fridgeInventory, favorites
  * TODO: add encryption for password
  */
 
-// function generateToken(id) {
-//   return jwt.sign(id, process.env.JWT_SECRET, {
-//     expiresIn: "30d",
-//   });
-// }
+const userController: any = {};
 
-const userController = {
-  createUser: async (req: Request, res: Response, next: NextFunction) => {
+
+userController.createUser = async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to userController');
 
     console.log(req.body);
@@ -43,16 +41,14 @@ const userController = {
       res.locals.newUser = newUser;
       console.log('the following user was created', newUser);
 
-    
-
       return next();
     } catch (err) {
       console.log('error occured in userController create user', err);
       next(err);
     }
-  },
+};
 
-  verifyUser: async (req: Request, res: Response, next: NextFunction) => {
+userController.verifyUser = async (req: Request, res: Response, next: NextFunction) => {
     console.log('made it to verifyUser');
     // console.log(req);
     const { username, password } = req.body;
@@ -70,24 +66,25 @@ const userController = {
 
       //handler if not able to find a user in the database
       if (!foundUser) {
-
         return next({
           log: 'Express error handler caught verifyUser middleware error',
           message: { err: `no user found within database ${username}` },
-
         });
       }
 
+   
+
+      const userToken = foundUser.createJWT({ id: foundUser._id, username: foundUser.username });
+
+      //add to res locals object: 1) JWT token for sessions and 2) user for updating favorites and fridge inventory
+      res.locals.id = userToken;
       res.locals.foundUser = foundUser;
-      console.log('the following user was found', foundUser);
-      const userToken = foundUser.createJWT();
 
       return next();
     } catch (err) {
       console.log('error occured in userController verify user', err);
       next(err);
     }
-  },
-};
+  };
 
 export default userController;
