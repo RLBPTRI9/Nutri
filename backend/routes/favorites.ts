@@ -2,8 +2,13 @@ import { Router } from 'express';
 
 const route = Router();
 
-route.get('/', () => {});
+// TODO: add session validator route
+route.get('/', (_, res) => {
+  res.status(200).json(res.locals.user.data.favorites);
+});
+
 route.post('/', () => {});
+
 route.patch('/', () => {});
 route.delete('/', () => {});
 
