@@ -17,17 +17,17 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SetMealOutlinedIcon from '@mui/icons-material/SetMealOutlined';
 
-const pages = ['Add Allergies', 'Search Recipes'];
+const pages = [{ pageName: 'Add Allergies', href: "/" }, { pageName: 'Search Recipes', href: "/recipes/search" }];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props: any) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = (event: any) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
+  const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
   };
 
@@ -94,8 +94,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
+                <MenuItem key={page.pageName} onClick={handleCloseNavMenu}>
+                  <Typography textAlign='center'>{page.pageName}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,11 +122,12 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.pageName}
+                href={page.href}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.pageName}
               </Button>
             ))}
           </Box>

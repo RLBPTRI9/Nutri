@@ -1,21 +1,42 @@
 import React from 'react';
+import Root from './routes/Root';
 import UserInterface from './UserInterface';
+import SearchRecipes from './routes/SearchRecipes';
 import '../stylesheets/styles.css';
-import ResponsiveAppBar from './NavBar.jsx';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 
 function App() {
-  const routes = [
+  //setting up React Router
+  const router = createBrowserRouter([
     {
       path: '/',
-      element: <App />,
+      element: <Root />,
+
+      children: [
+        {
+          path: "/",
+          element: <Navigate to="/home" />
+        },
+        {
+          path: "/home",
+          element: <UserInterface />,
+        },
+        {
+          path: "/recipes",
+          element: <SearchRecipes/>,
+        },
+      ],
     },
-  ];
+    {
+      path: "/login",
+      element: <div>Log In</div>,
+    },
+  ]);
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -35,8 +56,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ResponsiveAppBar />
-      <UserInterface />
+      <RouterProvider router={router} />
       <ToastContainer />
     </ThemeProvider>
   );

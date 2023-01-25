@@ -4,9 +4,9 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "nodemon backend/server.ts",
     "build": "webpack",
-    "dev": "concurrently \"webpack-dev-server --open --hot --progress\" \"nodemon ./server/server.js\"",
+    "dev": "concurrently \"webpack-dev-server --open --hot --progress\" \"nodemon backend/server.ts\"",
     "test": "jest"
   },
   "keywords": [],
@@ -23,7 +23,9 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.15",
     "@types/jest": "^29.2.6",
+    "@types/node-fetch": "^2.6.2",
     "@types/react-dom": "^18.0.10",
+    "@types/supertest": "^2.0.12",
     "assert": "^2.0.0",
     "babel-loader": "^9.1.0",
     "buffer": "^6.0.3",
@@ -41,6 +43,8 @@
     "postcss": "^8.4.20",
     "postcss-loader": "^7.0.2",
     "style-loader": "^3.3.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
     "typescript": "^4.9.4",
@@ -57,6 +61,7 @@
     "@mui/styled-engine-sc": "^5.11.0",
     "@reduxjs/toolkit": "^1.9.1",
     "@types/react-redux": "^7.1.25",
+    "axios": "^1.2.3",
     "cookie-session": "^2.0.0",
     "express": "^4.18.2",
     "mongoose": "^6.8.0",
@@ -69,6 +74,7 @@
     "react-router-dom": "^6.6.2",
     "react-toastify": "^9.1.1",
     "styled-components": "^5.3.6",
+    "ts-loader": "^9.4.2",
     "webpack-hot-middleware": "^2.25.3"
   }
 }
