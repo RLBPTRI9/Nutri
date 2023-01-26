@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon backend/server.ts",
     "build": "webpack",
-    "dev": "concurrently \"webpack-dev-server --open --hot --progress\" ",
+    "dev": "concurrently \"webpack-dev-server --open --hot --progress\" \"nodemon backend/server.ts\"",
     "test": "jest"
   },
   "keywords": [],
