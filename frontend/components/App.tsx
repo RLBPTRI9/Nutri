@@ -12,6 +12,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import Inventory from './routes/Inventory';
+
 
 function App() {
   //setting up React Router
@@ -32,6 +34,10 @@ function App() {
         {
           path: "/recipes",
           element: <SearchRecipes/>,
+        },
+        {
+          path:"/inventory",
+          element: <Inventory/>,
         },
       ],
     },

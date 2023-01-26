@@ -20,6 +20,7 @@ const initialState: UserState = {
     status: 'idle'
 }
 
+
 // Need to implement in components later: https://redux.js.org/tutorials/essentials/part-5-async-logic#dispatching-thunks-from-components
 // See also: https://redux.js.org/tutorials/essentials/part-5-async-logic#displaying-loading-state for implementing when app loads AND user signs in.
 export const getUserInfoAsync = createAsyncThunk<UserState>(
@@ -143,7 +144,6 @@ export const removeAllergyAsync = createAsyncThunk(
 )
 
 
-
 // Read the note on preparing action paylods with a unique ID: https://redux.js.org/tutorials/essentials/part-4-using-data#preparing-action-payloads
 //createSlice allows you to mutate the state in a way that is typically not allowed in Redux
 const userSlice = createSlice({
@@ -152,6 +152,9 @@ const userSlice = createSlice({
    reducers: {
         addFavorite: (state, action) => {
             state.favorites?.push(action.payload)
+        },
+        removeFavorite: (state, action) => {
+
         }
         },
         extraReducers(builder) {
