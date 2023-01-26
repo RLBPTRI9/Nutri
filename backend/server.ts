@@ -3,6 +3,8 @@ import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import env from 'dotenv';
+import cors from 'cors';
+
 const routes = require('./routes/api');
 // import * as routes from './routes/api';
 env.config();
@@ -11,23 +13,27 @@ const app = express();
 const PORT = 3000;
 
 
-
 //TODO: finish off userController
-//TODO: connect to frontend
 //TODO: figure out sessions
-
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 
 //template literal is required or else you get Typescript error of passed in value Argument of type 'string | undefined' is not assignable to parameter of type 'string'.  Type 'undefined' is not assignable to type 'string'
+// Note to the above: You can tell TS that a potentially undefined variable will be defined by adding an explanation point at the end or using the nullish operator to define a default. For an example see below.
 
-mongoose.connect(`${process.env.MONGO_URI}`);
-
-mongoose.connection.once('open', () => {
-  console.log('Connected to Database');
-});
+mongoose
+  .connect(process.env.MONGO_URI!)
+  .then(() => {
+    console.log('Connected to database ✅');
+    // Start the server on port 3000
+    app.listen(PORT, () => {
+      console.log(`Server is listening at http://localhost:${PORT}/ ✅`);
+    });
+  })
+  .catch((e) => console.log(`🛑 Failed to start server: ${e}`));
 
 app.use('/api', routes);
 
@@ -55,18 +61,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-// Start the server on port 3000
-app.listen(PORT, () => {
-  console.log('Server is listening on port 3000');
-});
-
-module.exports = app;
-
-// app.get('/api/leaders', async (req, res) => {
-//   res.status(200).json('hello');
-// });
-// app.get('/leaders', (req, res) => {
-//   return res.status(200).send(leaderList);
-// });
-
-//test purposes to check post route to DB
+// Exported for testing
+export default app;
