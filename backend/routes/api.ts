@@ -19,6 +19,10 @@ router.get('/getHealthLabels', inputController.default.getHealthLabels, (req, re
   return res.status(200).json(res.locals.healthLabels);
 });
 
+router.get('/getRecipes', inputController.default.getSearchResults, (req, res) => {
+  return res.status(200).json(res.locals.recipeData);
+})
+
 router.post('/allergies', (req, res) => {
   res.status(200).json();
 });
