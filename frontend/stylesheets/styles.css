@@ -24,3 +24,17 @@ body {
   height: 400px;
   width: 500px;
 }
+
+div.login-form {
+  display: flex;
+  justify-content: center;
+
+}
+
+.login-form-container{
+
+  height: 400px;
+  width: 300px;
+  padding: 25px;
+
+}

@@ -3,6 +3,9 @@ import Root from './routes/Root';
 import UserInterface from './UserInterface';
 import SearchRecipes from './routes/SearchRecipes';
 import '../stylesheets/styles.css';
+import ResponsiveAppBar from './ResponsiveAppBar';
+import LoginPage from './LoginPage';
+import Signup from './Signup';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -33,8 +36,12 @@ function App() {
       ],
     },
     {
+      path: "/signup",
+      element: <Signup/>,
+    },
+    {
       path: "/login",
-      element: <div>Log In</div>,
+      element: <LoginPage/>,
     },
   ]);
 
