@@ -20,7 +20,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       if (!user) {
         return next({
           log: 'Express error handler caught getFavorites middleware error',
-          message: { err: `no user found within database ${username}` },
+          message: { error: `no user found within database ${username}` },
         });
       }
 
@@ -30,11 +30,11 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
 
       return next();
     } catch (err) {
-      console.log(
-        'error occured in favoriteIngredientMiddleware addNewFavorite',
-        err
-      );
-      next(err);
+      return next({
+        log: `Express error handler caught unknown middleware error in favoriteIngredientMiddleware.get: ${err}`,
+        status: 500,
+        message: { error: 'An error occured' },
+      });
     }
   },
 
@@ -48,7 +48,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
         return next({
           log: 'Express error handler caught addNewFavorite middleware error',
           message: {
-            err: `no new ingredients were added. Did you mean add something?`,
+            error: `no new ingredients were added. Did you mean add something?`,
           },
         });
       }
@@ -60,7 +60,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       if (!user) {
         return next({
           log: 'Express error handler caught addNewFavorite middleware error',
-          message: { err: `no user found within database ${username}` },
+          message: { error: `no user found within database ${username}` },
         });
       }
 
@@ -69,7 +69,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
         if (typeof ingredient !== 'string')
           return next({
             log: 'Express error handler caught addNewFavorite middleware error',
-            message: { err: `new in ${username}` },
+            message: { error: `new in ${username}` },
           });
       }
 
@@ -79,11 +79,11 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
 
       return next();
     } catch (err) {
-      console.log(
-        'error occured in favoriteIngredientMiddleware addNewFavorite',
-        err
-      );
-      next(err);
+      return next({
+        log: `Express error handler caught unknown middleware error in favoriteIngredientMiddleware.add: ${err}`,
+        status: 500,
+        message: { error: 'An error occured' },
+      });
     }
   },
 
@@ -98,13 +98,13 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
           ? next({
               log: 'Express error handler caught updateFavorite middleware error',
               message: {
-                err: `missing update field`,
+                error: `missing update field`,
               },
             })
           : next({
               log: 'Express error handler caught updateFavorite middleware error',
               message: {
-                err: `missing to field`,
+                error: `missing to field`,
               },
             });
       }
@@ -116,7 +116,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       if (!user) {
         return next({
           log: 'Express error handler caught updateFavorite middleware error',
-          message: { err: `no user found within database ${username}` },
+          message: { error: `no user found within database ${username}` },
         });
       }
 
@@ -133,11 +133,11 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
 
       return next();
     } catch (err) {
-      console.log(
-        'error occured in favoriteIngredientMiddleware addNewFavorite',
-        err
-      );
-      next(err);
+      return next({
+        log: `Express error handler caught unknown middleware error in favoriteIngredientMiddleware.update: ${err}`,
+        status: 500,
+        message: { error: 'An error occured' },
+      });
     }
   },
 
@@ -151,7 +151,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
         return next({
           log: 'Express error handler caught removeFavorite middleware error',
           message: {
-            err: `missing item to remove. Please enter item and try again`,
+            error: `missing item to remove. Please enter item and try again`,
           },
         });
       }
@@ -163,7 +163,7 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       if (!user) {
         return next({
           log: 'Express error handler caught removeFavorite middleware error',
-          message: { err: `no user found within database ${username}` },
+          message: { error: `no user found within database ${username}` },
         });
       }
 
@@ -175,11 +175,11 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       res.locals.favorites = user.data.favorites;
       return next();
     } catch (err) {
-      console.log(
-        'error occured in favoriteIngredientMiddleware addNewFavorite',
-        err
-      );
-      next(err);
+      return next({
+        log: `Express error handler caught unknown middleware error in favoriteIngredientMiddleware.remove: ${err}`,
+        status: 500,
+        message: { error: 'An error occured' },
+      });
     }
   },
 };

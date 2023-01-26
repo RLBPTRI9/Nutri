@@ -68,7 +68,7 @@ const authMiddleware: AuthInterface = {
       if (!foundUser)
         return next({
           log: 'Express error handler caught verifyUser middleware error',
-          message: { err: `no user found within database ${username}` },
+          message: { error: `no user found within database ${username}` },
         });
 
       res.locals.user = foundUser;
