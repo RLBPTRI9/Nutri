@@ -38,3 +38,60 @@ div.login-form {
   padding: 25px;
 
 }
+
+
+.SearchRecipesPage {
+  display: flex;
+  flex-direction: column;
+  margin: 5rem 5rem 5rem 5rem;
+  align-items: center;
+  text-align: center;
+}
+
+.SearchRecipesPage hr {
+  width: 100%;
+}
+
+.SearchBar {
+  width: 40%
+}
+
+.SearchRecipesContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.172);
+}
+
+.SearchFlexItem {
+  background-color: white;
+  border: 1pt solid black;
+  margin: 1rem;
+  max-width: 300px;
+  min-width: 180px;
+  max-height: 400px;
+  min-height: 180px;
+  overflow: hidden;
+}
+
+.SearchFlexItem p {
+  text-align: center;
+  max-width: 300px;
+  color: rgb(14, 24, 10);
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 16pt;
+  padding: 0pt 5pt 0pt;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.SearchFlexItem img {
+  display: cover;
+  max-height: 300px;
+}
+
+.SearchFlexItem :hover {
+  filter: grayscale(20%);
+  text-decoration: underline #0e5423;
+}

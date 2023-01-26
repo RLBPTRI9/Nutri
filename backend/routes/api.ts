@@ -35,6 +35,10 @@ router.get(
   }
 );
 
+router.get('/getRecipes', inputController.default.getSearchResults, (req, res) => {
+  return res.status(200).json(res.locals.recipeData);
+})
+
 router.post('/allergies', (req, res) => {
   res.status(200).json();
 });

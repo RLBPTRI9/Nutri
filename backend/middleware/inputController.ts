@@ -13,6 +13,26 @@ type Recipe = {
 };
 
 const inputController = {
+  getSearchResults: (req: Request, res: Response, next: NextFunction) => {
+    const { q } = req.query;
+    // console.log('what is q' + q);
+    fetch(`https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID}&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${q}`)
+      .then(data => data.json())
+      .then(data => {
+      if (!data) {
+        res.locals.recipeData = null;
+      } else {
+        const recipeData = data;
+        // console.log(recipeData);
+        res.locals.recipeData = recipeData;
+        return next();
+      }
+    })
+      .catch(err => {
+      return next(err);
+    })
+  },
+
   getIngredients: (req: Request, res: Response, next: NextFunction) => {
     //pad thai, pad+thai
     //https://localhost:8080/api/getIngredients?allergy=peanut&dish=pad+thai
@@ -26,11 +46,10 @@ const inputController = {
 
     // console.log(process.env.EDAMAM_RECIPE_API_ID);
     console.log('before fetch');
-    const url = `https://api.edamam.com/search?app_id=${
-      process.env.EDAMAM_RECIPE_API_ID
-    }&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${String(dish ?? '')
-      .toLowerCase()
-      .trim()}`;
+    const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID
+      }&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${String(dish ?? '')
+        .toLowerCase()
+        .trim()}`;
 
     fetch(url)
       .then((response) => {
@@ -160,11 +179,10 @@ const inputController = {
 
     console.log(dish);
 
-    const url = `https://api.edamam.com/search?app_id=${
-      process.env.EDAMAM_RECIPE_API_ID
-    }&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${String(dish ?? '')
-      .toLowerCase()
-      .trim()}`;
+    const url = `https://api.edamam.com/search?app_id=${process.env.EDAMAM_RECIPE_API_ID
+      }&app_key=${process.env.EDAMAM_RECIPE_API_KEY}&q=${String(dish ?? '')
+        .toLowerCase()
+        .trim()}`;
 
     fetch(url)
       .then((response) => {
