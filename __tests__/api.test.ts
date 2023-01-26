@@ -2,9 +2,9 @@ import { Recipe } from '../backend/types/Recipe';
 import { Ingredient } from '../backend/types/Ingredients';
 import UserModel from '../backend/models/UserModel';
 import { User } from '../backend/types/User';
-import axios from 'axios';
+import { testUser } from './utils/testData';
 import request from 'supertest';
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 import env from 'dotenv';
 import app from '../backend/server';
 env.config({ path: '../.env' });
@@ -19,28 +19,7 @@ const testApp = request(app);
 // TODO: Bug fixes!
 // TODO: Add session support once sessions are made.
 // TODO: Test for non-duplicates in favorites, ingredients, and allergens
-
-let testUser: User = {
-  username: 'TEST',
-  name: 'TEST',
-  email: 'TEST@example.com',
-  password: 'PASSWORD',
-  fridgeInventory: [
-    {
-      itemName: 'Milk',
-      amount: 120,
-      expires: new Date(Date.now() + 172800000),
-    },
-    {
-      itemName: 'Chocolate',
-      amount: 67,
-      expires: new Date(Date.now() + 172800000),
-    },
-  ],
-  avatar: 'https://http.cat/510.jpg',
-  allergies: ['Peanuts', 'Gluten'],
-  favorites: ['Milk', 'Shrimp'],
-};
+// TODO: Allergies
 
 describe('API', () => {
   describe('recipes', () => {
@@ -166,7 +145,7 @@ describe('API', () => {
       const data: string[] = res.body;
 
       expect(Array.isArray(data)).toBe(true);
-      expect(data).toEqual(testUser.favorites);
+      expect(data).toEqual(testUser.data.favorites);
       expect(res.status).toBe(200);
     });
 
@@ -180,8 +159,12 @@ describe('API', () => {
       const data: string[] = res.body;
 
       expect(Array.isArray(data)).toBe(true);
-      expect(data.length).toBe(testUser.favorites.length + 2);
-      expect(data).toEqual([...testUser.favorites, 'Spinach', 'Chocolate']);
+      expect(data.length).toBe(testUser.data.favorites.length + 2);
+      expect(data).toEqual([
+        ...testUser.data.favorites,
+        'Spinach',
+        'Chocolate',
+      ]);
       expect(res.status).toBe(200);
     });
 
@@ -195,7 +178,7 @@ describe('API', () => {
       const data: string[] = res.body;
 
       expect(Array.isArray(data)).toBe(true);
-      expect(data.length).toBe(testUser.favorites.length);
+      expect(data.length).toBe(testUser.data.favorites.length);
       expect(data.includes('Milk')).toBe(false);
       expect(data.includes('Honey')).toBe(true);
       expect(res.status).toBe(200);
@@ -333,7 +316,7 @@ describe('API', () => {
       const data: Ingredient[] = res.body;
 
       expect(Array.isArray(data)).toBe(true);
-      expect(data).toEqual(testUser.fridgeInventory);
+      expect(data).toEqual(testUser.data.fridgeInventory);
       expect(res.status).toBe(200);
     });
 
@@ -352,7 +335,7 @@ describe('API', () => {
       const data: Ingredient[] = res.body;
 
       expect(Array.isArray(data)).toBe(true);
-      expect(data.length).toBe(testUser.fridgeInventory.length + 2);
+      expect(data.length).toBe(testUser.data.fridgeInventory.length + 2);
       expect(res.status).toBe(200);
     });
 
@@ -527,12 +510,12 @@ describe('API', () => {
     });
   });
 
-  // TODO: Needs sessions to work.
+  // TODO: This
   xdescribe('allergies', () => {
-    it('should get allergies saved', () => {});
-    it('should save allergies', () => {});
-    it('should update an allergy saved', () => {});
-    it('should remove an allergy saved', () => {});
+    it('should get allergies saved', async () => {});
+    it('should save allergies', async () => {});
+    it('should update an allergy saved', async () => {});
+    it('should remove an allergy saved', async () => {});
     it('all routes should return 401 and an error when the user is not logged in', async () => {});
     it('create should return 400 when missing what to add', async () => {});
     it('update should return 400 when missing details', async () => {});

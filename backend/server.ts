@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 
 //template literal is required or else you get Typescript error of passed in value Argument of type 'string | undefined' is not assignable to parameter of type 'string'.  Type 'undefined' is not assignable to type 'string'
 // Note to the above: You can tell TS that a potentially undefined variable will be defined by adding an explanation point at the end or using the nullish operator to define a default. For an example see below.
