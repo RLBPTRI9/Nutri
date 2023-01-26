@@ -2,7 +2,7 @@ import { fridgeItem } from "./interfaces/fridgeItem";
 
 import { createAsyncThunk, createSlice, nanoid, PayloadAction, prepareAutoBatched } from "@reduxjs/toolkit"
 import { json } from "express";
-import { Recipe } from "./interfaces/Recipe";
+import { Recipe } from "./interfaces/recipe";
 
 interface UserState {
     _id: string;
@@ -25,7 +25,7 @@ const initialState: UserState = {
 export const getUserInfoAsync = createAsyncThunk<UserState>(
     "user/getUserInfoAsync",
     async (_id) => {
-        const response = await fetch("http://localhost:8080/user/" + _id, {
+        const response = await fetch("http://localhost:8080/user/" + _id, { //route needs to be changed?
             method: "GET",
         });
         const data = response.json();
@@ -38,13 +38,13 @@ export const editInventoryAsync = createAsyncThunk<fridgeItem[] | string>(
     "user/editInventoryItemAsync",
     async (fridgeInventory): Promise<fridgeItem[] | string> => {
         try {
-            const response = await fetch("http://localhost:8080/api/ingredients", {
+            const response = await fetch("http://localhost:8080/api/ingredients", { //route needs to be changed?
                 method:"PATCH",
                 headers:{
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    fridgeInventory
+                    fridgeInventory //body needs to be changed? maybe not? im not sure?
                 })
             });
             const data: fridgeItem[] = await response.json(); // should return the entire inventory
@@ -62,13 +62,13 @@ export const addFavoriteAsync = createAsyncThunk(
     "user/addFavoriteAsync",
     async (favorite: string) => {
         try {
-            const response = await fetch("http://localhost:8080/user/addInventory", {
+            const response = await fetch("http://localhost:8080/user/addInventory", { //route needs to be changed?
                 method:"PATCH",
                 headers:{
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    favorite
+                    favorite //body needs to be changed? maybe not? im not sure?
                 })
             });
             const data = await response.json; //should return all of the favorites
@@ -82,13 +82,13 @@ export const removeFavoriteAsync = createAsyncThunk(
     "user/removeFavoriteAsync",
     async (favorite: string) => {
         try {
-            const response = await fetch("http://localhost:8080/user/addInventory", {
+            const response = await fetch("http://localhost:8080/user/addInventory", { //route needs to be changed?
                 method:"PATCH",
                 headers:{
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    favorite
+                    favorite //body needs to be changed? maybe not? im not sure?
                 })
             });
             const data = await response.json(); // should return all of the favorites
@@ -104,13 +104,13 @@ export const addAllergyAsync = createAsyncThunk(
     "user/addAllergyAsync",
     async (allergy: string) => {
         try {
-            const response = await fetch("http://localhost:8080/user/addAllergy", {
+            const response = await fetch("http://localhost:8080/user/addAllergy", { //route needs to be changed?
                 method:"PATCH",
                 headers:{
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    allergy
+                    allergy //body needs to be changed? maybe not? im not sure?
                 })
             });
             const data = await response.json(); // should return all of the allergies
@@ -125,13 +125,13 @@ export const removeAllergyAsync = createAsyncThunk(
     "user/removeAllergyAsync",
     async (allergy: string) => {
         try {
-            const response = await fetch("http://localhost:8080/user/removeAllergy", {
+            const response = await fetch("http://localhost:8080/user/removeAllergy", { //route needs to be changed?
                 method:"PATCH",
                 headers:{
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    allergy
+                    allergy  //body needs to be changed? maybe not? im not sure?
                 })
             });
             const data = await response.json(); // should return all of the allergies
