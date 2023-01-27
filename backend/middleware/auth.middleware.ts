@@ -13,13 +13,15 @@ interface AuthInterface {
 
 const authMiddleware: AuthInterface = {
   create: async (req: Request, res: Response, next: NextFunction) => {
+
+    
     const { username, password, name, email, avatar } = req.body;
 
     if (!username || !name || !email || !password || !avatar)
       return next({
         log: 'Express error handler caught error in authMiddleware.create',
         status: 400,
-        message: { error: 'Insufficient information.' },
+        message: { error: 'Insufficient information. authMiddleware.create' },
       });
 
     try {

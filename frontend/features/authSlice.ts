@@ -30,11 +30,13 @@ export const registerAsync = createAppAsyncThunk<ReturnedState>(
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body: JSON.stringify({
+                body: JSON.stringify(
                     userData
-                })
+                )
             });
+            console.log('userData in authSlice', userData);
             const data: ReturnedState = await response.json();
+            console.log('data to dispatch to userSlice', data)
             //@ts-ignore
             dispatch(setUserData(data))
             return data as ReturnedState
@@ -69,7 +71,7 @@ const initialState: AuthState = {
     name: user ? user.name : '',
     avatar: user ? user.avatar : '',
     email: user ? user.email : '',
-    isLoggedIn: user ? true : false,
+    isLoggedIn: false,
 }
 
 const authSlice = createSlice({

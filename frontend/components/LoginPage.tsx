@@ -6,8 +6,6 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 const LoginPage = () => {
-  const URL = 'http://localhost:3000';
-
   const usernameRef: any = useRef();
   const passwordRef: any = useRef();
 
@@ -80,9 +78,7 @@ const LoginPage = () => {
             sx={{ width: 250 }}
           />
           <br></br>
-          <Button type='submit'>
-            Login
-          </Button>
+          <Button type='submit'>Login</Button>
         </Paper>
       </form>
     </div>

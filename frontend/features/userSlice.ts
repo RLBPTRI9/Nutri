@@ -27,6 +27,7 @@ const initialState: UserState = {
   status: 'idle',
 };
 
+
 // Need to implement in components later: https://redux.js.org/tutorials/essentials/part-5-async-logic#dispatching-thunks-from-components
 // See also: https://redux.js.org/tutorials/essentials/part-5-async-logic#displaying-loading-state for implementing when app loads AND user signs in.
 export const getUserInfoAsync = createAppAsyncThunk<UserState>(
@@ -163,6 +164,7 @@ const userSlice = createSlice({
             state.favorites?.push(action.payload)
         },
         setUserData: (state, action) => {
+            console.log('actionpayload', action.payload)
             state._id = action.payload._id
             state.allergies = action.payload.data.allergies
             state.favorites = action.payload.data.favorites

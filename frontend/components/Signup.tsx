@@ -11,9 +11,17 @@ import { registerAsync } from '../features/authSlice';
 const Signup = () => {
   //username, name, avatar, email, password
 
+  const [userInput, setUserInput] = useState({
+    username: '',
+    name: '',
+    email: '',
+    avatar: '',
+    password: ''
+  })
+
   const dispatch = useAppDispatch();
 
-  const URL = 'http://localhost:3000';
+  const navigate = useNavigate();
 
   const usernameRef: any = useRef();
   const nameRef: any = useRef();
@@ -23,13 +31,10 @@ const Signup = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
-    // console.log(username, name, email, password);
-
     const username = usernameRef.current.value;
     const name = nameRef.current.value;
     const email = emailRef.current.value;
-    const avatar = 'Herman was here'
+    const avatar = 'Herman was here!!'
     const password = passwordRef.current.value;
 
     console.log(
@@ -40,20 +45,19 @@ const Signup = () => {
     );
 
     const userData = {
-        username: usernameRef.current.value,
-        name: nameRef.current.value,
-        avatar: 'Herman was here',
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
+      username: username, 
+      password: password, 
+      name: name, 
+      email: email, 
+      avatar: 'Herman was here'
     };
-
+    console.log('userData: ', userData)
     //@ts-ignore
     dispatch(registerAsync(userData))
 
-    usernameRef.current.value = '';
-    nameRef.current.value = '';
-    emailRef.current.value = '';
-    passwordRef.current.value = '';
+    clearFormValues();
+
+
   };
 
   const clearFormValues = () => {
@@ -105,7 +109,7 @@ const Signup = () => {
             sx={{ width: 250 }}
           />
           <br></br>
-          <Button type='submit' onClick={clearFormValues}>
+          <Button type='submit' onClick={handleSubmit}>
             Sign up
           </Button>
         </Paper>

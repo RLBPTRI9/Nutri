@@ -1,6 +1,6 @@
 export type Update = {
   from: string;
-  to: string;
+  to: string | null;
 };
 
 export default function renameKeys<T>(object: T, updates: Update[]) {

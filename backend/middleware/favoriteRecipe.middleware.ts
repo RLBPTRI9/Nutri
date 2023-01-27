@@ -1,34 +1,42 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/UserModel';
+import { Recipe } from '../types/Recipe';
+import { getRecipeById } from '../utils/getRecipeById';
 
-interface FavoriteIngredientInterface {
+interface FavoriteRecipeInterface {
   get: (req: Request, res: Response, next: NextFunction) => void;
   add: (req: Request, res: Response, next: NextFunction) => void;
   update: (req: Request, res: Response, next: NextFunction) => void;
   remove: (req: Request, res: Response, next: NextFunction) => void;
 }
 
-const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
+const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
   // setting httpOnly cookie nature allows it to only be accessible by the server application
 
-  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
-
   get: async (req: Request, res: Response, next: NextFunction) => {
+    console.log('hello world!');
     try {
-      const username = res.locals.user.auth.username;
-      const user = await User.findOne({ username });
-
+      const user = res.locals.user;
       //handler if not able to find a user in the database
       if (!user) {
         return next({
           log: 'Express error handler caught getFavorites middleware error',
-          message: { error: `no user found within database ${username}` },
+          message: { error: `no user found within database ${user._id}` },
         });
       }
-
       //add new ingredients to favorites array
 
-      res.locals.favorites = user.data.favorites;
+      const stupid: Recipe[] = user.data.favorites.map((fav: string) =>
+        getRecipeById(fav)
+      );
+
+      console.log('this is mappedFavs', stupid);
+      const dumb = await Promise.all(stupid);
+
+      console.log({ stupid });
+      res.locals.favorites = dumb;
+
+      //res.locals.favorites = stupid;
 
       return next();
     } catch (err) {
@@ -40,15 +48,13 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
     }
   },
 
-  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
-
   add: async (req: Request, res: Response, next: NextFunction) => {
-    //grab new favorite ingredients from req body
-    const { newIngredients } = req.body;
-    //newIngredients: ['Spinach', 'Chocolate']
+    //grab new favorite recipe object from req body
+    const { favorite } = req.body;
 
+    //handler if favorite recipe is missing
     try {
-      if (!newIngredients) {
+      if (!favorite) {
         return next({
           log: 'Express error handler caught addNewFavorite middleware error',
           message: {
@@ -57,41 +63,56 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
         });
       }
 
-      const username = res.locals.user.auth.username;
-      const user = await User.findOne({ username });
+      //grab
+      const user = res.locals.user;
 
       //handler if not able to find a user in the database
       if (!user) {
         return next({
           log: 'Express error handler caught addNewFavorite middleware error',
-          message: { error: `no user found within database ${username}` },
+          message: {
+            error: `no user found within database ${user.auth.username}`,
+          },
         });
       }
 
+      //convert to set
+      const recipeSet = new Set(user.data.favorites);
       //add new ingredients to favorites array
-      for (const ingredient in newIngredients) {
-        if (typeof ingredient !== 'string')
+
+      for (const recipe of favorite) {
+        if (typeof recipe !== 'string')
           return next({
             log: 'Express error handler caught addNewFavorite middleware error',
-            message: { error: `new in ${username}` },
+            message: {
+              error: `sent a non recipe id. This is not a recipe id${recipe}`,
+            },
           });
+
+        //then attempt to push new favorite recipe object onto to Set
+        if (!recipeSet.has(recipe)) {
+          recipeSet.add(recipe);
+        }
       }
 
-      user.data.favorites = [...user.data.favorites, ...newIngredients];
-
-      res.locals.favorites = user.data.favorites;
+      user.data.favorites = [...recipeSet];
+      //update user on database
+      await User.findOneAndUpdate(
+        { 'auth.username': user.auth.username },
+        { 'data.favorites': user.data.favorites }
+      );
 
       return next();
     } catch (err) {
       return next({
-        log: `Express error handler caught unknown middleware error in favoriteIngredientMiddleware.add: ${err}`,
+        log: `Express error handler caught unknown middleware error in favoriteRecipetMiddleware.add: ${err}`,
         status: 500,
         message: { error: 'An error occured' },
       });
     }
   },
 
-  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
+  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingredients
 
   update: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite ingredients from req body
@@ -148,13 +169,11 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
     }
   },
 
-  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
-
   remove: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite ingredients from req body
+    const user = res.locals.user;
     const { remove } = req.body;
-    //newIngredients: ['Spinach', 'Chocolate']
-
+    // example: { remove: 'id' }
     try {
       if (!remove) {
         return next({
@@ -164,24 +183,21 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
           },
         });
       }
-
-      const username = res.locals.user.username;
-      const user = await User.findOne({ username });
-
       //handler if not able to find a user in the database
       if (!user) {
         return next({
           log: 'Express error handler caught removeFavorite middleware error',
-          message: { error: `no user found within database ${username}` },
+          message: { error: `no user found within database ${user._id}` },
         });
       }
-
       //create a new array with all of the ingredients except the one expected to be removed.
-      user.data.favorites = res.locals.user.data.favorites.filter(
-        (ingredient: string) => ingredient !== remove
+      const filteredFavs: string[] = user.data.favorites.filter(
+        (favId: string) => favId !== remove
       );
-
-      res.locals.favorites = user.data.favorites;
+      await User.findOneAndUpdate(
+        { 'auth.username': user.auth.username },
+        { 'data.favorites': filteredFavs }
+      );
       return next();
     } catch (err) {
       return next({
@@ -193,4 +209,4 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
   },
 };
 
-export default favoriteIngredientMiddleware;
+export default favoriteRecipetMiddleware;
