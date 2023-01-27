@@ -36,7 +36,7 @@ export const getUserInfoAsync = createAsyncThunk<UserState>(
 //should be called onCLick of a "Save" button on frontend
 export const editInventoryAsync = createAsyncThunk<fridgeItem[] | string>(
     "user/editInventoryItemAsync",
-    async (fridgeInventory): Promise<fridgeItem[] | string> => {
+    async (fridgeInventoryInput): Promise<fridgeItem[] | string> => {
         try {
             const response = await fetch("http://localhost:8080/api/ingredients", { //route needs to be changed?
                 method:"PATCH",
@@ -44,7 +44,7 @@ export const editInventoryAsync = createAsyncThunk<fridgeItem[] | string>(
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({
-                    fridgeInventory //body needs to be changed? maybe not? im not sure?
+                    fridgeInventoryInput //body needs to be changed? maybe not? im not sure?
                 })
             });
             const data: fridgeItem[] = await response.json(); // should return the entire inventory
@@ -173,10 +173,10 @@ const userSlice = createSlice({
             })
             //ADD FAVORITE EXTRA REDUCER
             .addCase(addFavoriteAsync.fulfilled, (state, action) => {
-                const payload = action.payload;
+                state.favorites = action.payload;
                 if (typeof payload === 'string') console.log('bad favorite, string')
                 // @ts-ignore
-                state.favorites?.push(action.payload);
+                state.favorites
                 
             })
             //REMOVE FAVORITE EXTRA REDUCER
