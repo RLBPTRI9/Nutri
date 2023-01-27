@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import recipeMiddleware from '../../middleware/recipe.middleware';
+import sessionMiddleware from '../../middleware/session.middleware';
 const router = Router();
 
-router.get('/', recipeMiddleware.search, (req, res) =>
+router.get('/', sessionMiddleware.verify, recipeMiddleware.search, (req, res) =>
   res.status(200).json(res.locals.recipeData)
 );
 
