@@ -11,6 +11,8 @@ interface FavoriteIngredientInterface {
 const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
   // setting httpOnly cookie nature allows it to only be accessible by the server application
 
+  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
+
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const username = res.locals.user.auth.username;
@@ -37,6 +39,8 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       });
     }
   },
+
+  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
 
   add: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite ingredients from req body
@@ -87,6 +91,8 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
     }
   },
 
+  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
+
   update: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite ingredients from req body
     const { update, to } = req.body;
@@ -120,7 +126,8 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
         });
       }
 
-      //update the favorite item by looping through the favorites array, finding the ingredient to update and then replacing it
+      //update the favorite item by looping through the favorites array, finding the recipe to update and then replacing it
+
       user.data.favorites.forEach(
         (ingredient: string, i: number, array: Array<string>) => {
           if (ingredient === update) {
@@ -140,6 +147,8 @@ const favoriteIngredientMiddleware: FavoriteIngredientInterface = {
       });
     }
   },
+
+  //TODO: refactor forEach method to handle recipe ids INSTEAD of ingedients
 
   remove: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite ingredients from req body
