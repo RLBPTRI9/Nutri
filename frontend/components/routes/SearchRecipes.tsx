@@ -18,7 +18,7 @@ const SearchRecipes = () => {
   useEffect(() => {
     const getRecipes = async () => {
       const responseData: any = await (
-        await fetch(`/api/getRecipes/?q=${searchQuery}`)
+        await fetch(`/api/recipes/?q=${searchQuery}`)
       ).json();
       setRecipes(responseData.hits);
     };

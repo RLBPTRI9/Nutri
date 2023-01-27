@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import Inventory from './routes/Inventory';
+import ErrorPage from './routes/ErrorPage';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
     {
       path: '/',
       element: <Root />,
-
+      errorElement: <ErrorPage/>,
       children: [
         {
           path: "/",
@@ -44,10 +45,12 @@ function App() {
     {
       path: "/signup",
       element: <Signup/>,
+      errorElement: <ErrorPage/>,
     },
     {
       path: "/login",
       element: <LoginPage/>,
+      errorElement: <ErrorPage/>,
     },
   ]);
 
