@@ -36,7 +36,7 @@ export type EdemamResponse = {
   to: number;
   more: boolean;
   count: number;
-  hits: { recipie: EdemamRecipie }[];
+  hits: { recipe: EdemamRecipie }[];
 };
 
 const dummyEdemamData = JSON.parse(`{
