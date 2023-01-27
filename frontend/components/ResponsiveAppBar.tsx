@@ -17,7 +17,7 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SetMealOutlinedIcon from '@mui/icons-material/SetMealOutlined';
 
-const pages = [{ pageName: 'Add Allergies', href: "/" }, { pageName: 'Search Recipes', href: "/recipes/search" }];
+const pages = [{ pageName: 'Add Allergies', href: "/" }, { pageName: 'Search Recipes', href: "/recipes" }];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar(props: any) {

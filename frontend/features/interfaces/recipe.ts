@@ -1,9 +1,17 @@
 export interface Recipe {
-    id: string;
-    name: string;
-    image: string;
-    healthLabels: string[];
-    url: string;
-    ingredients: string[];
-    source: string;
+  recipeId: string;
+  sourceUrl: string;
+  recipeName: string;
+  image: string;
+  recipeSource: string;
+  edemamShareUrl: string;
+  yield: number;
+  dietLabels: string[];
+  healthLabels: string[];
+  allergens: string[];
+  instructions: string[];
+  ingredients: string[];
+  calories: number;
+  totalTime: number;
+  dishType: string[];
 }

@@ -38,7 +38,7 @@ const LoginPage = () => {
       }),
     };
 
-    fetch(URL + '/api/login', options)
+    fetch(URL + '/api/auth/login', options)
       .then((data) => data.json())
       .then((data) => {
         console.log('user is logged in!', data);
@@ -66,7 +66,7 @@ const LoginPage = () => {
             label='Username'
             variant='outlined'
             size='small'
-            placeholder='e.g., peanuts'
+            placeholder='e.g., HermanLovesSox123'
             inputRef={usernameRef}
             sx={{ width: 250 }}
           />
@@ -75,7 +75,7 @@ const LoginPage = () => {
             label='Password'
             variant='outlined'
             size='small'
-            placeholder='e.g., peanuts'
+            placeholder='e.g., herman'
             inputRef={passwordRef}
             sx={{ width: 250 }}
           />
