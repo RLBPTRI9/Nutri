@@ -26,6 +26,7 @@ const initialState: UserState = {
   status: 'idle',
 };
 
+
 // Need to implement in components later: https://redux.js.org/tutorials/essentials/part-5-async-logic#dispatching-thunks-from-components
 // See also: https://redux.js.org/tutorials/essentials/part-5-async-logic#displaying-loading-state for implementing when app loads AND user signs in.
 export const getUserInfoAsync = createAsyncThunk<UserState>(
@@ -155,64 +156,66 @@ export const removeAllergyAsync = createAsyncThunk(
 // Read the note on preparing action paylods with a unique ID: https://redux.js.org/tutorials/essentials/part-4-using-data#preparing-action-payloads
 //createSlice allows you to mutate the state in a way that is typically not allowed in Redux
 const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    addFavorite: (state, action) => {
-      state.favorites?.push(action.payload);
-    },
-  },
-  extraReducers(builder) {
-    builder
-      //GET USER INFO EXTRA REDUCER
-      .addCase(getUserInfoAsync.pending, (state, action) => {
-        state.status = 'loading';
-      })
-      .addCase(getUserInfoAsync.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        const { _id, allergies, fridgeInventory, favorites } = action.payload;
-        state._id = _id;
-        state.allergies = allergies;
-        state.fridgeInventory = fridgeInventory;
-        state.favorites = favorites;
-      })
-      .addCase(getUserInfoAsync.rejected, (state, action) => {
-        state.status = 'failed';
-      })
-      //ADD FAVORITE EXTRA REDUCER
-      .addCase(addFavoriteAsync.fulfilled, (state, action) => {
-        const payload = action.payload;
-        if (typeof payload === 'string') console.log('bad favorite, string');
-        // @ts-ignore
-        state.favorites?.push(action.payload);
-      })
-      //REMOVE FAVORITE EXTRA REDUCER
-      .addCase(removeFavoriteAsync.fulfilled, (state, action) => {
-        // const { id } = action.payload;
-        // // const newFavorites = state.favorites?.filter((fav) => fav.id != id);
-        // state.favorites = newFavorites;
-      })
-      //EDIT INVENTORY ITEM EXTRA REDUCER
-      .addCase(editInventoryAsync.fulfilled, (state, action) => {
-        const newInventory = action.payload;
-        state.fridgeInventory = newInventory;
-      })
-      // ADD ALLERGIES
-      .addCase(addAllergyAsync.fulfilled, (state, action) => {
-        const payload = action.payload;
-        if (typeof payload === 'string') console.log('bad allergy, string');
-        // @ts-ignore
-        state.allergies?.push(action.payload);
-      })
-      // REMOVE ALLERGIES
-      .addCase(removeAllergyAsync.fulfilled, (state, action) => {
-        const payload = action.payload;
-        if (typeof payload === 'string') console.log('bad favorite, string');
-        // @ts-ignore because it being handled above
-        state.allergies = payload;
-      });
-  },
-});
+   name: "user",
+   initialState,
+   reducers: {
+        addFavorite: (state, action) => {
+            state.favorites?.push(action.payload)
+        }
+        },
+        extraReducers(builder) {
+            builder
+            //GET USER INFO EXTRA REDUCER
+            .addCase(getUserInfoAsync.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(getUserInfoAsync.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                const {_id, allergies, fridgeInventory, favorites} = action.payload
+                state._id = _id;
+                state.allergies = allergies;
+                state.fridgeInventory = fridgeInventory;
+                state.favorites = favorites;
+            })
+            .addCase(getUserInfoAsync.rejected, (state, action) =>  {
+                state.status = 'failed'
+            })
+            //ADD FAVORITE EXTRA REDUCER
+            .addCase(addFavoriteAsync.fulfilled, (state, action) => {
+                const payload = action.payload;
+                if (typeof payload === 'string') console.log('bad favorite, string')
+                // @ts-ignore
+                state.favorites?.push(action.payload);
+                
+            })
+            //REMOVE FAVORITE EXTRA REDUCER
+            .addCase(removeFavoriteAsync.fulfilled, (state, action) => {
+                // const { id } = action.payload
+                // // const newFavorites = state.favorites?.filter(fav => fav.id != id)
+                // state.favorites = newFavorites
+            })
+            //EDIT INVENTORY ITEM EXTRA REDUCER
+            .addCase(editInventoryAsync.fulfilled, (state, action) => {
+                const newInventory = action.payload
+                state.fridgeInventory = newInventory
+            })
+            // ADD ALLERGIES
+            .addCase(addAllergyAsync.fulfilled, (state, action) => {
+                const payload = action.payload;
+                if (typeof payload === 'string') console.log('bad allergy, string')
+                // @ts-ignore
+                state.allergies?.push(action.payload);
+            })
+            // REMOVE ALLERGIES
+            .addCase(removeAllergyAsync.fulfilled, (state, action) =>  {
+                const payload = action.payload;
+                if (typeof payload === 'string') console.log('bad favorite, string')
+                // @ts-ignore because it being handled above
+                state.allergies = payload
+            })
+        }
+   }
+)
 
 export const {} = userSlice.actions;
 

@@ -12,6 +12,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import Inventory from './routes/Inventory';
+import ErrorPage from './routes/ErrorPage';
+
 
 function App() {
   //setting up React Router
@@ -19,7 +22,7 @@ function App() {
     {
       path: '/',
       element: <Root />,
-
+      errorElement: <ErrorPage/>,
       children: [
         {
           path: "/",
@@ -33,15 +36,21 @@ function App() {
           path: "/recipes",
           element: <SearchRecipes/>,
         },
+        {
+          path:"/inventory",
+          element: <Inventory/>,
+        },
       ],
     },
     {
       path: "/signup",
       element: <Signup/>,
+      errorElement: <ErrorPage/>,
     },
     {
       path: "/login",
       element: <LoginPage/>,
+      errorElement: <ErrorPage/>,
     },
   ]);
 
