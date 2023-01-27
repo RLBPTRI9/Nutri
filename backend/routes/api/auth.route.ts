@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import authMiddleware from '../middleware/auth.middleware';
-import sessionMiddleware from '../middleware/session.middleware';
+import authMiddleware from '../../middleware/auth.middleware';
+import sessionMiddleware from '../../middleware/session.middleware';
 const router = Router();
 
 router.post(
@@ -22,7 +22,7 @@ router.post(
 
 router.post(
   '/login',
-  authMiddleware.verifyUser,
+  authMiddleware.verify,
   sessionMiddleware.create,
   (req, res) => {
     const {

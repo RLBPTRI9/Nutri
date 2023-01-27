@@ -13,6 +13,8 @@ interface AuthInterface {
 
 const authMiddleware: AuthInterface = {
   create: async (req: Request, res: Response, next: NextFunction) => {
+
+    
     const { username, password, name, email, avatar } = req.body;
 
     if (!username || !name || !email || !password || !avatar)
