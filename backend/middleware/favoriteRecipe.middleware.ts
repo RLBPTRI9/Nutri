@@ -33,7 +33,7 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
       console.log('this is mappedFavs', stupid);
       const dumb = await Promise.all(stupid);
 
-      console.log({stupid});
+      console.log({ stupid });
       res.locals.favorites = dumb;
 
       //res.locals.favorites = stupid;
@@ -47,7 +47,6 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
       });
     }
   },
-
 
   add: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite recipe object from req body
@@ -192,10 +191,13 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
         });
       }
       //create a new array with all of the ingredients except the one expected to be removed.
-      const filteredFavs = user.data.favorites.filter(
+      const filteredFavs: string[] = user.data.favorites.filter(
         (favId: string) => favId !== remove
       );
-      res.locals.favorites = filteredFavs;
+      await User.findOneAndUpdate(
+        { 'auth.username': user.auth.username },
+        { 'data.favorites': filteredFavs }
+      );
       return next();
     } catch (err) {
       return next({
