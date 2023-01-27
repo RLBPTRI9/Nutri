@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import favoriteIngredientMiddleware from '../../middleware/favoriteIngredient.middleware';
+import favoriteRecipetMiddleware from '../../middleware/favoriteRecipe.middleware';
 import sessionMiddleware from '../../middleware/session.middleware';
 const router = Router();
 
 router.get(
   '/favorites',
   sessionMiddleware.verify,
-  favoriteIngredientMiddleware.get,
+  favoriteRecipetMiddleware.get,
   (req, res) => {
     //return favorites array on the found user
     res.status(200).json(res.locals.favorites);
@@ -16,7 +16,8 @@ router.get(
 router.post(
   '/favorites',
   sessionMiddleware.verify,
-  favoriteIngredientMiddleware.add,
+  favoriteRecipetMiddleware.add,
+  favoriteRecipetMiddleware.get,
   (req, res) => {
     //return favorites array on the found user
     res.status(200).json(res.locals.favorites);
@@ -26,7 +27,7 @@ router.post(
 router.patch(
   '/favorites',
   sessionMiddleware.verify,
-  favoriteIngredientMiddleware.update,
+  favoriteRecipetMiddleware.update,
   (req, res) => {
     //return favorites array on the found user
     res.status(200).json(res.locals.favorites);
@@ -36,7 +37,7 @@ router.patch(
 router.delete(
   '/favorites',
   sessionMiddleware.verify,
-  favoriteIngredientMiddleware.remove,
+  favoriteRecipetMiddleware.remove,
   (req, res) => {
     //return favorites array on the found user
     res.status(200).json(res.locals.favorites);
