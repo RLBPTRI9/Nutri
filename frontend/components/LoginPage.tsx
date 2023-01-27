@@ -38,7 +38,7 @@ const LoginPage = () => {
       }),
     };
 
-    fetch(URL + '/api/login', options)
+    fetch(URL + '/api/auth/login', options)
       .then((data) => data.json())
       .then((data) => {
         console.log('user is logged in!', data);

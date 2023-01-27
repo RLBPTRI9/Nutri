@@ -188,9 +188,9 @@ const userSlice = createSlice({
       })
       //REMOVE FAVORITE EXTRA REDUCER
       .addCase(removeFavoriteAsync.fulfilled, (state, action) => {
-        const { id } = action.payload;
-        const newFavorites = state.favorites?.filter((fav) => fav.id != id);
-        state.favorites = newFavorites;
+        // const { id } = action.payload;
+        // // const newFavorites = state.favorites?.filter((fav) => fav.id != id);
+        // state.favorites = newFavorites;
       })
       //EDIT INVENTORY ITEM EXTRA REDUCER
       .addCase(editInventoryAsync.fulfilled, (state, action) => {

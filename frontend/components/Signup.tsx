@@ -44,7 +44,7 @@ const Signup = () => {
       }),
     };
 
-    fetch(URL + '/api/signup', options)
+    fetch(URL + '/api/auth/signup', options)
       .then((data) => data.json())
       .then((data) => {
         console.log('user is created!', data);
