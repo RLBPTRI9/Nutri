@@ -6,8 +6,6 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 const Signup = () => {
-  const URL = 'http://localhost:3000';
-
   const usernameRef: any = useRef();
   const nameRef: any = useRef();
   const emailRef: any = useRef();
@@ -41,10 +39,11 @@ const Signup = () => {
         name: nameRef.current.value,
         email: emailRef.current.value,
         password: passwordRef.current.value,
+        avatar: '',
       }),
     };
 
-    fetch(URL + '/api/auth/signup', options)
+    fetch('/api/auth/signup', options)
       .then((data) => data.json())
       .then((data) => {
         console.log('user is created!', data);

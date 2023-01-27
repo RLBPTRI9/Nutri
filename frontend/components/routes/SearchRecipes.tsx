@@ -18,9 +18,9 @@ const SearchRecipes = () => {
   useEffect(() => {
     const getRecipes = async () => {
       const responseData: any = await (
-        await fetch(`/api/recipes/?q=${searchQuery}`)
+        await fetch(`/api/recipes?q=${searchQuery}`)
       ).json();
-      setRecipes(responseData.hits);
+      setRecipes(responseData);
     };
 
     if (searchQuery) {
@@ -51,9 +51,9 @@ const SearchRecipes = () => {
       <hr color='lightgrey' />
       <div className='SearchRecipesContainer'>
         {recipes.map((recipe: any) => (
-          <div className='SearchFlexItem' key={recipe.recipe.label}>
-            <img src={recipe.recipe.image} alt={recipe.recipe.label} />
-            <p>{recipe.recipe.label}</p>
+          <div className='SearchFlexItem' key={recipe.recipeName}>
+            <img src={recipe.image} alt={recipe.recipeName} />
+            <p>{recipe.recipeName}</p>
           </div>
         ))}
       </div>

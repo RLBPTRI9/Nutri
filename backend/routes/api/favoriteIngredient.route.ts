@@ -38,6 +38,7 @@ router.delete(
   '/favorites',
   sessionMiddleware.verify,
   favoriteRecipetMiddleware.remove,
+  favoriteRecipetMiddleware.get,
   (req, res) => {
     //return favorites array on the found user
     res.status(200).json(res.locals.favorites);
