@@ -3,7 +3,7 @@ import { createAppAsyncThunk, useAppDispatch } from '../store/hooks'
 import { UserState } from './userSlice'
 import { setUserData } from './userSlice'
 
-interface ReturnedState {
+export interface ReturnedState {
     auth: AuthState;
     data: UserState;
 } 
@@ -17,7 +17,6 @@ interface AuthState {
 }
 
 const dispatch = useAppDispatch
-
 const user = JSON.parse(localStorage.getItem('user')!);
 // post request async thunk for sign up that requires, username, name, avatar, email, and password
 export const registerAsync = createAppAsyncThunk<ReturnedState>(
@@ -34,31 +33,35 @@ export const registerAsync = createAppAsyncThunk<ReturnedState>(
                     userData
                 )
             });
-            console.log('userData in authSlice', userData);
+            console.log('userData in Register Thunk', userData);
             const data: ReturnedState = await response.json();
-            console.log('data to dispatch to userSlice', data)
+            // console.log('data to dispatch to userSlice', data)
             //@ts-ignore
-            dispatch(setUserData(data))
             return data as ReturnedState
         } catch (error) {
             return `${error}`
         }
     }
+    //@ts-ignore
 )
 
-export const loginAsync = createAppAsyncThunk<Object>(
+export const loginAsync = createAppAsyncThunk<ReturnedState>(
     "auth/loginAsync",
-    async(loginData) => {
+    // @ts-ignore
+    async(userData: Object) => {
         try {
-            const response = await fetch('http://localhost:8080/api/login', {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({
-                    loginData
-                })
-            })
+                body:JSON.stringify(
+                    userData
+                )
+            });
+            console.log('userData in LoginThunk', userData)
+            const data: ReturnedState = await response.json();
+            return data as ReturnedState
         } catch (error) {
             return `${error}`
         }
@@ -95,6 +98,7 @@ const authSlice = createSlice({
         .addCase(registerAsync.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
             state.isLoggedIn = true;
+            console.log('register auth payload fulfilled', action.payload)
             state.username = action.payload.auth.username;
             state.name = action.payload.auth.name;
             state.avatar = action.payload.auth.avatar;
@@ -106,6 +110,11 @@ const authSlice = createSlice({
         .addCase(loginAsync.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
             state.isLoggedIn = true;
+            console.log('login auth payload fulfilled', action.payload)
+            state.username = action.payload.auth.username;
+            state.name = action.payload.auth.name;
+            state.avatar = action.payload.auth.avatar;
+            state.email = action.payload.auth.email;
         })
         
     }

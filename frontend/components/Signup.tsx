@@ -7,17 +7,10 @@ import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '../store/hooks';
 import { useNavigate } from 'react-router-dom'
 import { registerAsync } from '../features/authSlice';
+import { setUserData } from '../features/userSlice';
 
 const Signup = () => {
   //username, name, avatar, email, password
-
-  const [userInput, setUserInput] = useState({
-    username: '',
-    name: '',
-    email: '',
-    avatar: '',
-    password: ''
-  })
 
   const dispatch = useAppDispatch();
 
@@ -54,10 +47,11 @@ const Signup = () => {
     console.log('userData: ', userData)
     //@ts-ignore
     dispatch(registerAsync(userData))
+    //@ts-ignore
 
     clearFormValues();
 
-
+    navigate('/home')
   };
 
   const clearFormValues = () => {
