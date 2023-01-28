@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthState, ReturnedState } from '../features/authSlice';
 import { Recipe } from '../features/interfaces/recipe';
 import { UserState } from '../features/userSlice';
 import RecipeCard from './RecipeCard';
 import { store } from '../store/store';
+import Button from '@mui/material/Button';
 
 const Favorites = () => {
   //   const favorites: Recipe[] = useSelector<UserState, Recipe[]>(
@@ -13,6 +14,7 @@ const Favorites = () => {
   //   );
   const user = useSelector<ReturnedState, ReturnedState>((state) => state);
   const favorites = user.data.favorites;
+  const navigate = useNavigate();
 
   //   const store1 = store.getState();
 
@@ -44,30 +46,16 @@ const Favorites = () => {
       ) : (
         <div className='NoAuth'>
           <h1>Not logged in</h1>
-          <p>
-            Please{' '}
-            <span>
-              <Link to='/login'>Login</Link>
-            </span>
-          </p>
+          <Button
+            variant='contained'
+            onClick={(e: React.MouseEvent) => {
+              e.preventDefault();
+              navigate('/login');
+            }}>
+            Login
+          </Button>
         </div>
       )}
-      {/* <div className='Favs'>
-      {favorites?.length ? (
-        favorites.map((recipe) => (
-          <RecipeCard
-            key={recipe.recipeId}
-            name={recipe.recipeName}
-            image={recipe.image}
-            url={recipe.sourceUrl}
-            source={recipe.sourceUrl}
-            ingredients={recipe.ingredients}
-          />
-        ))
-      ) : (
-        <h1>No favs</h1>
-      )}
-    </div> */}
     </div>
   );
 };
