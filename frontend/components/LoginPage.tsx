@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { loginAsync } from '../features/authSlice';
-import { getUserInfoAsync } from '../features/userSlice';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -39,8 +38,6 @@ const LoginPage = () => {
     };
     //@ts-ignore
     dispatch(loginAsync(userData));
-    setTimeout(() => dispatch(getUserInfoAsync()), 600);
-    // dispatch(getUserInfoAsync());
 
     clearFormValues();
 
