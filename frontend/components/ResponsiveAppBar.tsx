@@ -16,19 +16,35 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SetMealOutlinedIcon from '@mui/icons-material/SetMealOutlined';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-const pages = [{ pageName: 'Add Allergies', href: "/" }, { pageName: 'Search Recipes', href: "/recipes" }];
+type Page = {
+  pageName: string;
+  href: string;
+};
+
+const pages: Page[] = [
+  { pageName: 'Add Allergies', href: '/' },
+  { pageName: 'Search Recipes', href: '/recipes' },
+  { pageName: 'Favorites', href: '/favorites' },
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar(props: any) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: any) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
+  };
+
+  const handleNavClick = (e: React.MouseEvent, page?: Page) => {
+    e.preventDefault();
+    if (page) navigate(page.href);
   };
 
   const handleCloseNavMenu = () => {
@@ -59,8 +75,7 @@ function ResponsiveAppBar(props: any) {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-            }}
-          >
+            }}>
             NUTRI
           </Typography>
 
@@ -71,8 +86,7 @@ function ResponsiveAppBar(props: any) {
               aria-controls='menu-appbar'
               aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color='inherit'
-            >
+              color='inherit'>
               <MenuIcon />
             </IconButton>
             <Menu
@@ -91,11 +105,14 @@ function ResponsiveAppBar(props: any) {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' },
-              }}
-            >
+              }}>
               {pages.map((page) => (
-                <MenuItem key={page.pageName} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page.pageName}
+                  // onClickCapture={(e) => handleNavClick(e, page)}
+                  onClick={(e) => handleNavClick(e, page)}>
                   <Typography textAlign='center'>{page.pageName}</Typography>
+                  {/* // <Link to={page.href}>{page.pageName}</Link> */}
                 </MenuItem>
               ))}
             </Menu>
@@ -115,8 +132,7 @@ function ResponsiveAppBar(props: any) {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-            }}
-          >
+            }}>
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -124,9 +140,8 @@ function ResponsiveAppBar(props: any) {
               <Button
                 key={page.pageName}
                 href={page.href}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
+                onClick={(e) => handleNavClick(e, page)}
+                sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page.pageName}
               </Button>
             ))}
@@ -156,8 +171,7 @@ function ResponsiveAppBar(props: any) {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+              onClose={handleCloseUserMenu}>
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign='center'>{setting}</Typography>
