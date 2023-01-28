@@ -8,7 +8,7 @@ export interface ReturnedState {
   data: UserState;
 }
 
-interface AuthState {
+export interface AuthState {
   username: string | null;
   name: string | null;
   avatar: string | null;
