@@ -17,7 +17,7 @@ const ErrorPage: React.FC = () => {
         <p>404</p>
       <h1>Uh-oh! You got lost in the sauce.</h1>
       <p>An unexpected error occurred.</p>
-      <h3><a href='/home' >Go back home <ArrowForwardIcon style={{marginLeft: '5px'}}/></a></h3>
+      <h3 ><a href='/home' >Go back home <ArrowForwardIcon style={{marginLeft: '5px'}}/></a></h3>
       <p>{error && <i>{error.statusText || error.status}</i>}</p>
       </div>
       <img src="https://source.unsplash.com/PFX41973J6M" alt="An almost empty sriracha sauce bottle."></img>
