@@ -154,3 +154,35 @@ div.MuiFormControl-root {
 #likeBtn.selected {
   color: #14692e;
 }
+
+.Favorites {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  /* background-color: blue; */
+}
+
+.Favorites .Favs {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  /* background-color: red; */
+}
+
+.Favorites .NoAuth {
+  width: 20em;
+  height: 15em;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  /* background-color: red; */
+}
+
+.Favorites .NoAuth * {
+  margin: auto;
+}
+
+/* .Favorites .Favs .cardContainer {
+  background-color: green;
+} */
