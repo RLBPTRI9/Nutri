@@ -5,9 +5,9 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '../store/hooks';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { registerAsync } from '../features/authSlice';
-import { setUserData } from '../features/userSlice';
+// import { setUserData } from '../features/userSlice';
 
 const Signup = () => {
   //username, name, avatar, email, password
@@ -21,13 +21,12 @@ const Signup = () => {
   const emailRef: any = useRef();
   const passwordRef: any = useRef();
 
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const username = usernameRef.current.value;
     const name = nameRef.current.value;
     const email = emailRef.current.value;
-    const avatar = 'Herman was here!!'
+    const avatar = 'Herman was here!!';
     const password = passwordRef.current.value;
 
     console.log(
@@ -38,20 +37,20 @@ const Signup = () => {
     );
 
     const userData = {
-      username: username, 
-      password: password, 
-      name: name, 
-      email: email, 
-      avatar: 'Herman was here'
+      username: username,
+      password: password,
+      name: name,
+      email: email,
+      avatar: 'Herman was here',
     };
-    console.log('userData: ', userData)
+    console.log('userData: ', userData);
     //@ts-ignore
-    dispatch(registerAsync(userData))
+    dispatch(registerAsync(userData));
     //@ts-ignore
 
     clearFormValues();
 
-    navigate('/home')
+    navigate('/home');
   };
 
   const clearFormValues = () => {
