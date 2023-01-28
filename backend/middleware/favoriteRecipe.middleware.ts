@@ -50,11 +50,11 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
 
   add: async (req: Request, res: Response, next: NextFunction) => {
     //grab new favorite recipe object from req body
-    const { favorite } = req.body;
+    const { recipeId } = req.body;
 
-    //handler if favorite recipe is missing
+    //handler if recipeId recipe is missing
     try {
-      if (!favorite) {
+      if (!recipeId) {
         return next({
           log: 'Express error handler caught addNewFavorite middleware error',
           message: {
@@ -80,19 +80,17 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
       const recipeSet = new Set(user.data.favorites);
       //add new ingredients to favorites array
 
-      for (const recipe of favorite) {
-        if (typeof recipe !== 'string')
-          return next({
-            log: 'Express error handler caught addNewFavorite middleware error',
-            message: {
-              error: `sent a non recipe id. This is not a recipe id${recipe}`,
-            },
-          });
+      if (typeof recipeId !== 'string')
+        return next({
+          log: 'Express error handler caught addNewFavorite middleware error',
+          message: {
+            error: `sent a non recipe id. This is not a recipe id${recipeId}`,
+          },
+        });
 
-        //then attempt to push new favorite recipe object onto to Set
-        if (!recipeSet.has(recipe)) {
-          recipeSet.add(recipe);
-        }
+      //then attempt to push new recipeId recipe object onto to Set
+      if (!recipeSet.has(recipeId)) {
+        recipeSet.add(recipeId);
       }
 
       user.data.favorites = [...recipeSet];
