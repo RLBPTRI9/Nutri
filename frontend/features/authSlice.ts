@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, useAppDispatch } from '../store/hooks';
-import { getUserInfoAsync, UserState } from './userSlice';
+import { UserState } from './userSlice';
 // import { setUserData } from './userSlice';
 
 export interface ReturnedState {
