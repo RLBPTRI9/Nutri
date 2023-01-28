@@ -11,10 +11,14 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from 'react-router-dom';
 import Inventory from './routes/Inventory';
 import ErrorPage from './routes/ErrorPage';
-
+import Favorites from './Favorites';
 
 function App() {
   //setting up React Router
@@ -22,35 +26,39 @@ function App() {
     {
       path: '/',
       element: <Root />,
-      errorElement: <ErrorPage/>,
+      errorElement: <ErrorPage />,
       children: [
         {
-          path: "/",
-          element: <Navigate to="/home" />
+          path: '/',
+          element: <Navigate to='/home' />,
         },
         {
-          path: "/home",
+          path: '/home',
           element: <UserInterface />,
         },
         {
-          path: "/recipes",
-          element: <SearchRecipes/>,
+          path: '/recipes',
+          element: <SearchRecipes />,
         },
         {
-          path:"/inventory",
-          element: <Inventory/>,
+          path: '/inventory',
+          element: <Inventory />,
+        },
+        {
+          path: '/favorites',
+          element: <Favorites />,
         },
       ],
     },
     {
-      path: "/signup",
-      element: <Signup/>,
-      errorElement: <ErrorPage/>,
+      path: '/signup',
+      element: <Signup />,
+      errorElement: <ErrorPage />,
     },
     {
-      path: "/login",
-      element: <LoginPage/>,
-      errorElement: <ErrorPage/>,
+      path: '/login',
+      element: <LoginPage />,
+      errorElement: <ErrorPage />,
     },
   ]);
 
