@@ -1,4 +1,5 @@
 export interface Recipe {
+  source: string | undefined;
   recipeId: string;
   sourceUrl: string;
   recipeName: string;

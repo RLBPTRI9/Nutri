@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, useAppDispatch } from '../store/hooks';
-import { UserState } from './userSlice';
+import { getUserInfoAsync, UserState } from './userSlice';
 // import { setUserData } from './userSlice';
 
 export interface ReturnedState {
@@ -33,8 +33,8 @@ export const registerAsync = createAppAsyncThunk<ReturnedState>(
       });
       console.log('userData in Register Thunk', userData);
       const data: ReturnedState = await response.json();
+      // const data = {auth: res.auth, user: res.data}
       // console.log('data to dispatch to userSlice', data)
-      //@ts-ignore
       return data as ReturnedState;
     } catch (error) {
       return `${error}`;
@@ -107,6 +107,7 @@ const authSlice = createSlice({
         state.name = action.payload.auth.name;
         state.avatar = action.payload.auth.avatar;
         state.email = action.payload.auth.email;
+        // dispatch(getUserInfoAsync());
       });
   },
 });

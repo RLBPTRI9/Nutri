@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { loginAsync } from '../features/authSlice';
+import { getUserInfoAsync } from '../features/userSlice';
 
 const LoginPage = () => {
-
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -27,14 +27,16 @@ const LoginPage = () => {
 
     const userData = {
       username: username,
-      password: password
-    }
+      password: password,
+    };
     //@ts-ignore
-    dispatch(loginAsync(userData))
+    dispatch(loginAsync(userData));
+    setTimeout(() => dispatch(getUserInfoAsync()), 600);
+    // dispatch(getUserInfoAsync());
 
-      clearFormValues();
+    clearFormValues();
 
-    navigate('/home')
+    navigate('/home');
   };
 
   const clearFormValues = () => {

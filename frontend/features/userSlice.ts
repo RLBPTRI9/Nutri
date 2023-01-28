@@ -11,7 +11,6 @@ import { json } from 'express';
 import { Recipe } from './interfaces/recipe';
 
 export interface UserState {
-  _id: string;
   allergies: string[] | string;
   fridgeInventory: fridgeItem[] | string;
   favorites: Recipe[]; //need to change this on backend to match recipe interface, the idea is to not make another fetch call
@@ -19,7 +18,6 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  _id: '',
   allergies: [],
   fridgeInventory: [],
   favorites: [],
@@ -30,13 +28,13 @@ const initialState: UserState = {
 // See also: https://redux.js.org/tutorials/essentials/part-5-async-logic#displaying-loading-state for implementing when app loads AND user signs in.
 export const getUserInfoAsync = createAsyncThunk<UserState>(
   'user/getUserInfoAsync',
-  async (_id) => {
-    const response = await fetch('http://localhost:8080/api/user/', {
+  async () => {
+    const response = await fetch('http://localhost:8080/api/auth/user/', {
       //route needs to be changed?
       method: 'GET',
     });
-    const data = response.json();
-    return data; // need to destructure this data to get what is needed for UserState
+    const data = await response.json();
+    return data.data; // need to destructure this data to get what is needed for UserState
   }
 );
 
@@ -79,7 +77,7 @@ export const addFavoriteAsync = createAsyncThunk(
           favorite, //body needs to be changed? maybe not? im not sure?
         }),
       });
-      const data = await response.json; //should return all of the favorites
+      const data = await response.json(); //should return all of the favorites
       return data; //should return all of the favorites
     } catch (error) {
       return `${error}`;
@@ -170,8 +168,7 @@ const userSlice = createSlice({
       })
       .addCase(getUserInfoAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const { _id, allergies, fridgeInventory, favorites } = action.payload;
-        state._id = _id;
+        const { allergies, fridgeInventory, favorites } = action.payload;
         state.allergies = allergies;
         state.fridgeInventory = fridgeInventory;
         state.favorites = favorites;
