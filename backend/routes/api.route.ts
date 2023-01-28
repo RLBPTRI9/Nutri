@@ -12,7 +12,7 @@ const router = Router();
 router.use('/auth', authRoute);
 
 // Favorite ingredient endpoint
-router.use('/ingredients', favoriteIngredientRoute);
+router.use('/favorites', favoriteIngredientRoute);
 
 // Fridge inventory endpoint
 router.use('/inventory', fridgeInventoryRoute);

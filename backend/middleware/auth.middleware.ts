@@ -63,13 +63,16 @@ const authMiddleware: AuthInterface = {
       });
 
     try {
-      const foundUser = await User.findOne({ username });
+      const foundUser = await User.findOne({ 'auth.username':username});
       //handler if not able to find a user in the database
       if (!foundUser)
         return next({
           log: 'Express error handler caught verifyUser middleware error',
           message: { error: `no user found within database ${username}` },
         });
+
+        console.log({username, password, foundUser});
+
       const isCorrectPass = bcrypt.compareSync(
         password,
         foundUser?.auth.password

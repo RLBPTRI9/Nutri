@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { EdemamResponse } from '../../__tests__/utils/dummyData';
 import renameKeys from '../utils/renameKeys';
 import getID from '../utils/getID';
+import fetch from 'node-fetch';
 import axios from 'axios';
 import { getRecipeById } from '../utils/getRecipeById';
 

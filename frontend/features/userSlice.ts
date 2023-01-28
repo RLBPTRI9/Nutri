@@ -58,12 +58,12 @@ export const addFavoriteAsync = createAppAsyncThunk(
     try {
       const response = await fetch('http://localhost:8080/api/favorites', {
         //route needs to be changed?
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          favorite, //body needs to be changed? maybe not? im not sure?
+          recipeId: favorite, //body needs to be changed? maybe not? im not sure?
         }),
       });
       const data = await response.json(); //should return all of the favorites

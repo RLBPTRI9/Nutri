@@ -58,7 +58,7 @@ const SearchRecipes = () => {
       <div className='SearchRecipesContainer'>
         {recipes.map((recipe: any) => (
           <div className='SearchFlexItem' key={recipe.recipeName}>
-            <LikeButton/>
+            <LikeButton recipeId = {recipe.recipeId}/>
             <img src={recipe.image} alt={recipe.recipeName} />
             <p>{recipe.recipeName}</p>
           </div>

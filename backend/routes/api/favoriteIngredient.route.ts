@@ -4,7 +4,7 @@ import sessionMiddleware from '../../middleware/session.middleware';
 const router = Router();
 
 router.get(
-  '/favorites',
+  '/',
   sessionMiddleware.verify,
   favoriteRecipetMiddleware.get,
   (req, res) => {
@@ -14,7 +14,7 @@ router.get(
 );
 
 router.post(
-  '/favorites',
+  '/',
   sessionMiddleware.verify,
   favoriteRecipetMiddleware.add,
   favoriteRecipetMiddleware.get,
@@ -25,7 +25,7 @@ router.post(
 );
 
 router.patch(
-  '/favorites',
+  '/',
   sessionMiddleware.verify,
   favoriteRecipetMiddleware.update,
   (req, res) => {
@@ -35,7 +35,7 @@ router.patch(
 );
 
 router.delete(
-  '/favorites',
+  '/',
   sessionMiddleware.verify,
   favoriteRecipetMiddleware.remove,
   favoriteRecipetMiddleware.get,

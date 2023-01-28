@@ -66,6 +66,7 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
       //grab
       const user = res.locals.user;
 
+
       //handler if not able to find a user in the database
       if (!user) {
         return next({
@@ -76,6 +77,7 @@ const favoriteRecipetMiddleware: FavoriteRecipeInterface = {
         });
       }
 
+      console.log({recipeId, user});
       //convert to set
       const recipeSet = new Set(user.data.favorites);
       //add new ingredients to favorites array
