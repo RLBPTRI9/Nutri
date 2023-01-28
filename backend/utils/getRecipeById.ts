@@ -32,16 +32,12 @@ export const getRecipeById = async (recipeId: string): Recipe => {
         to: null,
       },
       {
-        from: 'source',
-        to: 'sourceUrl',
-      },
-      {
         from: 'label',
         to: 'recipeName',
       },
       {
         from: 'url',
-        to: null,
+        to: 'sourceURL',
       },
       {
         from: 'shareAs',

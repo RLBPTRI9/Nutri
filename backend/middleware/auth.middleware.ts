@@ -63,7 +63,7 @@ const authMiddleware: AuthInterface = {
       });
 
     try {
-      const foundUser = await User.findOne({ auth: { username } });
+      const foundUser = await User.findOne({ username });
       //handler if not able to find a user in the database
       if (!foundUser)
         return next({

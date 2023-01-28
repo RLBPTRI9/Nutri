@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { registerAsync } from '../features/authSlice';
-import { setUserData } from '../features/userSlice';
+// import { setUserData } from '../features/userSlice';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
@@ -75,7 +75,7 @@ const Signup = () => {
         {...props}>
         {'Copyright © '}
         <Link color='inherit' href='/login'>
-         Nutri
+          Nutri
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}

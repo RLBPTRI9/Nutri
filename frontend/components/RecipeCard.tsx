@@ -157,15 +157,6 @@ const RecipeReviewCard: FC<{
           />
           <CardContent>
             <Typography variant='body2' color='text.secondary'>
-              Health Labels:
-              <Stack
-                direction='row'
-                spacing={0.5}
-                alignItems='flex-start'
-                flexWrap='wrap'>
-                {labels}
-              </Stack>
-              <br />
               Click <a href={url}> link</a> for recipe
             </Typography>
           </CardContent>
@@ -190,8 +181,8 @@ const RecipeReviewCard: FC<{
               <Typography paragraph>Ingredients:</Typography>
               <Typography paragraph>
                 {ingredients.map((item: any) => (
-                  <span key={item}>
-                    {item} <br />{' '}
+                  <span key={item.name}>
+                    {item.text} <br />{' '}
                   </span>
                 ))}
               </Typography>
