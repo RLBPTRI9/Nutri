@@ -17,10 +17,19 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SetMealOutlinedIcon from '@mui/icons-material/SetMealOutlined';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ReturnedState } from '../features/authSlice';
+import axios from 'axios';
 
 type Page = {
   pageName: string;
   href: string;
+};
+
+type Setting = {
+  name: string;
+  shouldDisplay: boolean;
+  action: (...any: any) => void;
 };
 
 const pages: Page[] = [
@@ -28,12 +37,31 @@ const pages: Page[] = [
   { pageName: 'Search Recipes', href: '/recipes' },
   { pageName: 'Favorites', href: '/favorites' },
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar(props: any) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+
+  const user = useSelector<ReturnedState, ReturnedState>((state) => state);
+  const settings: Setting[] = [
+    {
+      name: 'Logout',
+      shouldDisplay: user.auth.isLoggedIn,
+      action: () => {
+        axios
+          .post('/api/auth/logout')
+          .then(() => (window.location.href = '/login'));
+      },
+    },
+    {
+      name: 'Login',
+      shouldDisplay: !user.auth.isLoggedIn,
+      action: () => {
+        navigate('/login');
+      },
+    },
+  ];
 
   const handleOpenNavMenu = (event: any) => {
     setAnchorElNav(event.currentTarget);
@@ -133,7 +161,7 @@ function ResponsiveAppBar(props: any) {
               color: 'inherit',
               textDecoration: 'none',
             }}>
-            LOGO
+            Nutri
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -173,8 +201,14 @@ function ResponsiveAppBar(props: any) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}>
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
+                <MenuItem
+                  key={setting.name}
+                  style={{ display: setting.shouldDisplay ? '' : 'none' }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setting.action(e);
+                  }}>
+                  <Typography textAlign='center'>{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
