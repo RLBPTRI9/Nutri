@@ -1,24 +1,33 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useAppDispatch } from '../store/hooks';
+import { useNavigate } from 'react-router-dom'
+import { registerAsync } from '../features/authSlice';
+import { setUserData } from '../features/userSlice';
 
 const Signup = () => {
+  //username, name, avatar, email, password
+
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
   const usernameRef: any = useRef();
   const nameRef: any = useRef();
   const emailRef: any = useRef();
   const passwordRef: any = useRef();
 
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
-    // console.log(username, name, email, password);
-
     const username = usernameRef.current.value;
     const name = nameRef.current.value;
     const email = emailRef.current.value;
+    const avatar = 'Herman was here!!'
     const password = passwordRef.current.value;
 
     console.log(
@@ -28,38 +37,28 @@ const Signup = () => {
         passwordRef.current.value
     );
 
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: usernameRef.current.value,
-        name: nameRef.current.value,
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-        avatar: '',
-      }),
+    const userData = {
+      username: username, 
+      password: password, 
+      name: name, 
+      email: email, 
+      avatar: 'Herman was here'
     };
+    console.log('userData: ', userData)
+    //@ts-ignore
+    dispatch(registerAsync(userData))
+    //@ts-ignore
 
-    fetch('/api/auth/signup', options)
-      .then((data) => data.json())
-      .then((data) => {
-        console.log('user is created!', data);
-      });
+    clearFormValues();
 
+    navigate('/home')
+  };
+
+  const clearFormValues = () => {
     usernameRef.current.value = '';
     nameRef.current.value = '';
     emailRef.current.value = '';
     passwordRef.current.value = '';
-  };
-
-  const clearFormValues = () => {
-    // usernameRef.current.value = '';
-    // nameRef.current.value = '';
-    // emailRef.current.value = '';
-    // passwordRef.current.value = '';
   };
 
   return (
@@ -72,7 +71,7 @@ const Signup = () => {
             label='Name'
             variant='outlined'
             size='small'
-            placeholder='e.g., peanuts'
+            placeholder='e.g., Herman'
             inputRef={nameRef}
             sx={{ width: 250 }}
           />
@@ -81,7 +80,7 @@ const Signup = () => {
             label='Username'
             variant='outlined'
             size='small'
-            placeholder='e.g., peanuts'
+            placeholder='e.g., HermanLovesSox123'
             inputRef={usernameRef}
             sx={{ width: 250 }}
           />
@@ -90,7 +89,7 @@ const Signup = () => {
             label='Email'
             variant='outlined'
             size='small'
-            placeholder='e.g., peanuts'
+            placeholder='e.g., herman@redsox.com'
             inputRef={emailRef}
             sx={{ width: 250 }}
           />
@@ -99,12 +98,12 @@ const Signup = () => {
             label='Password'
             variant='outlined'
             size='small'
-            placeholder='e.g., peanuts'
+            placeholder='e.g., herman1234'
             inputRef={passwordRef}
             sx={{ width: 250 }}
           />
           <br></br>
-          <Button type='submit' onClick={clearFormValues}>
+          <Button type='submit' onClick={handleSubmit}>
             Sign up
           </Button>
         </Paper>
