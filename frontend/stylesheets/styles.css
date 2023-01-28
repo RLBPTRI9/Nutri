@@ -94,6 +94,7 @@ div.login-form {
 }
 
 .SearchFlexItem {
+  position: relative;
   background-color: white;
   border: 1pt solid black;
   margin: 1rem;
@@ -117,6 +118,7 @@ div.login-form {
 }
 
 .SearchFlexItem img {
+  
   display: cover;
   max-height: 300px;
 }
@@ -129,4 +131,22 @@ div.login-form {
 div.MuiFormControl-root{
   margin: 0.625rem;
   right: 0.625rem;
+}
+
+#likeBtn {  
+  z-index: 9;
+  position: absolute;
+  right:0;
+  width: 70px;
+  height: 70px;
+
+  color: rgb(184, 180, 183);
+}
+
+#likeBtn :active {
+  color: #14692e;
+}
+
+#likeBtn.selected {
+  color: #14692e;
 }
