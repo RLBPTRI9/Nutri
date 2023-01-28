@@ -7,6 +7,13 @@ import Typography from '@mui/material/Typography';
 import { useAppDispatch } from '../store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { registerAsync } from '../features/authSlice';
+// import { setUserData } from '../features/userSlice';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 
 const Signup = () => {
   //username, name, avatar, email, password
@@ -59,54 +66,113 @@ const Signup = () => {
     passwordRef.current.value = '';
   };
 
+  function Copyright(props: any) {
+    return (
+      <Typography
+        variant='body2'
+        color='text.secondary'
+        align='center'
+        {...props}>
+        {'Copyright © '}
+        <Link color='inherit' href='/login'>
+          Nutri
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
+
   return (
-    <div className='login-form'>
-      <form onSubmit={handleSubmit}>
-        <Typography variant='h5'>Register</Typography>
-        <br></br>
-        <Paper className='login-form-container'>
-          <TextField
-            label='Name'
-            variant='outlined'
-            size='small'
-            placeholder='e.g., Herman'
-            inputRef={nameRef}
-            sx={{ width: 250 }}
-          />
-          <br></br>
-          <TextField
-            label='Username'
-            variant='outlined'
-            size='small'
-            placeholder='e.g., HermanLovesSox123'
-            inputRef={usernameRef}
-            sx={{ width: 250 }}
-          />
-          <br></br>
-          <TextField
-            label='Email'
-            variant='outlined'
-            size='small'
-            placeholder='e.g., herman@redsox.com'
-            inputRef={emailRef}
-            sx={{ width: 250 }}
-          />
-          <br></br>
-          <TextField
-            label='Password'
-            variant='outlined'
-            size='small'
-            placeholder='e.g., herman1234'
-            inputRef={passwordRef}
-            sx={{ width: 250 }}
-          />
-          <br></br>
-          <Button type='submit' onClick={handleSubmit}>
-            Sign up
+    <Container component='main' maxWidth='xs'>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LocalDiningIcon />
+        </Avatar>
+        <Typography component='h1' variant='h5'>
+          Sign up
+        </Typography>
+        <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete='name'
+                name='name'
+                required
+                fullWidth
+                id='name'
+                label='name'
+                autoFocus
+                placeholder='e.g., Herman'
+                inputRef={nameRef}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id='username'
+                label='Username'
+                name='username'
+                autoComplete='username'
+                placeholder='e.g., HermanLovesSox123'
+                inputRef={usernameRef}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
+                placeholder='e.g., herman@redsox.com'
+                inputRef={emailRef}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='new-password'
+                placeholder='e.g., herman1234'
+                inputRef={passwordRef}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            sx={{ mt: 3, mb: 2 }}>
+            Sign Up
           </Button>
-        </Paper>
-      </form>
-    </div>
+          <Grid container justifyContent='flex-end'>
+            <Grid item>
+              <Link href='/login' variant='body2'>
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+      <Copyright sx={{ mt: 5 }} />
+    </Container>
   );
 };
 
