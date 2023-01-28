@@ -1,7 +1,10 @@
 body {
   background-color: #f7fbfc;
 }
-
+div.MuiFormControl-root {
+  margin: 0.625rem;
+  right: 0.625rem;
+}
 #error-page {
   display: flex;
   align-items: center;
@@ -14,7 +17,10 @@ body {
   padding: 8rem;
 }
 
-a, a:hover, a:focus, a:active {
+a,
+a:hover,
+a:focus,
+a:active {
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -26,7 +32,11 @@ a, a:hover, a:focus, a:active {
   object-fit: cover;
   object-position: center;
   filter: grayscale(30%);
-  -webkit-mask: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
   mask: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
@@ -56,17 +66,13 @@ a, a:hover, a:focus, a:active {
 div.login-form {
   display: flex;
   justify-content: center;
-
 }
 
 .login-form-container {
-
   height: 400px;
   width: 300px;
   padding: 25px;
-
 }
-
 
 .SearchRecipesPage {
   display: flex;
@@ -81,7 +87,7 @@ div.login-form {
 }
 
 .SearchBar {
-  width: 40%
+  width: 40%;
 }
 
 .SearchRecipesContainer {
